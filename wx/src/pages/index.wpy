@@ -1,0 +1,287 @@
+<style lang="less">
+    #homepage {
+        // display: flex;
+        // flex-direction: column;
+        overflow-x: hidden;
+        width: 100%;
+        .topSwiper {
+            height: 306rpx;
+        }
+        .navTab {
+            background-color: #fff;
+            padding-top: 8rpx;
+            padding-bottom: 35rpx;
+            position: relative;
+        }
+        .navTablist {
+            height: 415rpx;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #fff;
+            font-size: 23rpx;
+            color: #6c6b6b;
+            .icon {
+                width: 77rpx;
+                height: 77rpx;
+                margin-bottom: 30rpx;
+            }
+            span {
+                width: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+        }
+        .navDots {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            .dot {
+                display: inline-block;
+                height: 10rpx;
+                width: 24rpx;
+                margin-right: 15rpx;
+                background-color: #ccc;
+                border-radius: 15rpx;
+                transition: all .3s;
+                &.current {
+                    border-radius: 25rpx;
+                    width: 32rpx;
+                    background-color: rgb(246, 17, 17);
+                }
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="container" id="homepage">
+        <!-- 头部轮播图片 -->
+        <div class="topSwiper">
+            <swiper wx:if="{{!adload}}" style="height:306rpx" indicator-dots="{{true}}" autoplay="{{true}}" indicator-color="#ffffff" indicator-active-color="rgb(246,17,17)">
+                <block wx:for="{{imgUrls}}" wx:key="{{index}}">
+                    <swiper-item wx:if="{{item.status == 1}}">
+                        <!-- <navigator url="{{item.target_url}}" hover-class="none"> -->
+                        <image src="{{item.image_url}}" class="slide-image" bindtap="navAD({{item.target_url}})" />
+                        <!-- </navigator> -->
+                    </swiper-item>
+                </block>
+            </swiper>
+        </div>
+        <!-- 导航图标 -->
+        <view class="navTab">
+            <swiper style="height:418rpx" @change="changenav" indicator-dots="{{false}}" autoplay="{{false}}" indicator-color="#ffffff" indicator-active-color="rgb(246,17,17)">
+                <swiper-item>
+                    <div class="navTablist">
+                        <span wx:for="{{catelist1}}" wx:key="{{index}}" @tap="gotolist({{item.id}})">
+                                            <view class="icon">
+                                                <image src="{{item.image_url?item.image_url:baseServerImg}}" mode="aspectFill"/>
+                                            </view>
+                                            {{item.name}}
+                                        </span>
+                    </div>
+                </swiper-item>
+                <swiper-item wx:if="{{cateShow}}">
+                    <div class="navTablist">
+                        <span wx:for="{{catelist2}}" wx:key="{{index}}" @tap="gotolist({{item.id}})">
+                                            <view class="icon">
+                                                <image src="{{item.image_url?item.image_url:baseServerImg}}" mode="aspectFill"/>
+                                            </view>
+                                            {{item.name}}</span>
+                    </div>
+                </swiper-item>
+            </swiper>
+            <div class="navDots" wx:if="{{cateShow}}">
+                <span class="dot {{navIndex == 0?'current':''}}"></span>
+                <span class="dot {{navIndex == 1?'current':''}}"></span>
+            </div>
+        </view>
+        <!-- 热门推荐 -->
+        <text class="sutitle">热门推荐</text>
+        <view class="p-0-32">
+            <repeat for="{{recommend}}" index="index" item="item" key="key">
+                <recommend :goodsitem.sync="item"></recommend>
+            </repeat>
+        </view>
+        <text class="sutitle">全球优质路线</text>
+        <view class="p-0-32">
+            <repeat for="{{recommend2}}" index="index" item="item" key="key">
+                <recommend :goodsitem.sync="item"></recommend>
+            </repeat>
+        </view>
+        <notice></notice>
+        <span class="public_icon1_to_top" @tap="scrollTop"></span>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import recommend from '@/components/gooditem'
+    import notice from '@/components/notice'
+    export default class Index extends wepy.page {
+        config = {
+            enablePullDownRefresh: true,
+            navigationBarTitleText: '知兮乐兮',
+        }
+        components = {
+            recommend,
+            notice
+        }
+        mixins = [Mixin]
+        data = {
+            imgUrls: [],
+            catelist1: [],
+            catelist2: [],
+            navIndex: 0,
+            cateShow: false,
+            recommend: [],
+            recommend2: [],
+            recommendpage: 1,
+            recommend2page: 1,
+            noticemess: '',
+            test: {},
+            adload: true,
+            recommendShow:false,
+            last_page2: 1,
+            messageTimer:''
+        }
+        methods = {
+            navAD(url) {
+                if (url) {
+                    wepy.navigateTo({
+                        url: url
+                    })
+                }
+            },
+            changenav(index) {
+                // console.log(index)
+                this.navIndex = index.detail.current
+            },
+            gotolist(id) {
+                wepy.setStorageSync('cateid', id)
+                wepy.switchTab({
+                    url: "/pages/search_page"
+                })
+            }
+        }
+        getAD() {
+            wepy.request({
+                url: 'api/advertisingposition/getAd',
+                method: 'POST',
+                data: {
+                    sign: 'home_ad',
+                }
+            }).then(res => {
+                this.adload = false
+                if (res.code == 1) {
+                    this.imgUrls = res.data.list
+                }
+                this.$apply()
+            })
+        }
+        getremmend() {
+            wepy.request({
+                url: 'api/index/recommend',
+                method: 'POST',
+                data: {
+                    type: 1,
+                    per_page: this.page_size,
+                    page: this.recommendpage
+                }
+            }).then(res => {
+                this.recommendShow = true
+                if (res.code == 1) {
+                    this.recommend = res.data.list.data
+                }
+                this.$apply()
+            })
+        }
+        /* 全球优质路线 */
+        getremmend2() {
+            wepy.request({
+                url: 'api/index/recommend',
+                method: 'POST',
+                data: {
+                    type: 4,
+                    per_page: this.page_size,
+                    page: this.recommend2page
+                }
+            }).then(res => {
+                wx.stopPullDownRefresh();
+                if (res.code == 1) {
+                    if (this.recommend2page == 1) {
+                        this.recommend2 = res.data.list.data
+                    } else {
+                        this.recommend2 = this.recommend2.concat(res.data.list.data)
+                    }
+                    this.last_page2 = res.data.list.last_page
+                }
+                this.$apply()
+            })
+        }
+        getCate() {
+            wepy.request({
+                url: 'api/label/getlist',
+                method: 'POST',
+            }).then(res => {
+                if (res.code == 1) {
+                    this.catelist1 = res.data.list.slice(0, 10)
+                    if (res.data.list.length > 10) {
+                        this.catelist2 = res.data.list.slice(10,20)
+                        this.cateShow = true
+                    }
+                } else {
+                    wepy.showModal({
+                        content: res.msg,
+                        showCancel: false
+                    })
+                }
+                this.$apply()
+            })
+        }
+        onLoad() {
+           
+            var arr = new RegExp(/.*?img.*?(width=.*?)\s(height=.*?)\s.*/g)
+            var str12="<a href=\"标注1\" target=_blank>标注2</a>";
+ 
+            var pattern12 = "<img.*?\\s(width=\"[^\"]*\").*?\\s(height=\"[^\"]*)\"";
+            var pattern14 = /.*?img.*?(width=.*?)\s(height=.*?)\s.*/g;
+            
+            // this.PageInit()
+            // this.messageTimer = setInterval(() => {
+            //     console.log('eeee')
+            //     // this.$invoke('notice','getNotice')
+            // },10000)
+        }
+        onHide(){
+            // this.messageTimer = null
+            // clearInterval(this.messageTimer)
+            // console.log('ee',this.messageTimer)
+        }
+        onReachBottom() {
+            if (this.recommend2page > this.last_page2) {
+                this.recommend2page = this.last_page2 == 0 ? 1 :this.last_page2
+                return
+            }
+            this.recommend2page += 1
+            this.getremmend2()
+            
+        }
+        PageInit() {
+            this.getCate()
+            this.getAD()
+            this.getremmend()
+            this.getremmend2()
+            wepy.removeStorage({
+                key: 'payflag'
+            })
+        }
+        onPullDownRefresh(e) {
+            this.recommend2page = 1
+            this.PageInit()
+        }
+    }
+</script>

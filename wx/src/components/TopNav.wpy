@@ -1,0 +1,84 @@
+<style lang="less">
+
+  @primary-color: #d74a45;
+  @default-Fcolor: #2d2d2d;
+  @nav-top-h: 80rpx;
+
+  .nav-container {
+    position: fixed;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: @nav-top-h;
+    padding: 0 100rpx;
+    font-size: 28rpx;
+    color: @default-Fcolor;
+    top:0;
+    width:100%;
+    box-sizing:border-box;
+
+    .active {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      color: @primary-color;
+      position: relative;
+      .public_icon2_location {
+        left:-32rpx;
+        top:2rpx;
+        position: absolute;
+      }
+    }
+    .zhuanfa {
+      position: absolute;
+      right: 48rpx;
+      width: 42rpx;
+      height: 42rpx;
+      button{
+        background-color: transparent;
+            outline: none;
+            border-radius: 0px;
+            border: none;
+      }
+      button::after {
+            border: none;
+        }
+    }
+  }
+</style>
+<template>
+  <view class="nav-container">
+    <repeat for="{{tab}}" key="index" index="index" item="item">
+      <view class="{{index == activeIndex ? 'active' : ''}}" bindtap="changeindex({{index}})">
+          <span wx:if="{{index == activeIndex}}" class="public_icon2_location" ></span>
+          {{index == 0 ? words.combination_one : item}}</view>
+    </repeat>
+    <view class="zhuanfa">
+      <button open-type="share" class="public_icon1_share"> </button>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class TopNav extends wepy.component {
+    components = {};
+
+    data = {
+      tab: ['游学', '详情', '须知', '评价']
+    };
+
+    props = {
+      activeIndex: String,
+      words:Object,
+    };
+    methods = {
+        changeindex(index){
+            this.$emit('changeactiveIndex',index)
+        }
+    }
+  }
+</script>

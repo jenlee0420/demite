@@ -1,0 +1,393 @@
+<style lang="less">
+    #orderdetail {
+        overflow-x: hidden;
+        width: 100%;
+        >view {
+            background-color: #fff;
+        }
+        .orderstatus {
+            height: 177rpx;
+            background-color: #ce4031;
+            color: #fff;
+            font-size: 33rpx;
+            padding: 0 70rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .address {
+            display: flex;
+            align-items: center;
+            padding: 20rpx;
+            text {
+                line-height: 35rpx;
+                font-size: 26rpx;
+                color: #333;
+                display: inline;
+            }
+        }
+        .payment {
+            background-color: transparent;
+            line-height: 85rpx;
+            margin-bottom: 20rpx;
+            >text {
+                padding-left: 44rpx;
+                display: inline-block;
+                height: 65rpx;
+            }
+            .paylist {
+                background-color: #fff;
+                padding-left: 44rpx;
+                width: 100%;
+                box-sizing: border-box;
+                ul {
+                    li {
+                        border-bottom: 1rpx solid @bColor;
+                        display: flex;
+                        font-size: 26rpx;
+                        height: 85rpx;
+                        align-items: center;
+                        >text {
+                            flex: 1
+                        }
+                        padding-right: 20rpx;
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                }
+            }
+        }
+        .contact {
+            font-size: 28rpx;
+            color: #666;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10rpx 0;
+            background-color: transparent;
+            outline: none;
+            border-radius: 0px;
+            border-top:1rpx solid @bColor;
+        }
+        button.contact::after {
+            border: none;
+        }
+        .orderinfo {
+            padding: 30rpx;
+            font-size: 24rpx;
+            color: #888;
+            display: flex;
+            flex-direction: column;
+            line-height: 45rpx;
+            margin-bottom: 20rpx;
+        }
+        .comments {
+            .commlabel {
+                background-color: #eee;
+                display: flex;
+                >text {
+                    font-size: 24rpx;
+                    color: #555545;
+                    margin-right: 180rpx;
+                }
+                height: 67rpx;
+                line-height: 67rpx;
+                padding-left: 30rpx;
+            }
+            .commContent {
+                line-height: 40rpx;
+                color: #333;
+                word-break: break-all;
+                font-size: 24rpx;
+                padding: 30rpx;
+            }
+            .commentimgs {
+                padding: 30rpx;
+                image {
+                    width: 166rpx;
+                    height: 166rpx;
+                    margin-right: 20rpx;
+                    margin-bottom: 10rpx;
+                }
+                display: flex;
+                flex-flow: wrap;
+            }
+            .noComments {
+                height: 273rpx;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 24rpx;
+                color: #bebcbc;
+                span {
+                    margin-bottom: 37rpx;
+                }
+            }
+        }
+        .members {
+            >view:first-child {
+                background-color: #eee;
+                padding-left: 30rpx;
+                font-size: 24rpx;
+                height: 67rpx;
+                line-height: 67rpx;
+            }
+            .memberinfo {
+                padding: 30rpx;
+                padding-left: 0;
+                margin-left: 30rpx;
+                font-size: 26rpx;
+                line-height: 40rpx;
+                display: flex;
+                flex-direction: column;
+                border-bottom: 1rpx solid @bColor;
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+        .btns {
+            padding: 20rpx;
+            text-align: right;
+        }
+    }
+</style>
+
+<template>
+    <view class="container" id="orderdetail" wx:if="{{!loading}}">
+        <view class="orderstatus">
+            <text wx:if="{{order_status=='10'}}">等待买家付款</text>
+            <text wx:if="{{order_status=='20'}}">订单已取消</text>
+            <text wx:if="{{order_status=='30'}}">买家已完成</text>
+            <text wx:if="{{order_status=='40'}}">等待买家使用</text>
+            <text wx:if="{{order_status=='90' || order_status=='60'}}">退款中</text>
+            <span class="public_icon_order_wait_pay" wx:if="{{order_status=='10'}}"></span>
+            <span class="public_icon_order_cancel" wx:if="{{order_status=='20'}}"></span>
+            <span class="public_icon4_complete_buy" wx:if="{{order_status=='30'}}"></span>
+            <span class="public_icon_order_nouse" wx:if="{{order_status=='40'}}"></span>
+            <span class="public_icon_refund" wx:if="{{order_status=='90' || order_status=='60'}}"></span>
+        </view>
+        <view class="address" wx:if="{{order_status=='10'||order_status=='20'}}">
+            <span class="public_icon2_location2"></span>
+            <view class="flexCol flex-astart flex-1 ml20">
+                <text class="mb10">{{detail.address[0].name}}   {{detail.address[0].phone}}</text>
+                <text>{{detail.address[0].region.province+detail.address[0].region.city+detail.address[0].region.region+detail.address[0].detail}}</text>
+            </view>
+            <view wx:if="{{order_status=='10'}}">
+                <button class="btnRdline" @tap="to_address_list">修改</button>
+            </view>
+        </view>
+        <!-- 待支付 -->
+        <view class="payment" wx:if="{{order_status=='10'}}">
+            <text class="fs24">请选择支付方式</text>
+            <view class="paylist">
+                <ul>
+                    <li @tap="choice_pay(1)"><span class="public_icon2_weixin_pay mr20"></span><text>微信支付</text><span class="zan-icon-success zan-icon" wx:if="{{detail.pay_type==1}}"></span></li>
+                    <li @tap="choice_pay(2)"><span class="public_icon2_other_pay mr20"></span><text>找微信朋友代付</text><span class="zan-icon-success zan-icon" wx:if="{{detail.pay_type==2}}"></span></li>
+                </ul>
+            </view>
+        </view>
+        <!-- 待支付 end-->
+        <view class="itemContent">
+            <view class="itemtop">
+                <image src="{{detail.source_image}}" mode="aspectFill" /><span class="fs25 c333 flex-1 ml20">{{detail.source_name}}</span>
+                <button open-type="share" class="public_icon1_share"> </button>
+            </view>
+            <block wx:for="{{detail.goods}}" wx:key="{{index}}">
+                <view class="itemdetail"  bindtap="navDetail({{item.goods_id}})">
+                    <view class="mr20">
+                        <image src="{{item.image.file_path}}" mode="aspectFill" />
+                    </view>
+                    <view class="flex-1">
+                        <text class="itemname">{{item.goods_name}}</text>
+                        <text class="fs22 c929292">{{item.goods_attr}}</text>
+                    </view>
+                    <view class="itemprice ml20">
+                        <text class="fs28 c333">￥{{item.goods_price}}</text>
+                        <view class="c888">
+                            <font class="fs28">x</font>
+                            <font class="fs24">{{item.total_num}}</font>
+                        </view>
+                    </view>
+                </view>
+            </block>
+            <view class="itempay">
+                实付：￥{{detail.total_price}}
+            </view>
+            <!-- 出行人信息 -->
+            <view class="members" wx:if="{{order_status=='40'}}">
+                <view class="c555545"><text>出行人信息（{{detail.address.length}}人）</text></view>
+                <block wx:for="{{detail.address}}">
+                  <view class="memberinfo">
+                    <text class="c333">{{item.name}}</text>
+                    <text class="cb4b4b4">手机号码   {{item.phone}}</text>
+                    <text class="cb4b4b4">身份证     {{item.card}}</text>
+                  </view>
+                </block>
+
+            </view>
+            <!-- 出行人信息 end-->
+            <!-- 评价信息 -->
+            <view class="comments" wx:if="{{order_status=='30'}}">
+                <block wx:for="{{comment_list}}" wx:for-item="item" wx:key="index" >
+                  <view class="commlabel"><text>评价信息</text>
+                    <Star total="5" num="{{item.score}}">
+                  </view>
+                  <view class="commContent">{{item.comment}}</view>
+                  
+                    <view class="commentimgs">
+                        <block wx:for="{{item.pic}}" wx:for-item="itema" wx:key="index1">
+                        <image src="{{itema}}" mode="aspectFill" />
+                        </block>
+                    </view>
+                  
+                </block>
+
+                <view class="noComments" wx:if="{{detail.is_comment!=1}}">
+                    <span class="public_icon4_not_assess"></span>
+                    <text>暂无评价信息，请参与评价，谢谢哦！</text>
+                </view>
+            </view>
+            <!-- 评价信息 end -->
+            <button class="contact" hover-class="none" open-type="contact" ><span class="public_icon4_contact mr10"></span>联系客服</button>
+        </view>
+        {{this.detail.pay_type}}
+        <view class="orderinfo" wx:if="{{order_status=='10'||order_status=='20'||order_status=='40'}}">
+            <text>订单编号：{{detail.order_no}}</text>
+            <text wx:if="{{detail.pay_type==1}}">支付方式：微信</text>
+            <text wx:if="{{detail.pay_type==2}}">支付方式：好友代付</text>
+            <text>下单时间：{{detail.create_time}}</text>
+            <text wx:if="{{order_status=='30'}}">完成时间：{{detail.receipt_time}}  </text>
+        </view>
+        <orderbtn :orderitem.sync="detail"></orderbtn>
+        <view style="margin-top: 20rpx">
+            <guess></guess>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import orderbtn from '@/components/orderBtn'
+    import Star from '@/components/StarRatine'
+    import guess from '@@/guess'
+    export default class orderdetail extends wepy.page {
+        config = {
+            navigationBarTitleText: '订单详情',
+        }
+        components = {
+            orderbtn,
+            Star,
+            guess
+        }
+        mixins = [Mixin]
+        data = {
+            order_status: "",
+            detail: {},
+            loading: true,
+            order_id: 0,
+            comment_list:[],
+        }
+        events = {
+            delrefresh() {
+                //删除订单后跳转到已取消列表
+                wepy.reLaunch({
+                  url: '/pages/mycenter/orderlist?type=4&isshow=show"',
+                })
+            },
+            cancelrefresh(){
+                //刷新当前页面
+                this.getDetail()
+            }
+        }
+        methods = {
+            navDetail(id) {
+                console.log(id)
+                wepy.navigateTo({
+                    url: '/pages/goods_detail?id=' + id
+                })
+            },
+            to_address_list() {
+                wx.navigateTo({
+                    url: "/pages/member/list_member?address_id="+this.detail.address[0].address_id+"&order_id="+this.order_id,
+                })
+            },
+            choice_pay(pay_type) {
+                this.detail.pay_type = pay_type;
+                this.$apply();
+            }
+        }
+        getDetail(){
+            wepy.request({
+            url: "api/order/detail",
+            method: 'POST',
+            data: {
+              order_id: this.order_id
+            },
+          }).then(res => {
+            this.loading = false;
+            if (res.code != "1") {
+              this.showAlert({
+                content: res.msg
+              });
+            } else {
+              this.order_status = res.data.order_status.value;
+              this.detail = res.data
+            }
+            this.$apply();
+
+            if(this.order_status == '30'){
+
+              wepy.request({
+                url: "api/order/getcomment",
+                method: 'POST',
+                data: {
+                  order_id: this.order_id
+                },
+              }).then(res => {
+                if (res.code != "1") {
+                  this.showAlert({
+                    content: res.msg
+                  });
+                  return
+                }
+                this.comment_list=res.data.list;
+                this.$apply();
+              })
+            }
+          })
+        }
+        onLoad(options) {
+            if (options.order_id == undefined) {
+                this.showAlert({
+                    title: "错误"
+                });
+                return
+            }
+            this.order_id = options.order_id;
+        }
+        PageInit() {
+        }
+
+        onShow(){
+          if (!this.order_id) {
+            this.showAlert({
+              title: "错误 order_id"
+            });
+            return
+          }
+          this.getDetail()
+        }
+        onShareAppMessage(obj) {
+            var re = {
+                title: this.detail.goods[0].goods_name,
+                path: "/pages/goods_detail?id=" + this.detail.goods[0].goods_id,
+                imageUrl: this.detail.goods[0].image.file_path,
+            }
+            return re
+        }
+    }
+</script>

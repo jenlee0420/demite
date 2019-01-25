@@ -1,0 +1,649 @@
+<style lang="less">
+//   @import '../resource/less/layout.less';
+
+  @footer-h: 106rpx;
+
+  page {
+    background: #f4f4f4;
+    padding-bottom: @footer-h;
+    view > view {
+      background: #fff;
+    }
+  }
+
+  .icon-44 {
+    width: 44rpx;
+    height: 44rpx;
+  }
+
+  .icon-44 {
+    width: 44rpx;
+    height: 44rpx;
+  }
+
+  .right_arrow {
+    width: 18rpx;
+    height: 26rpx;
+  }
+
+  .locWrap {
+    margin-bottom: 16rpx;
+    padding-left: 40rpx;
+    padding-right: 18rpx;
+    border-top: 1rpx solid #e3e3e3;
+    // height: 111rpx;
+    padding-top:20rpx;
+    padding-bottom:20rpx;
+
+    .icon-loc {
+      width: 28rpx;
+      height: 35rpx;
+      margin-right: 26rpx;
+    }
+    .info-wrap {
+      flex: 1;
+      height: 75%;
+      font-size: 26rpx;
+      .nandt {
+        flex: 1;
+        .name {
+          margin-right: 35rpx;
+          letter-spacing: 2rpx;
+        }
+        .tel {
+          letter-spacing: 3rpx;
+        }
+      }
+      .address {
+        flex: 1;
+        letter-spacing: 2rpx;
+      }
+
+    }
+
+  }
+
+  .listWrap {
+    margin-bottom: 16rpx;
+    padding-left: 20rpx;
+    border-top: 1rpx solid #e3e3e3;
+    view {
+      height: 90rpx;
+      padding: 0 20rpx;
+      .icon-44 {
+        margin-right: 24rpx;
+      }
+      text {
+        font-size: 26rpx;
+        flex: 1;
+      }
+    }
+    view + view {
+      border-top: 1rpx solid #ededed;
+    }
+  }
+
+  .numWrap {
+    margin-bottom: 16rpx;
+    .man-info {
+      padding-left: 36rpx;
+      height: 78rpx;
+      .avatar {
+        border-radius: 50%;
+        overflow: hidden;
+        width: 48rpx;
+        height: 48rpx;
+        margin-right: 20rpx;
+        background: #9c6d12;
+        image { width: 100%; height: 100%;}
+        text {font-size: 26rpx; color: #fff;}
+      }
+      text {font-size: 26rpx;}
+    }
+    .shop-info {
+      background: #f5f5f5;
+      padding: 30rpx 36rpx;
+      view {background: #f5f5f5;}
+      text {letter-spacing: 1rpx;}
+      image {
+        width: 204rpx;
+        height: 154rpx;
+        margin-right: 36rpx;
+      }
+      .title {
+        font-size: 26rpx;
+      }
+      .des {
+        color: #c0bebe;
+        font-size: 22rpx;
+      }
+      .price {
+        color: #595959;
+        font-size: 30rpx;
+      }
+    }
+    .btns {
+      padding: 0 28rpx 0 36rpx;
+      height: 157rpx;
+      text {
+        height: 52rpx;
+        line-height: 52rpx;
+        font-size: 26rpx;
+      }
+      .btn-wrap {
+        height: 52rpx;
+        text-align: center;
+        .sub {
+          width: 68rpx;
+          line-height: 52rpx;
+          font-size: 48rpx;
+          color: #acacac;
+          background: #eff0f0;
+        }
+        text {
+          width: 100rpx;
+          flex: 1;
+          line-height: 52rpx;
+          font-size: 30rpx;
+        }
+        .plus {
+          width: 68rpx;
+          line-height: 52rpx;
+          font-size: 36rpx;
+          color: #8e8d8d;
+          background: #ddd;
+        }
+      }
+    }
+  }
+
+  .payway {
+    .listWrap;
+    border-top: none;
+    .pick_gou {
+      width: 37rpx;
+      height: 30rpx;
+    }
+  }
+
+  .x-btns {
+    background: transparent;
+    height: 68rpx;
+    padding: 0 48rpx;
+    image {
+      width: 34rpx;
+      height: 34rpx;
+      margin-right: 20rpx;
+    }
+    view {
+      font-size: 24rpx;
+      color: #a1a1a1;
+      background: transparent;
+    }
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @footer-h;
+    .price-part {
+      letter-spacing: 2rpx;
+      border-top: 1rpx solid #e1e1e1;
+      flex: 2;
+      font-size: 26rpx;
+      text {
+        margin: 0 16rpx;
+        letter-spacing: 3rpx;
+        color: #e02e24;
+        font-size: 33rpx;
+      }
+    }
+    .pay-btn {
+      text-align: center;
+      flex: 1;
+      background: #e02e24;
+      font-size: 33rpx;
+      color: #fff;
+      line-height: @footer-h;
+      &.disable {
+        background: #adadad;
+      }
+    }
+  }
+#shareBox {
+  position: fixed;
+  bottom: 0;
+  height: 327rpx;
+  width: 100%;
+  padding: 16rpx 16rpx 20rpx 16rpx;
+  box-sizing: border-box;
+  background-color: #e9e8fb;
+  font-size: 26rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+.content {
+  margin: 67rpx 51rpx 37rpx 51rpx;
+  border: 1rpx dotted #ffc2b1;
+  border-radius: 10rpx;
+  text-align: center;
+  height: 47px;
+  line-height: 47px;
+}
+.sharebtn {
+  width: 626rpx;
+  background-color: @theme;
+  border-radius: 50rpx;
+  color: #fff;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 26rpx;
+  margin: 0 auto;
+}
+.Topcorner {
+  top: 16rpx;
+  right: 16rpx;
+  font-size: 42rpx;
+}
+}
+
+</style>
+<template>
+  <view>
+
+    <!-- 地址信息 S -->
+    <view class="flexRow locWrap" wx:if="{{detail.address}}" @tap="to_addresslist({{detail.address.address_id}})">
+      <icon class="public_icon2_location2 list_mg_35 mr20"></icon>
+      <view class="flexCol flex-astretch info-wrap">
+        <view class="flexRow nandt">
+          <text class="name">{{detail.address.name}}</text>
+          <text class="tel">{{detail.address.phone}}</text>
+        </view>
+        <text class="flexRow flex-acenter address">{{detail.address.region.province+detail.address.region.city+detail.address.region.region+detail.address.detail}}</text>
+      </view>
+      <span class="c999 zan-icon zan-icon-arrow"></span>
+    </view>
+    <!-- 地址信息 E -->
+    <!-- 按钮列表 S -->
+    <view class="flexCol flex-astretch listWrap" wx:if="{{!detail.address}}">
+      <view class="flexRow" @tap="to_addresslist('')">
+        <span class="public_icon_manual_add_address"></span>
+        <text>手动添加联系信息</text>
+        <span class="cb4b4b4 zan-icon zan-icon-arrow"></span>
+      </view>
+      <!-- <view class="flexRow">
+        <span class="public_icon2_weixin"></span>
+        <text>一键获取微信联系信息</text>
+        <image class="right_arrow" src="../resource/img/right_arrow.png"></image>
+      </view> -->
+    </view>
+    <!-- 按钮列表 E -->
+    <!-- 数量选择 S -->
+    <block wx:for="{{detail.goods_list}}" wx:key="{{index}}">
+      <view class="flexCol flex-astretch numWrap">
+        <view class="flexRow man-info">
+          <img class="flex flex-jcenter avatar" src="{{item.source_image}}"/>
+          <text>{{item.source_name}}</text>
+        </view>
+        <view class="shop-info">
+          <view class="flexRow flex-astretch">
+            <image class="self-start" src="{{item.image[0].file_path}}" />
+            <view class="flexCol flex-astretch flex-jbetween">
+              <text class="title">{{item.goods_name}}</text>
+              <text class="des">{{item.describe}}</text>
+              <text class="price">￥{{item.goods_price}}/个</text>
+            </view>
+          </view>
+        </view>
+        <view class="btns flexRow flex-jbetween">
+          <text>购买数量</text>
+          <view class="btn-wrap flexRow flex-astretch">
+            <view @tap="good_sub({{index}})" class="sub {{sub_min? 'disable' : ''}}">-</view>
+            <text>{{item.total_num}}</text>
+            <view @tap="good_plus({{index}})" class="plus {{plus_max? 'disable' : ''}}">+</view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 数量选择 E -->
+    <!-- 支付方式 S -->
+    <view class="flexCol flex-astretch payway">
+      <view @tap="select_pay_type(1)" class="flexRow">
+        <span class="public_icon2_weixin_pay"></span>
+        <text>微信支付</text>
+        <span wx:if="{{pay_type==1}}" class="public_icon2_select_pay"></span>
+      </view>
+      <view @tap="select_pay_type(2)" class="flexRow">
+        <span class="public_icon2_other_pay"></span>
+        <text>找微信朋友代付</text>
+        <span wx:if="{{pay_type==2}}" class="public_icon2_select_pay"></span>
+      </view>
+    </view>
+    <!-- 支付方式 E -->
+    <!-- 确认协议按钮 S -->
+    <view class="x-btns flexRow">
+      <span wx:if="{{!user_term}}" @tap="do_user_term" class="public_icon_user_term"></span>
+      <span wx:if="{{user_term}}"  @tap="do_user_term" class="public_icon_user_term_select"></span>
+      <view class="flex"><text @tap="do_user_term">我已阅读并同意 </text><navigator url="/pages/instructions" class="maincolor" hover-class="none">《用户条款》</navigator></view>
+    </view>
+    <!-- 确认协议按钮 E -->
+    <!-- 底部按钮 S -->
+    <view class="footer flexRow flex-astretch">
+      <view class="price-part flexRow flex-jend">
+        实付款:<text>￥{{detail.order_total_price}}</text>
+      </view>
+      <view class="pay-btn {{user_term? '' : 'disable'}}" wx:if="{{pay_type==1}}" @tap="pay_now">立即支付</view>
+      <view class="pay-btn {{user_term? '' : 'disable'}}" wx:if="{{pay_type==2}}" @tap="pay_friend">找好友代付</view>
+    </view>
+    <!-- 底部按钮 E -->
+    <notice :goodsid.sync="good_id"/>
+    <view class="container" id="shareBox" wx:if="{{showPopup}}">
+      <view class="content">邀请好友支付？点击
+        <font class="maincolor">按钮</font>即可分享</view>
+      <button class="sharebtn flexRow flex-jcenter" open-type="share">
+        <span class="public_icon1_white_weixin mr20"></span> 分享给您的好友
+      </button>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import notice from '@/components/notice'
+  import Mixin from '@/mixins/global'
+  export default class paypage extends wepy.page {
+    mixins = [Mixin]
+    data = {
+      user_term:false,
+      detail:{},
+      pay_type:1,
+      goods_sku_id:"",
+
+      max_good_number: 999,
+      min_good_number: 1,
+      plus_max: false,
+      sub_min: true,
+      buy_type:2,
+      showPopup:false,
+      order_id:0,
+      order_collage_id:0,
+      options:{},
+      good_id:''
+    };
+    components = {
+      notice
+    }
+    methods = {
+      pay_friend(){
+        if (!this.user_term){
+          return
+        }
+
+        var data={
+          goods_id:this.detail.goods_list[0].goods_id,
+          goods_num:this.detail.goods_list[0].total_num,
+          goods_sku_id:this.goods_sku_id,
+          address_id:this.detail.address.address_id,
+          address:{
+            name:this.detail.address.name ,
+            phone :this.detail.address.phone ,
+            province_id :this.detail.address.region.province_id,
+            city_id :this.detail.address.region.city_id,
+            region_id : this.detail.address.region.region_id,
+            detail :this.detail.address.detail,
+          },
+          buy_type:this.buy_type,
+          pay_type:this.pay_type,
+          order_collage_id:this.order_collage_id,
+        };
+
+        wepy.request({
+          url: "api/order/paynow",
+          method: 'POST',
+          data: data,
+        }).then(res => {
+          if(res.code != "1"){
+            this.showAlert({ content: res.msg});
+            return
+          }
+          //this.showPopup=true;
+          this.order_id=res.data.order_id;
+
+          wx.navigateTo({
+            url:"/pages/sharefriend?order_id="+this.order_id,
+          })
+          this.$apply();
+        })
+
+      },
+
+      pay_now(){
+        if (!this.user_term){
+          return
+        }
+        if(!this.detail.address){
+          this.showToast('请先添加联系信息')
+          return
+        }
+        var data={
+          goods_id:this.detail.goods_list[0].goods_id,
+          goods_num:this.detail.goods_list[0].total_num,
+          goods_sku_id:this.goods_sku_id,
+          address_id:this.detail.address.address_id,
+          address:{
+            name:this.detail.address.name ,
+            phone :this.detail.address.phone ,
+            province_id :this.detail.address.region.province_id,
+            city_id :this.detail.address.region.city_id,
+            region_id : this.detail.address.region.region_id,
+            detail :this.detail.address.detail,
+          },
+          buy_type:this.buy_type,
+          pay_type:this.pay_type,
+          order_collage_id:this.order_collage_id,
+        };
+        console.log('buy_type:',this.buy_type,this.order_collage_id)
+        wepy.removeStorage({
+                key: 'payflag'
+            })
+        wepy.request({
+          url: "api/order/paynow",
+          method: 'POST',
+          data: data,
+        }).then(res => {
+          if(res.code != "1"){
+            this.showAlert({content: res.msg});
+            return
+          }
+          this.order_id=res.data.order_id;
+          
+          var that = this ;
+          wx.requestPayment({
+            timeStamp:res.data.timeStamp,
+            nonceStr:res.data.nonceStr,
+            package:res.data.package,
+            signType:res.data.signType,
+            paySign:res.data.paySign,
+            success:function(e){
+              
+              if(that.buy_type == 1){
+                if(that.order_collage_id==0){
+                  wepy.navigateTo({
+                    url: '/pages/yaoqing?order_id='+that.order_id,
+                  })
+                }else {
+                  wepy.navigateTo({
+                    url: '/pages/joinSuccess?order_id='+that.order_id+"&order_collage_id="+that.order_collage_id,
+                  })
+                }
+
+              }else{
+                wepy.navigateTo({
+                  url: '/pages/mycenter/orderlist?type=2&isshow=show',
+                })
+              }
+            },
+            fail:function(e){
+              console.log(e)
+              wepy.navigateTo({
+                url: '/pages/mycenter/orderdetail?order_id='+that.order_id,
+              })
+            }
+          })
+
+        });
+      },
+
+      to_addresslist(address_id){
+        if(address_id==""){
+          wx.navigateTo({
+            url:"/pages/member/list_member?from=pay"
+          })
+        }else{
+          wx.navigateTo({
+            url:"/pages/member/list_member?address_id="+address_id,
+          })
+        }
+
+      },
+
+      do_user_term(){
+        this.user_term= !this.user_term;
+        this.$apply();
+      },
+
+      select_pay_type(value){
+        this.pay_type=value;
+        this.$apply();
+      },
+
+      good_plus(index) {
+        if (this.detail.goods_list[index].total_num + 1 > this.max_good_number) {
+          this.plus_max = true;
+          this.$apply();
+          return;
+        };
+        if (this.detail.goods_list[index].total_num + 1 == this.max_good_number) {
+          this.plus_max = true;
+        } else {
+          this.plus_max = false;
+        };
+        this.sub_min = false;
+        this.detail.goods_list[index].total_num = this.detail.goods_list[index].total_num + 1;
+        this.$apply();
+        this.price_count();
+      },
+
+      good_sub(index) {
+        if (this.detail.goods_list[index].total_num - 1 < this.min_good_number) {
+          this.sub_min = true;
+          this.$apply();
+          return;
+        };
+        if (this.detail.goods_list[index].total_num - 1 == this.min_good_number) {
+          this.sub_min = true;
+        } else {
+          this.sub_min = false;
+        };
+        this.plus_max = false;
+        this.detail.goods_list[index].total_num = this.detail.goods_list[index].total_num - 1;
+        this.$apply();
+        this.price_count();
+      },
+    };
+
+    price_count(){
+        var price=0.0;
+        for(var i=0;i<this.detail.goods_list.length;i++){
+          price=price+this.detail.goods_list[i].total_num*this.detail.goods_list[i].goods_price;
+        }
+        this.detail.order_total_price=price;
+        this.$apply();
+    }
+
+    onShareAppMessage(obj){
+      var re={
+        title:this.detail.goods_list[0].goods_name,
+        path:"/pages/friendpay?user_id="+wx.getStorageSync("userid")+"&order_id="+this.order_id,
+        imageUrl:this.detail.goods_list[0].image[0].file_path,
+      }
+      return re
+    };
+
+    getbuyInfo(){
+      this.buy_type=this.options.buy_type;
+      this.goods_sku_id=this.options.goods_sku_id;
+      this.order_collage_id=this.options.order_collage_id;
+      var data={
+        goods_id:this.options.goods_id,
+        goods_num:this.options.good_number,
+        goods_sku_id:this.options.goods_sku_id,
+        buy_type:this.options.buy_type,
+        order_collage_id:this.options.order_collage_id,
+      };
+
+      wepy.request({
+        url: "api/order/buynow",
+        method: 'POST',
+        data: data,
+      }).then(res => {
+        if(res.code != "1"){
+          this.showAlert({ content: res.msg});
+          return
+        }
+        console.log(res.data)
+        if(res.data.error_msg){
+          this.showAlert({ content: res.data.error_msg});
+        }
+        this.detail=res.data;
+        this.good_id = this.detail.goods_list[0].good_id
+        this.$apply();
+      })
+    }
+    onLoad(options){
+      if(!options){
+        return;
+      }
+
+      if(!options.goods_id){
+        return;
+      }
+      if(!options.good_number){
+        return;
+      }
+
+      if(!options.goods_sku_id){
+        return;
+      }
+      if(!options.buy_type){
+        return;
+      }
+      if(!options.order_collage_id){
+        return;
+      }
+
+      this.options = options;
+
+      this.getbuyInfo()
+      wx.setStorageSync("payflag",'true'); 
+    }
+
+    onShow(){
+      if(wx.getStorageSync("address")!=""){
+        var obj=JSON.parse(wx.getStorageSync("address"));
+        this.detail.address=obj;
+        console.log(obj)
+      }
+      else{
+        this.getbuyInfo()
+      }
+      this.$apply();
+    }
+
+    onUnload(){
+      wx.setStorageSync("address","");
+    }
+  }
+</script>

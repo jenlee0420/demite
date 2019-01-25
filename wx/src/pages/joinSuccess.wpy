@@ -1,0 +1,246 @@
+<style lang="less">
+    @footer-h: 106rpx;
+    .icon-44 {
+        width: 44rpx;
+        height: 44rpx;
+    }
+    .tipsuccess {
+        color: #009131;
+        font-size: 30rpx;
+    }
+    .huabian {
+        // .huabian-bg;
+        background-size: contain;
+        padding-top: 44rpx;
+        width: 100%;
+        .shop-photo {
+            padding-left: 36rpx;
+            padding-right: 17rpx;
+            width: 230rpx;
+            height: 230rpx; // box-sizing: border-box;
+            image {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .shop-info {
+            // margin-left: 17rpx;
+            flex: 1;
+            padding-right: 30rpx;
+            height: 230rpx;
+            text-align: left;
+            .t1 {
+                font-size: 26rpx;
+                color: #373636;
+                line-height: 36rpx;
+            }
+            .t2 {
+                font-size: 22rpx;
+                color: #c0bebe;
+                line-height: 36rpx;
+            }
+            .t3 {
+                font-size: 40rpx;
+                color: #e70e0e;
+                height: 56rpx;
+                line-height: 56rpx;
+            }
+        }
+    }
+    .shop-gou {
+        margin:20rpx;
+        .pin-avatar {
+            position: relative;
+            image {
+                width: 88rpx;
+                height: 88rpx;
+                border-radius: 50%;
+                margin-right: 20rpx;
+            }
+            .bubble {
+                position: absolute;
+                left: -8rpx;
+                top: -12rpx;
+                padding: 2rpx 11rpx;
+                background: #e0b213;
+                font-size: 20rpx;
+                color: #fff;
+                height: 31rpx;
+                border-radius: 15rpx;
+                line-height: 31rpx;
+            }
+        }
+        .btn {
+            width: 658rpx;
+            height: 92rpx;
+            color: #fff;
+            font-size: 30rpx;
+            text-align: center;
+            line-height: 92rpx;
+            background-color: #e02e24;
+            margin-top: 46rpx;
+        }
+    }
+    .time-part {
+        padding: 70rpx 48rpx 20rpx 48rpx;
+        .btn {
+            width: 100%;
+            background: #e02e24;
+            color: #fff;
+            font-size: 30rpx;
+            text-align: center;
+            border-radius: 10rpx;
+            padding: 30rpx 0;
+            letter-spacing: 2rpx;
+            margin-bottom: 26rpx;
+        }
+        .tips {
+            font-size: 24rpx;
+        }
+    }
+    .item2 {
+        min-height: 90rpx;
+        padding: 20rpx 30rpx; // margin: 0 20rpx;
+        border-top: 1rpx solid #e5e5e5;
+        font-size: 24rpx;
+        box-sizing:border-box;
+
+        &:first-child {
+            border-top: 0rpx solid #e5e5e5;
+        }
+        .des {
+            color: #9c9999;
+            text {
+                margin: 0 10rpx;
+                font-size: 46rpx;
+            }
+        }
+    }
+    .tuijian {
+        .title {
+            font-size: 30rpx;
+            height: 100rpx;
+            line-height: 100rpx;
+        }
+    }
+</style>
+<template>
+    <view>
+        <view class="bg_fff">
+            <!--  加入组团成功页面（好友见） -->
+            <view class="flex-column">
+                <view class="flexRow flex-jcenter">
+                    <span class="public_icon2_pin_success mr20"></span><text class="tipsuccess">组团成功</text>
+                </view>
+                <text class="fs24 c929292 t_c mt30 mb10"> 供应商已准备就绪，请您届时参与。</text>
+            </view>
+            <view class="flexCol shop-gou">
+                <view class="flexRow flex-jcenter pin-avatar mb20">
+                    <text class="bubble">{{collage_detail.nickName}}</text>
+                    <block wx:for="{{collage_detail.collage_list}}">
+                      <image src="{{item.avatarUrl}}" mode="aspectFill" />
+                    </block>
+                    <span wx:if="{{collage_detail.meed_num-collage_detail.join_num!=0}}" class="public_icon1_wait_pin"></span>
+                </view>
+                <navigator class="fs24 mb20" url="/pages/mycenter/orderdetail?order_id={{order_id}}" hover-class="none">查看订单详情></navigator>
+            </view>
+        </view>
+        <view class="flexRow flex-astart item2 bg_fff">
+            <view class="title mr40 ">{{collage_detail.combination_third}}</view>
+            <view class="flexCol flex-astart reverse flex-1 des">
+                <view class="fs25 c333 mb10">{{collage_detail.goods_name}}</view>
+                <view class="fs24 c929292">{{collage_detail.goods_attr}}</view>
+            </view>
+        </view>
+        <view class="flexRow flex-jbetween item2 bg_fff">
+            <view class="title">订单信息</view>
+            <view class="flexRow reverse flex-1 des">
+                <view class="flexRow"><text>·</text>联系信息</view>
+                <view class="flexRow"><text>·</text>组成时间</view>
+            </view>
+        </view>
+        <!-- 相似的列表 E -->
+        <view class="flexCol tuijian">
+            <recommend tilte='精品推荐' :type="3"></recommend>
+        </view>
+        <backHome />
+    </view>
+</template>
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import recommend from '@/components/recommend'
+    import shareBox from '@@/shareBox'
+    import backHome from '@@/backtoHome1'
+    export default class joinSuccess extends wepy.page {
+        config = {}
+        components = {
+            recommend,
+            shareBox,
+            backHome
+        }
+        mixins = [Mixin]
+        data = {
+          order_id:0,
+          order_collage_id:0,
+          collage_detail:{},
+        }
+        methods = {}
+        onLoad(options) {
+          if(!options){
+            this.showAlert({
+              title: "错误",
+              content: "options 为空"
+            });
+            return;
+          }
+
+          if(!options.order_id){
+            this.showAlert({
+              title: "错误",
+              content: "order_id 为空"
+            });
+            return;
+          }
+
+          if(!options.order_collage_id){
+            this.showAlert({
+              title: "错误",
+              content: "order_collage_id为空"
+            });
+            return;
+          }
+
+          this.order_collage_id=options.order_collage_id;
+          this.order_id=options.order_id;
+
+        //   this.$invoke('recommend','getlist')
+
+          wepy.request({
+            url: "api/order/collagedetail",
+            method: 'POST',
+            data: {
+              order_collage_id: this.order_collage_id
+            },
+          }).then(res => {
+            if (res.code != "1") {
+              this.showAlert({
+                content: res.msg
+              });
+              return
+            }
+
+            this.collage_detail = res.data.collage_detail;
+            this.$apply();
+          })
+        }
+        onShareAppMessage(obj){
+          var re={
+            title:this.collage_detail.goods_name,
+            path:"/pages/join?order_collage_id="+this.order_collage_id,
+            imageUrl:this.collage_detail.image,
+          }
+          return re
+        }
+    }
+</script>

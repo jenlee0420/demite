@@ -1,0 +1,162 @@
+<style lang="less">
+.btns .btn,.btns .btnline{
+  height: 60rpx;
+  line-height: 58rpx;
+  font-size: 24rpx;
+}
+</style>
+
+<template>
+  <view class="btns">
+    <!--10待支付 20已取消 30 已完成 40未使用  50已删除 60退款中、70已退款、80退款失败-->
+    <button class="btnline mr12" @tap="to_refund({{orderitem}})" wx:if="{{orderitem.order_status.value=='40'}}">申请退款</button>
+    <button class="btnline mr12" @tap="cancle_order({{orderitem}})" wx:if="{{orderitem.order_status.value=='10'}}">取消订单</button>
+    <button class="btnline mr12" @tap="to_good_detail({{orderitem}})" wx:if="{{orderitem.order_status.value=='30'}}">再次购买</button>
+    <button class="btn" @tap="to_member({{orderitem}})" wx:if="{{orderitem.order_status.value=='40'}}">完善出行人</button>
+    <button class="btn" wx:if="{{orderitem.order_status.value=='30'&&orderitem.is_comment==1}}" disabled>已评价</button>
+    <button class="btn" @tap="todianpin({{orderitem}})" wx:if="{{orderitem.order_status.value=='30'&&orderitem.is_comment!=1}}">我要评价</button>
+    <button class="btn" @tap="to_pay({{orderitem}})" wx:if="{{orderitem.order_status.value=='10'&&orderitem.pay_type==1}}">去支付</button>
+    <button class="btn" @tap="to_friend_pay({{orderitem}})" wx:if="{{orderitem.order_status.value=='10'&&orderitem.pay_type==2}}">发给好友</button>
+    <button class="btn mr12" @tap="del_order({{orderitem}})" wx:if="{{orderitem.order_status.value=='20'}}">删除订单</button>
+    <button class="btn" @tap="to_good_detail({{orderitem}})" wx:if="{{orderitem.order_status.value=='20'}}">再次购买</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  export default class Orderbtn extends wepy.component {
+    config = {}
+    components = {}
+    props = {
+      orderitem: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      }
+    }
+    watch = {}
+    mixins = [Mixin]
+    data = {}
+    methods = {
+      to_friend_pay(order) {
+        wx.navigateTo({
+          url: "/pages/sharefriend?order_id=" + order.order_id,
+        })
+      },
+      to_pay(order) {
+        wepy.request({
+          url: "api/order/pay",
+          method: 'POST',
+          data: {
+            order_id: order.order_id,
+            pay_type: order.pay_type
+          },
+        }).then(res => {
+          this.loading = false;
+          if (res.code != "1") {
+            this.showAlert({
+              content: res.msg
+            });
+          } else {
+            wx.requestPayment({
+              timeStamp: res.data.timeStamp,
+              nonceStr: res.data.nonceStr,
+              package: res.data.package,
+              signType: res.data.signType,
+              paySign: res.data.paySign,
+              success: function(e) {
+                wepy.navigateTo({
+                  url: '/pages/mycenter/orderlist?type=1',
+                })
+                wx.setStorageSync("address"+order.order_id,"");
+              },
+              fail: function(e) {
+                console.log(e)
+              }
+            })
+          }
+        })
+      },
+      to_good_detail(order) {
+        wx.navigateTo({
+          url: "/pages/goods_detail?id=" + order.goods[0].goods_id
+        })
+      },
+      to_refund(order) {
+        wx.navigateTo({
+          url: "/pages/refund?order_id=" + order.order_id
+        })
+      },
+      to_member(order) {
+        wx.navigateTo({
+          url: "/pages/mycenter/list_member?order_id=" + order.order_id
+        })
+      },
+      todianpin(item) {
+        wx.navigateTo({
+          url: "/pages/mycenter/dianpin?orderid=" + item.order_id + "&goodsid=" + item.goods[0].order_goods_id
+        })
+      },
+      cancle_order(order) {
+        var that=this
+        this.showAlert({
+          content: '确定取消订单',
+          confirm: function() {
+            wepy.request({
+              url: "api/order/cancel",
+              method: 'POST',
+              data: {
+                order_id: order.order_id
+              },
+            }).then(res => {
+              that.loading = false;
+              if (res.code != "1") {
+                that.showAlert({
+                  content: res.msg
+                });
+              } else {
+                //回调父级刷新 
+                that.showSuccess('操作成功')
+                that.$emit('cancelrefresh') 
+                // wepy.navigateTo({
+                //   url: '/pages/mycenter/orderlist?type=1',
+                // })
+              }
+            })
+          }
+        })
+      },
+      del_order(order) {
+        var that=this
+        this.showAlert({
+          content: '确定删除订单',
+          confirm: function() {
+            wepy.request({
+              url: "api/order/delete",
+              method: 'POST',
+              data: {
+                order_id: order.order_id
+              },
+            }).then(res => {
+              that.loading = false;
+              if (res.code != "1") {
+                that.showAlert({
+                  content: res.msg
+                });
+              } else {
+                that.showSuccess('操作成功')
+                that.$emit('delrefresh');
+                // wepy.navigateTo({
+                //   url: '/pages/mycenter/orderlist?type=1',
+                // })
+              }
+            })
+          }
+        })
+      },
+    }
+    onLoad() {}
+  }
+</script>

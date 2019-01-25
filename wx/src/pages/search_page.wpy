@@ -1,0 +1,254 @@
+<style lang="less">
+  #searchpage {
+    //  background-color: #fff;
+    .toppanel {
+      height: 105rpx;
+      border-top: 1rpx solid @bColor;
+      border-bottom: 1rpx solid @bColor;
+      padding: 20rpx 33rpx;
+      background-color: #fff;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .seachinput {
+      background-color: #f1f1f1;
+      border-radius: 30rpx;
+      width: 100%;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 30rpx;
+      color: #b3b3b3;
+      text-align: center;
+    }
+    .cateTap {
+      height: 88rpx;
+      background-color: #fff;
+      border-bottom: 1rpx solid @bColor;
+      white-space: nowrap;
+    }
+    .cate {
+      font-size: 28rpx;
+      color: #5b5a5a;
+      margin-right: 39rpx;
+      display: inline-block;
+      line-height: 88rpx;
+      height: 85rpx;
+      box-sizing: content-box;
+      &:first-child {
+        margin-left: 24rpx;
+      }
+      &.active {
+        color: @theme;
+        border-bottom: 2px solid @theme;
+      }
+    }
+    .searchView {
+      z-index: 10;
+      position: fixed;
+      box-sizing: border-box;
+      .searchcontent {
+        padding: 30rpx;
+      }
+      .seachinput {
+        text-align: left;
+        display: flex;
+        align-items: center;
+        padding-left: 35rpx;
+        input {
+          flex: 1
+        }
+      }
+      .keywordslist {
+        margin: 47rpx 10rpx 57rpx 10rpx;
+        font-size: 23rpx;
+        color: #818080;
+        &>span {
+          margin-right: 55rpx;
+        }
+      }
+    }
+  }
+</style>
+
+<template>
+  <view class="container" id="searchpage">
+    <block wx:if="{{!searchview}}">
+      <view class="toppanel">
+        <view class="seachinput" @tap="changeView">
+          <span class="zan-icon zan-icon-search"></span> 搜索{{category.val}} {{search}} <span @tap="clearsearch" wx:if="{{search!=''}}" class="r mr20 zan-icon zan-icon-clear"></span>
+        </view>
+      </view>
+      <scroll-view scroll-x style="width: 100%;" class="cateTap" scroll-left="{{scrollleft}}">
+        <view class="cateTap">
+          <span class="cate {{0 == category.id?'active':''}}" @tap="changeCate">全部</span><span class="cate {{item.id==category.id?'active':''}}" wx:for="{{catelist}}" @tap="changeCate({{item}})" wx:key="{{index}}">{{item.name}}</span>
+        </view>
+      </scroll-view>
+      <view class="mb30"></view>
+      <scroll-view scroll-y style="height: cala(100% - 143rpx);">
+        <view class="p-0-32">
+          <repeat for="{{goodslist.list}}" index="index" item="item" key="key">
+            <gooditem :goodsitem="item">
+          </repeat>
+          <listfooter :loading.sync="loading" :item.sync="goodslist" :pagesize="pagesize"></listfooter>
+        </view>
+      </scroll-view>
+    </block>
+    <notice />
+    <span class="public_icon1_to_top" @tap="scrollTop" wx:if="{{showtopBtn}}"></span>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  import gooditem from '@/components/gooditem'
+  import listfooter from '@/components/listFooter'
+  import notice from '@/components/notice'
+  export default class searchpage extends wepy.page {
+    config = {
+      navigationBarTitleText: '知兮乐兮',
+      enablePullDownRefresh: true
+    }
+    components = {
+      gooditem,
+      notice,
+      listfooter
+    }
+    mixins = [Mixin]
+    data = {
+      catelist: [],
+      goodslist: {
+        list: [],
+        total_count: 0,
+        last_page: 1
+      },
+      page: 1,
+      category: {
+        id: 0,
+        val: '全部'
+      },
+      pagesize: 10,
+      loading: true,
+      searchview: false,
+      scrollleft: 0,
+      search: '',
+      showtopBtn:false
+    }
+    methods = {
+      changeCate(obj) {
+        if (obj.id) {
+          this.category.id = obj.id
+          this.category.val = obj.name
+        } else {
+          this.category.id = 0
+          this.category.val = '全部'
+        }
+        this.page = 1
+        this.getlist()
+        this.getValbyId()
+      },
+      changeView() {
+        // this.searchview = !this.searchview
+        wepy.navigateTo({
+          url: '/pages/search?val=' + this.category.val
+        })
+      },
+      clearsearch() {
+        this.search = '';
+        this.page = 1
+        this.getlist()
+      }
+    }
+    getCate() {
+      wepy.request({
+        url: 'api/label/getlist',
+        method: 'POST',
+      }).then(res => {
+        if (res.code == 1) {
+          this.catelist = res.data.list
+        } else {
+          wepy.showModal({
+            content: res.msg,
+            showCancel: false
+          })
+        }
+        this.$apply()
+      })
+    }
+    getlist() {
+      this.showtopBtn = false
+      wepy.request({
+        url: 'api/goods/lists',
+        method: 'POST',
+        data: {
+          per_page: this.pagesize,
+          page: this.page,
+          category_id: this.category.id,
+          search: this.search
+        }
+      }).then(res => {
+        this.loading = false
+        wx.stopPullDownRefresh();
+        if (res.code == 1) {
+          if (this.page == 1) {
+            this.goodslist.list = res.data.list.data
+          } else {
+            this.goodslist.list = this.goodslist.list.concat(res.data.list.data)
+          }
+          this.goodslist.total_count = res.data.list.total
+          this.last_page = res.data.list.last_page
+
+          if(this.goodslist.list.length>5){this.showtopBtn = true}
+        } else {
+          wepy.showModal({
+            content: res.msg,
+            showCancel: false
+          })
+        }
+        this.$apply()
+      })
+    }
+    getValbyId() {
+      this.catelist.forEach(e => {
+        if (e.id == this.category.id) {
+          this.category.val = e.name
+          wepy.setNavigationBarTitle({
+            title: e.name
+          })
+        }
+      });
+    }
+    onLoad() {
+      this.getCate()
+    }
+    onShow() {
+      if (wepy.getStorageSync('cateid')) {
+        this.category.id = wepy.getStorageSync('cateid')
+        this.scrollleft = this.category.id * 40
+        wepy.removeStorage({
+          key: 'cateid'
+        })
+        this.getValbyId()
+      }
+      if (wepy.getStorageSync('keyword')) {
+        this.search = wepy.getStorageSync('keyword')
+        wepy.removeStorage({
+          key: 'keyword'
+        })
+      }
+      this.getlist()
+    }
+    onReachBottom() {
+      if (this.page > this.last_page) {
+        this.page = this.last_page == 0 ? 1 : this.last_page
+        return
+      }
+      this.page += 1
+      this.getlist()
+    }
+    onPullDownRefresh(e) {
+      this.page = 1
+      this.getlist()
+    }
+  }
+</script>

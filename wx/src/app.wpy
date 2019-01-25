@@ -1,0 +1,165 @@
+<style lang="less">
+  @import 'styles/reset';
+  @import 'styles/icon';
+  @import "styles/common";
+  page {
+    height: 100%;
+    background-color: #f4f4f4;
+    width: 100%;
+    font-family: 'microsoft yahei', '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  }
+</style>
+<script>
+  // let aldstat = require('./untils/ald-stat.js')
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import {
+    config,
+    init,
+    mode
+  } from './untils'
+  export default class extends wepy.app {
+    config = { 
+      pages: [
+        // 'pages/icon',
+        //'pages/test',
+        'pages/index',
+        'pages/yaoqing', 
+        'pages/wxlogin',
+        'pages/search_page',
+        'pages/friendpay',
+        'pages/sharefriend',
+        'pages/join',
+        'pages/joinSuccess',
+        'pages/mycenter/dianpin',
+        'pages/mycenter/list_member',
+        'pages/search',
+        'pages/mycenter/collection',
+        'pages/mycenter/orderlist',
+        'pages/paypage',
+        'pages/mycenter/orderdetail',
+        'pages/mycenter/index',
+        'pages/member/list_member',
+        'pages/member/add_member',
+        'pages/mycenter/collaborate',
+        'pages/mycenter/feedback',
+        'pages/kefu',
+        'pages/mycenter/about',
+        'pages/goods_detail',
+        'pages/custom',
+        'pages/refund',
+        'pages/instructions'
+      ],
+      tabBar: {
+        color: '#949393',
+        selectedColor: '#db3e41',
+        backgroundColor: '#ffffff',
+        borderStyle: 'black',
+        list: [{
+          'pagePath': 'pages/index',
+          'text': '首页',
+          'iconPath': 'images/home.png',
+          'selectedIconPath': 'images/home_act.png'
+        }, {
+          'pagePath': 'pages/search_page',
+          'text': '搜索',
+          'iconPath': 'images/search.png',
+          'selectedIconPath': 'images/search_act.png'
+        }, {
+          'pagePath': 'pages/custom',
+          'text': '定制',
+          'iconPath': 'images/custom.png',
+          'selectedIconPath': 'images/custom_act.png'
+
+        },{
+          'pagePath': 'pages/mycenter/index',
+          'text': '我的',
+          'iconPath': 'images/mycenter.png',
+          'selectedIconPath': 'images/mycenter_act.png'
+        }]
+      },
+      window: {
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: '知兮乐兮',
+        navigationBarTextStyle: 'black',
+        backgroundTextStyle: 'dark',
+        // backgroundColor: '#fff'
+      },
+      debug: true
+    }
+    globalData = {
+      userInfo: null,
+      mode,
+      config,
+      timer:null
+    }
+    constructor() {
+      super()
+      this.use('requestfix')
+      this.use('promisify')
+      /* 初始化HTTP拦截器等 */
+      Object.keys(init).forEach((v) => {
+        init[v].forEach((obj) => {
+          let key = v
+          let name = obj.name
+          let data = obj.data
+          this[key](name, data)
+        })
+      })
+    }
+    onLaunch(options) {
+      /* 启动先调用微信登录 => 服务器登录 */
+      this.wxLogin().then(code => {
+        /* 用户登录 */
+        // console.log('code',code)
+        this.userlogin(code, options)
+      })
+    }
+    wxLogin() {
+      return new Promise((resolve, reject) => {
+        /* 微信登录 */
+        wepy.login().then(res => {
+          if (res.code) {
+            resolve(res.code)
+          } else {
+            reject(res)
+          }
+        })
+      })
+    }
+    userlogin(code, debug, callbackurl) {
+      let data = {
+        code: code,
+        // login_key: wepy.getStorageSync('loginkey')
+      }
+      // 是否为测试
+      if (debug.debug == 'test' || this.globalData.mode == 'dev') {
+        // data.is_bug = 'test'
+      }
+      wepy.request({
+        url: 'api/user/login',
+        method: 'POST',
+        noToken: true,
+        data: data
+      }).then(res => {
+        if (res.code == '1') {
+          wepy.setStorageSync('userid', res.data.user_id)
+          this.updateLoginInfo(res.data)
+        } else {
+          wepy.showModal({
+            content: res.msg,
+            showCancel: false
+          })
+        }
+      })
+    }
+    updateLoginInfo(data) {
+            let userData = JSON.stringify(data)
+            wepy.setStorageSync('userData', userData)
+            wepy.setStorageSync('token', data.token)
+            if (this.userInfoReadyCallback) {
+                this.userInfoReadyCallback(data)
+            }
+        }
+  }
+</script>

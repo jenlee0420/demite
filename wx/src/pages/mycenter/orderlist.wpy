@@ -1,0 +1,329 @@
+<style lang="less">
+    #orderMain {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        swiper {
+            height: 100vh;
+        }
+        .order_nav {
+            // position: fixed;
+            top: 0px;
+            display: flex;
+            font-size: 28rpx;
+            width: 100%;
+            color: #666;
+            height: 80rpx;
+            line-height: 80rpx;
+            background-color: #fff;
+            border-bottom: 1rpx solid @bColor;
+            box-sizing: border-box;
+            z-index: 10;
+            span {
+                margin: auto;
+                box-sizing: content-box;
+                display: flex;
+                &:first-child {
+                    padding-left: 14rpx;
+                    &.act:after {
+                        left: 12rpx;
+                    }
+                }
+                &.act {
+                    position: relative;
+                    font-weight: bold;
+                    color: @theme;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        width: 60rpx;
+                        height: 2px;
+                        background-color: @theme;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        margin: auto;
+                    }
+                }
+            }
+        }
+        .main-scroll {
+            max-height: 100%; // height: 100vh;
+            -webkit-overflow-scrolling: touch; // margin-top: 20rpx
+        }
+        .btns {
+            padding: 20rpx;
+            text-align: right;
+        }
+    }
+</style>
+
+<template>
+    <view class="container" id="orderMain">
+        <view class="order_nav">
+            <!-- <span wx:for="{{TypeList}}" wx:for-item="item" wx:key="index">{{item.name}}</span> -->
+            <repeat for="{{TypeList}}" index="index" item="item" key="key">
+                <span class="{{currType == item.key ? 'act' : ''}}" @tap="changeType({{index}})">{{item.name}}</span>
+            </repeat>
+        </view>
+        <!-- 广告部分 -->
+        <view wx:if="{{false}}"></view>
+        <view class="flex-1">
+            <swiper indicator-dots="{{false}}" autoplay="{{false}}" class="swiper" style="height:calc(100vh - 80rpx)" bindchange="changeType_swiper" current="{{currentIndex}}">
+                <block wx:for="{{TypeList}}" wx:for-item="itemb" wx:key="indexa" wx:for-index="indexa">
+                    <!-- <repeat for="{{TypeList}}" index="indexa" item="itemb" key="indexa"> -->
+                    <swiper-item>
+                        <scroll-view scroll-y @scrolltolower="nextpage({{indexa}})" style="height:100%" scroll-with-animation="{{true}}" 
+                        scroll-top="{{thisScrollIndex}}"
+                        @scroll="thisScroll" >
+                            <view class="main-scroll" wx:if="{{currType == itemb.key}}">
+                                <repeat for="{{itemb.list}}" index="index" item="item" key="key">
+                                    <!-- 订单内容 -->
+                                    <view class="itemContent">
+                                        <view class="itemtop">
+                                            <image src="{{item.source_image}}" mode="aspectFill" /><span class="fs25 c333 flex-1 ml20">{{item.source_name}}</span>
+                                            <text class="fs25 ce02e24">{{item.order_status.text}}</text>
+                                        </view>
+                                        <block wx:for="{{item.goods}}" wx:key="{{index}}">
+                                            <view class="itemdetail" @tap="to_detail({{item.order_id}})">
+                                                <view class="mr20">
+                                                    <image src="{{item.image.file_path}}" mode="aspectFill" />
+                                                </view>
+                                                <view class="flex-1">
+                                                    <text class="itemname">{{item.goods_name}}</text>
+                                                    <text class="fs22 c929292">{{item.goods_attr}}</text>
+                                                </view>
+                                                <view class="itemprice ml20">
+                                                    <text class="fs28 c333">￥{{item.goods_price}}</text>
+                                                    <view class="c888">
+                                                        <font class="fs28">x</font>
+                                                        <font class="fs24">{{item.total_num}}</font>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </block>
+                                        <view class="itempay flex flex-between">
+                                            <view class="flexRow" wx:if="{{item.collage_list.length>0 }}">
+                                                <view class="collageImage">
+                                                    <block wx:for="{{item.collage_list}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}">
+                                                        <image src="{{item2.avatarUrl}}" wx:if="{{index2 < 6}}" />
+                                                    </block>
+                                                    <text wx:if="{{item.collage_list.lenght > 6}}">....</text>
+                                                </view>
+                                                <text>还差{{item.lack_num}}人成团</text>
+                                            </view>
+                                            <text>实付：￥{{item.total_price}}</text>
+                                        </view>
+                                        <orderBtn :orderitem="item" />
+                                    </view>
+                                </repeat>
+                                <view class="list-foot foot" wx:if="{{loading}}">
+                                    加载中......
+                                </view>
+                                <view class="list-foot foot" wx:if="{{itemb.total_page >= itemb.current_page && !loading}}">
+                                    <span class="gopng_img">没有更多</span>
+                                </view>
+                                <view class="nodata" wx:if="{{!loading && itemb.list.length == 0}}">
+                                    <span class="word">暂无数据</span>
+                                </view>
+                            </view>
+                        </scroll-view>
+                    </swiper-item>
+                </block>
+            </swiper>
+        </view>
+        <span class="public_icon1_to_top" @tap="scrollTo(0)"></span>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import orderBtn from '@/components/orderBtn'
+    export default class Index extends wepy.page {
+        config = {
+            enablePullDownRefresh: true,
+            navigationBarTitleText: '订单列表',
+        }
+        components = {
+            orderBtn
+        }
+        mixins = [Mixin]
+        data = {
+            thisScrollIndex: 0,
+            isshow: "",
+            loading: true,
+            TypeList: [{
+                name: '全部',
+                key: 'all',
+                current_page: 1,
+                total_page: 1,
+                list: []
+            }, {
+                name: '待付款',
+                key: 'payment',
+                current_page: 1,
+                total_page: 1,
+                list: []
+            }, {
+                name: '未使用',
+                key: 'noused',
+                current_page: 1,
+                total_page: 1,
+                list: []
+            }, {
+                name: '已完成',
+                key: 'finish',
+                current_page: 1,
+                total_page: 1,
+                list: []
+            }, {
+                name: '已取消',
+                key: 'cancel',
+                current_page: 1,
+                total_page: 1,
+                list: []
+            }],
+            currType: 'all',
+            currentIndex: 0,
+            page_size: 10,
+        }
+        events = {
+            delrefresh() {
+                //删除后更新当前列表
+                console.log(this.TypeList[this.currentIndex].key),
+                    this.TypeList[this.currentIndex].current_page = 1
+                this.loadorderlist({
+                    per_page: this.page_size,
+                    page: 1,
+                    data_type: this.TypeList[this.currentIndex].key,
+                }, this.currentIndex);
+            },
+            cancelrefresh() {
+                //取消订单，跳到取消列表
+                var index = 4
+                this.TypeList[index].current_page = 1;
+                this.currentIndex = index;
+                this.currType = this.TypeList[index].key;
+            }
+        }
+        methods = {
+            scrollTo() {
+                
+                this.thisScrollIndex = 0
+                this.$apply()
+                
+            },
+            thisScroll(e){
+                this.thisTop = e.detail.scrollTop
+                if(this.thisTop >0 &&  this.thisScrollIndex == 0 ){
+                    this.thisScrollIndex = this.thisTop
+                }
+            },
+            changeType(index) {
+                this.TypeList[index].current_page = 1;
+                this.currentIndex = index;
+                this.currType = this.TypeList[index].key;
+            },
+            changeType_swiper(e) {
+                this.TypeList[e.detail.current].current_page = 1;
+                this.loadorderlist({
+                    per_page: this.page_size,
+                    page: this.TypeList[e.detail.current].current_page,
+                    data_type: this.TypeList[e.detail.current].key,
+                }, e.detail.current)
+            },
+            to_detail(order_id) {
+                console.log(order_id)
+                wx.navigateTo({
+                    url: "orderdetail?order_id=" + order_id
+                })
+            },
+            nextpage(index) {
+                if (this.TypeList[index].list.length >= this.TypeList[index].totalCount) {
+                    return
+                }
+                this.loadorderlist({
+                    per_page: this.page_size,
+                    page: this.TypeList[index].current_page,
+                    data_type: this.TypeList[index].key,
+                }, index);
+                // let index = this.getTypeIndex(this.currType)
+                // if (this.TypeList[index].list.length > 0) {
+                //     if (this.TypeList[index].list.length < this.TypeList[index].total_count) {
+                //         this.TypeList[index].current_page += 1
+                //         this.loadorderlist(true)
+                //     }
+                // }
+            }
+        }
+        loadorderlist(data, index, feedback) {
+            this.loading = true
+            wepy.request({
+                url: 'api/order/lists',
+                method: 'POST',
+                data: data
+            }).then(res => {
+                this.loading = false
+                if (res.code != "1") {
+                    this.showAlert({
+                        content: res.msg
+                    });
+                    return
+                }
+                if (data.page == 1) {
+                    this.TypeList[index].list = [];
+                }
+                this.TypeList[index].current_page = data.page + 1;
+                this.currentIndex = index;
+                this.currType = this.TypeList[index].key;
+                this.TypeList[index].total_page = res.data.list.last_page;
+                this.TypeList[index].totalCount = res.data.list.total
+                //last page
+                if (this.TypeList[index].current_page == res.data.list.last_page) {}
+                // res = res.data.list;
+                this.TypeList[index].list = this.TypeList[index].list.concat(res.data.list.data)
+                // for (var i = 0; i < res.data.length; i++) {
+                //     this.TypeList[index].list.push(res.data[i])
+                // }
+                console.log(this.TypeList[index].list)
+                if (feedback) {
+                    feedback();
+                }
+                this.$apply();
+            })
+        }
+        getTypeIndex() {}
+        onLoad(option) {
+            if (option && option.type) {
+                this.currentIndex = option.type
+            }
+            if (option && option.isshow) {
+                this.isshow = option.isshow;
+            }
+        }
+        //        PageInit(opation) {
+        //
+        //        }
+        onShow() {
+            if (this.isshow != "") {
+                this.isshow = ''
+                return;
+            }
+            this.loadorderlist({
+                per_page: this.page_size,
+                page: 1,
+                data_type: this.TypeList[this.currentIndex].key,
+            }, this.currentIndex);
+        }
+        onPullDownRefresh(e) {
+            this.loadorderlist({
+                per_page: this.page_size,
+                page: 1,
+                data_type: this.TypeList[this.currentIndex].key,
+            }, this.currentIndex, function() {
+                wx.stopPullDownRefresh();
+            });
+        }
+    }
+</script>

@@ -1,0 +1,203 @@
+<style lang="less">
+  @color-orange: #ee8151;
+  @color-green: #91c46c;
+  @color-purple: #9c44ee;
+  @color-line: #e6e6e6;
+  @color-line2: #e9eae7;
+  .totalPin {
+    // border-top: 2rpx solid @color-line;
+    height: 204rpx;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .layout {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    .total-num {
+      .layout;
+      font-size: 26rpx;
+      text {
+        color: @color-green;
+        font-size: 36rpx;
+        margin-right: 16rpx;
+        letter-spacing: 2rpx;
+      }
+      margin-bottom: 35rpx;
+    }
+    .rating {
+      .layout;
+      font-size: 26rpx;
+    }
+  }
+  .ping-card {
+    border-top: 1rpx solid @color-line2;
+    padding: 40rpx 26rpx 48rpx 135rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .head {
+      position: relative;
+      height: 90rpx;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24rpx;
+      .avatar {
+        width: 86rpx;
+        height: 86rpx;
+        position: absolute;
+        top: 2rpx;
+        left: -100rpx;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        .name {
+          font-size: 30rpx;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 20rpx;
+          text {
+            height: 30rpx;
+            font-size: 24rpx;
+            line-height: 28rpx;
+            margin-left: 8rpx;
+            padding: 0 15rpx;
+            border-radius: 15rpx;
+            color: #fff;
+            &.bg-orange {
+              background: @color-orange;
+            }
+            &.bg-purple {
+              background: @color-purple;
+            }
+          }
+        }
+        text {
+          font-size: 24rpx;
+          color: #7f807c;
+        }
+      }
+      .star {
+        align-self: flex-start;
+      }
+    }
+    .content {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+      text {
+        width: 100%;
+        font-size: 24rpx;
+        line-height: 34rpx;
+        letter-spacing: 1rpx;
+        margin-bottom: 14rpx;
+      }
+      image {
+        width: 168rpx;
+        height: 168rpx;
+        margin-right: 14rpx;
+        margin-bottom: 14rpx;
+      }
+      .extra-text {
+        width: 100%;
+        color: @color-green;
+        font-size: 24rpx;
+      }
+    }
+  }
+</style>
+<template>
+  <view class="bg_fff">
+    <!-- 总评分 S -->
+    <view class="totalPin">
+      <view class="total-num"><text>{{comment_list.total}}</text>条评价</view>
+      <view class="rating">
+        整体评分
+        <view class="starContainer" style="{{containerStyle ? containerStyle : ''}}">
+          <span wx:for="{{comment_list.avg_score}}" wx:key="{{index}}" class="public_icon2_star_light"></span>
+          <span wx:for="{{5-comment_list.avg_score}}" wx:key="{{index}}" class="public_icon2_star_dark"></span>
+        </view>
+        {{comment_list.data.avg_score}}</view>
+    </view>
+    <!-- 总评分 E -->
+    <!-- 评价块 S -->
+    <view class="ping-card" wx:for="{{comment_list.data}}" wx:key="{{index}}" index="index">
+      <view class="head">
+        <view class="avatar">
+          <image src="{{item.avatarUrl}}"></image>
+        </view>
+        <view class="info">
+          <view class="name">{{item.nickName}}<text class="bg-orange" wx:if="{{item.gender !='未知' && item.gender !=''}}">{{item.gender}}</text></view>
+          <text>{{item.create_time}}</text>
+        </view>
+        <view class="star">
+          <view class="starContainer">
+            <span wx:for="{{item.score}}" wx:key="{{index2}}" class="public_icon2_star_light"></span>
+            <span wx:for="{{5-item.score}}" wx:key="{{index2}}" class="public_icon2_star_dark"></span>
+          </view>
+        </view>
+      </view>
+      <view class="content">
+        <text>{{item.comment}}</text>
+        <block wx:for="{{item.pic}}" wx:for-item="itema" wx:key="index1">
+          <view class="commentimgs">
+            <image src="{{itema}}" mode="aspectFill" @tap="showpic({{itema}},{{item.pic}})" />
+          </view>
+        </block>
+        <view class="extra-text">{{item.goods_attr}}</view>
+      </view>
+    </view>
+    <!-- 评价块 E -->
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Star from '@/components/StarRatine'
+  export default class comments extends wepy.component {
+    components = {
+      Star
+    };
+    props = {
+      comment_list: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      }
+    }
+    computed = {
+      starnum() {
+        if (this.comment_list.data) {
+          return this.comment_list.data.avg_score
+        }
+      }
+    }
+    data = {};
+    methods = {
+      showpic(url, urls) {
+        wx.previewImage({
+          current: url, // 当前显示图片的http链接
+          urls: urls // 需要预览的图片http链接列表
+        })
+      }
+    }
+  }
+</script>

@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" @open="handleOpen" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
                 <template v-if="item.subs">
@@ -37,6 +37,7 @@
         data() {
             return {
                 collapse: false,
+                handleOpen:true,
                 items: [
                     {
                         icon: 'el-icon-lx-home',
@@ -45,10 +46,10 @@
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'table',
-                        title: '基础表格'
+                        index: 'adminlist',
+                        title: '管理员列表'
                     },
-                    {
+                    /* {
                         icon: 'el-icon-lx-copy',
                         index: 'tabs',
                         title: 'tab选项卡'
@@ -121,7 +122,7 @@
                                 title: '404页面'
                             }
                         ]
-                    }
+                    } */
                 ]
             }
         },

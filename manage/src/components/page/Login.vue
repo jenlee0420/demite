@@ -16,7 +16,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
             </el-form>
         </div>
     </div>
@@ -44,8 +44,21 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        var formdata ={
+                            name:this.ruleForm.username,
+                            pwd:this.ruleForm.password
+                        }
+                        this.$axios.post('/user/login', formdata ).then((res) => {
+                            // this.$refs.md.$img2Url(pos, url);
+                            // console.log(data)
+                            if(res.status.haserror){
+                                this.$message.error(res.status.errorshowdesc)
+                            }else{
+                                localStorage.setItem('ms_username',this.ruleForm.username);
+                                this.$router.push('/');
+                            }
+                        })
+                        
                     } else {
                         console.log('error submit!!');
                         return false;

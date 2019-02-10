@@ -25,9 +25,9 @@ export default new Router({
                     meta: { title: '自定义图标' }
                 },
                 {
-                    path: '/table',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve),
-                    meta: { title: '基础表格' }
+                    path: '/adminlist',
+                    component: resolve => require(['../components/page/adminlist.vue'], resolve),
+                    meta: { title: '管理员列表' }
                 },
                 {
                     path: '/tabs',

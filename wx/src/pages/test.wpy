@@ -20,6 +20,9 @@
 
 <template>
   <view class="container">
+      <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="sharebtn flexRow flex-jcenter">
+              <span class="public_icon1_white_weixin mr20"></span> 微信快捷登录
+            </button>
     <view>
       <view>
         <text>选择地区:</text>
@@ -57,28 +60,23 @@
     <!--</view>-->
     <!--</picker>-->
     <!--&lt;!&ndash; <button @tap="addressinfo">收货地址</button> &ndash;&gt;-->
-    <!--<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"> eee</button>-->
+    <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"> eee</button>
     <!--<backtoHome />-->
-    <shareBox></shareBox>
+    <!-- <shareBox></shareBox> -->
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import Mixin from '@/mixins/global'
-  import popwin from '@@/popWin'
+  /* import popwin from '@@/popWin'
   import gooditem from '@@/gooditem'
   // import zanpopup from '@@/zan-popup'
   import backtoHome from '@@/backtoHome'
-  import shareBox from '@@/shareBox'
+  import shareBox from '@@/shareBox' */
   export default class Index extends wepy.page {
     config = {}
     components = {
-      popwin,
-      // zanpopup,
-      gooditem,
-      backtoHome,
-      shareBox
     }
     mixins = [Mixin]
     data = {
@@ -105,12 +103,14 @@
       ],
     }
     methods = {
-      bindRegionChange() {
+        
+      bindgetuserinfo(e) {
+          console.log(e)
       },
 
       getPhoneNumber(e){
         console.log(e)
-        this.addressinfo()
+        // this.addressinfo()
       },
 
       bindMultiPickerColumnChange(e){

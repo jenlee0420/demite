@@ -37,7 +37,7 @@
       <image src="{{imgBaseUrl}}logo.png" mode="aspectFit"/>
     </view>
     <text class="c999 fs25"> 登录后即可继续当前操作</text>
-    <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="sharebtn flexRow flex-jcenter">
+    <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="sharebtn flexRow flex-jcenter">
               <span class="public_icon1_white_weixin mr20"></span> 微信快捷登录
             </button>
     <text class="c666 fs25">登录后可购物，参加活动还可领优惠券</text>
@@ -54,32 +54,33 @@
     data = {}
     methods = {
       bindgetuserinfo(e) {
+        console.log(e)
         if (!e.detail.signature) {
           return
         }
         let detail = e.detail.userInfo
-        console.log(e.detail)
-        wepy.request({
-          url: "api/user/edit",
-          method: 'POST',
-          data: {
-            nick_name: detail.nickName,
-            avatar_url: detail.avatarUrl,
-            gender: detail.gender,
-            iv: e.detail.iv,
-            encryptedData: e.detail.encryptedData,
-            rawData: e.detail.rawData,
-            signature: e.detail.signature
-          },
-        }).then(res => {
-          if (res.code == 1) {
-            this.showSuccess('登录成功')
-            setTimeout(() => {
-              wepy.navigateBack()
-            }, 500);
-          }
-          this.$apply()
-        })
+        
+        // wepy.request({
+        //   url: "api/user/edit",
+        //   method: 'POST',
+        //   data: {
+        //     nick_name: detail.nickName,
+        //     avatar_url: detail.avatarUrl,
+        //     gender: detail.gender,
+        //     iv: e.detail.iv,
+        //     encryptedData: e.detail.encryptedData,
+        //     rawData: e.detail.rawData,
+        //     signature: e.detail.signature
+        //   },
+        // }).then(res => {
+        //   if (res.code == 1) {
+        //     this.showSuccess('登录成功')
+        //     setTimeout(() => {
+        //       wepy.navigateBack()
+        //     }, 500);
+        //   }
+        //   this.$apply()
+        // })
       }
     }
     onLoad() {}

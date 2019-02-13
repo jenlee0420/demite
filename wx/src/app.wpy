@@ -12,7 +12,7 @@
 <script>
   // let aldstat = require('./untils/ald-stat.js')
   import wepy from 'wepy'
-  import 'wepy-async-function'
+//   import 'wepy-async-function'
   import {
     config,
     init,
@@ -21,12 +21,16 @@
   export default class extends wepy.app {
     config = { 
       pages: [
-        // 'pages/icon',
+          'pages/express',
+          'pages/scancode',
+          
         'pages/test',
-        'pages/index',
-        'pages/yaoqing', 
         'pages/wxlogin',
+        /*'pages/index',
         'pages/search_page',
+        'pages/mycenter/index',
+        /*'pages/yaoqing', 
+        // 'pages/wxlogin',
         'pages/friendpay',
         'pages/sharefriend',
         'pages/join',
@@ -38,7 +42,7 @@
         'pages/mycenter/orderlist',
         'pages/paypage',
         'pages/mycenter/orderdetail',
-        'pages/mycenter/index',
+        
         'pages/member/list_member',
         'pages/member/add_member',
         'pages/mycenter/collaborate',
@@ -47,40 +51,34 @@
         'pages/mycenter/about',
         'pages/goods_detail',
         'pages/custom',
-        'pages/refund',
-        'pages/instructions'
+        'pages/refund', */
+        // 'pages/instructions'
       ],
-      tabBar: {
-        color: '#949393',
-        selectedColor: '#db3e41',
-        backgroundColor: '#ffffff',
-        borderStyle: 'black',
-        list: [{
-          'pagePath': 'pages/index',
-          'text': '首页',
-          'iconPath': 'images/home.png',
-          'selectedIconPath': 'images/home_act.png'
-        }, {
-          'pagePath': 'pages/search_page',
-          'text': '搜索',
-          'iconPath': 'images/search.png',
-          'selectedIconPath': 'images/search_act.png'
-        }, {
-          'pagePath': 'pages/custom',
-          'text': '定制',
-          'iconPath': 'images/custom.png',
-          'selectedIconPath': 'images/custom_act.png'
-
-        },{
-          'pagePath': 'pages/mycenter/index',
-          'text': '我的',
-          'iconPath': 'images/mycenter.png',
-          'selectedIconPath': 'images/mycenter_act.png'
-        }]
-      },
+    //   tabBar: {
+    //     color: '#949393',
+    //     selectedColor: '#db3e41',
+    //     backgroundColor: '#ffffff',
+    //     borderStyle: 'black',
+    //     list: [{
+    //       'pagePath': 'pages/index',
+    //       'text': '首页',
+    //       'iconPath': 'images/home.png',
+    //       'selectedIconPath': 'images/home_act.png'
+    //     }, {
+    //       'pagePath': 'pages/search_page',
+    //       'text': '搜索',
+    //       'iconPath': 'images/search.png',
+    //       'selectedIconPath': 'images/search_act.png'
+    //     },{
+    //       'pagePath': 'pages/mycenter/index',
+    //       'text': '我的',
+    //       'iconPath': 'images/mycenter.png',
+    //       'selectedIconPath': 'images/mycenter_act.png'
+    //     }]
+    //   },
       window: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: 'demite',
+        navigationBarTitleText: '知兮乐兮',
         navigationBarTextStyle: 'black',
         backgroundTextStyle: 'dark',
         // backgroundColor: '#fff'
@@ -111,8 +109,8 @@
       /* 启动先调用微信登录 => 服务器登录 */
       this.wxLogin().then(code => {
         /* 用户登录 */
-        // console.log('code',code)
-        this.userlogin(code, options)
+        console.log('code',code)
+        // this.userlogin(code, options)
       })
     }
     wxLogin() {

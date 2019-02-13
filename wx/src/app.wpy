@@ -22,7 +22,7 @@
     config = { 
       pages: [
         // 'pages/icon',
-        //'pages/test',
+        'pages/test',
         'pages/index',
         'pages/yaoqing', 
         'pages/wxlogin',
@@ -80,7 +80,7 @@
       },
       window: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '知兮乐兮',
+        navigationBarTitleText: 'demite',
         navigationBarTextStyle: 'black',
         backgroundTextStyle: 'dark',
         // backgroundColor: '#fff'

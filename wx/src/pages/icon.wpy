@@ -1,5 +1,5 @@
 <style lang="css">
-@import '/zanui/icon.wxss';
+/* @import '/zanui/icon.wxss'; */
 
 .icon-wrap {
   width: 33.33333%;

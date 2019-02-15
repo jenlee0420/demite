@@ -21,38 +21,11 @@
   export default class extends wepy.app {
     config = { 
       pages: [
-          'pages/express',
-          'pages/scancode',
-          
+        'pages/mycenter/addresslist',
+        'pages/express',
+        'pages/scancode',
         'pages/test',
         'pages/wxlogin',
-        /*'pages/index',
-        'pages/search_page',
-        'pages/mycenter/index',
-        /*'pages/yaoqing', 
-        // 'pages/wxlogin',
-        'pages/friendpay',
-        'pages/sharefriend',
-        'pages/join',
-        'pages/joinSuccess',
-        'pages/mycenter/dianpin',
-        'pages/mycenter/list_member',
-        'pages/search',
-        'pages/mycenter/collection',
-        'pages/mycenter/orderlist',
-        'pages/paypage',
-        'pages/mycenter/orderdetail',
-        
-        'pages/member/list_member',
-        'pages/member/add_member',
-        'pages/mycenter/collaborate',
-        'pages/mycenter/feedback',
-        'pages/kefu',
-        'pages/mycenter/about',
-        'pages/goods_detail',
-        'pages/custom',
-        'pages/refund', */
-        // 'pages/instructions'
       ],
     //   tabBar: {
     //     color: '#949393',
@@ -78,7 +51,7 @@
     //   },
       window: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '知兮乐兮',
+        navigationBarTitleText: '德米特',
         navigationBarTextStyle: 'black',
         backgroundTextStyle: 'dark',
         // backgroundColor: '#fff'

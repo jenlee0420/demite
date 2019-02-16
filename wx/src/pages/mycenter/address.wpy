@@ -1,0 +1,240 @@
+<style lang="less">
+  .address {
+    .my_view {
+      font-size: 32rpx;
+      color: #333;
+      .my_view_view {
+        display: flex;
+        align-items: center;
+        min-height: 110rpx;
+        background-color: #fff;
+        border-top: 1rpx solid @bColor;
+        padding: 25rpx 30rpx;
+        box-sizing:border-box;
+        position: relative;
+        &:last-child {
+          border-bottom: 1rpx solid @bColor;
+        }
+        >text {
+          white-space: nowrap;
+          width: 130rpx;
+          padding-right: 30rpx;
+        }
+        input {
+          flex: 1;
+          font-size: 32rpx;
+        }
+      }
+    }
+    .clear_icon {
+        position: absolute;
+        right: 20rpx;
+        top:0;bottom: 0;
+        margin: auto;
+        line-height: 110rpx;
+        font-size: 26rpx;
+        font-weight: bold;
+      }
+      .tomap{
+        color: @theme;
+        text-decoration: underline;
+      }
+      .btnfull{
+        position: relative;
+        margin:20rpx 0;
+        border-bottom: 1rpx solid @bColor;
+      }
+  }
+</style>
+
+<template>
+  <view class="container address">
+    <view class="my_view mb40">
+      <view class="my_view_view">
+        <text class="my_view_text">收货人</text>
+        <input class="my_input" value="{{name}}" placeholder="请填写收货人姓名" @input="checkval('name',0)" @focus="checkval('name',0)" focus maxlength="10" />
+      </view>
+      <view class="my_view_view">
+        <text class="my_view_text">手机号码</text>
+        <input class="my_input" placeholder="请填写收货人手机号码" value="{{phone}}" @input="checkval('phone',1)"  @focus="checkval('phone',1)"/>
+      </view>
+      <view class="my_view_view">
+        <text class="my_view_text">选择地区</text>
+        <picker class="my_picker" mode="multiSelector" @change="pick_place" @columnchange="choice_place" value="{{place_index}}" range="{{place_display_array}}">
+          <view class="picker">
+            <input class="my_input" placeholder="选择地区" value="{{place.path}}" disabled/>
+          </view>
+        </picker>
+      </view>
+      <view class="flex-astart my_view_view">
+        <text class="my_view_text mt5">详细地址</text>
+        <view class="flex-1">
+        <input class="my_input" placeholder="省市区县、乡镇、街道、楼牌号等" value="{{address}}" @input="checkval('address',3)"  @focus="checkval('address',3)"/>
+        <span class="fs24 tomap" @tap="toMap">获取地址</span>
+        </view>
+      </view>
+    </view>
+    <view  style="{{'top:'+currentIndex * 110 +'rpx'}}" class="zan-icon zan-icon-close clear_icon" @tap="clearInput('name')" wx-if="{{currentInput}}"></view>
+    <view class="btnfull">保存</view>
+    <view class="btnfull">删除</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  export default class address extends wepy.page {
+    config = {
+      navigationBarTitleText: '编辑收货地址'
+    }
+    components = {}
+    mixins = [Mixin]
+    data = {
+      currentInput:'',
+      currentIndex:0,
+      name: "",
+      phone: "",
+      address: "",
+      user_id: 0,
+      place: {
+        province_id: "",
+        city_id: "",
+        region_id: "",
+        province: "",
+        city: "",
+        region: "",
+        path: "",
+      },
+      place_array: [
+        [],
+        [],
+        []
+      ],
+      place_index: [0, 0, 0],
+      place_display_array: [
+        [],
+        [],
+        []
+      ],
+    }
+    methods = {
+      clearInput(key) {
+        this[key] = ''
+        this['c'+key] = false
+      },
+      checkval(key, index,e) {
+        let input = this[key]
+        input = e.detail.value
+        if(input.length>0){
+          this.currentInput = key
+        }else{
+          this.currentInput = ''
+        }
+        this.currentIndex = index
+        // console.log(this.$refs)
+        // this.$refscloseicon.style.top = 110 * index
+      },
+      pick_place(e) {
+        this.place.province_id = this.place_array[0][this.place_index[0]].id;
+        this.place.city_id = this.place_array[1][this.place_index[1]].id;
+        this.place.region_id = this.place_array[2][this.place_index[2]].id;
+        this.place.province = this.place_array[0][this.place_index[0]].name;
+        this.place.city = this.place_array[1][this.place_index[1]].name;
+        this.place.region = this.place_array[2][this.place_index[2]].name;
+        this.place.path = this.place.province + "-" + this.place.city + "-" + this.place.region;
+        this.$apply();
+      },
+      toMap() {
+        var that = this;
+        wx.getLocation({
+          type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+          success: function(res) {
+            var latitude = res.latitude;
+            var longitude = res.longitude;
+            wx.chooseLocation({
+              latitude: latitude,
+              longitude: longitude,
+              scale: 28,
+              success: function(res) {
+                console.log('address', res)
+                that.address = res.name;
+                that.$apply();
+              },
+            })
+          },
+          fail: function(err) {}
+        })
+      },
+    }
+    saveContact() {
+      var url = "";
+      if (this.edit) {
+        url = "api/address/edit"
+      } else {
+        url = "api/address/add"
+      }
+      if (this.name == "") {
+        this.showAlert({
+          content: "请输入名字"
+        });
+        return
+      }
+      if (this.phone == "") {
+        this.showAlert({
+          content: "请输入手机号"
+        });
+        return
+      }
+      if (this.place.province_id == "" || this.place.city_id == '' || this.place.region_id == '' || this.address == '') {
+        this.showAlert({
+          content: "请选择地址"
+        });
+        return
+      }
+      var data = {
+        address_id: this.address_id,
+        name: this.name,
+        phone: this.phone,
+        province_id: this.place.province_id,
+        city_id: this.place.city_id,
+        region_id: this.place.region_id,
+        detail: this.address,
+        postcode: this.postcode,
+        card: this.id_card,
+        birthday: this.transdate2Time(this.bir_date),
+        type: this.type,
+        sex: this.sex,
+        friend_user_id: this.user_id,
+      };
+      console.log(data)
+      wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res => {
+        if (res.code != "1") {
+          this.showAlert({
+            content: res.msg
+          });
+          return
+        } else {
+          this.showSuccess('添加成功')
+          setTimeout(() => {
+            if (this.user_id) {
+              wepy.reLaunch({
+                url: '/pages/index'
+              })
+            } else {
+              wx.navigateBack();
+            }
+          }, 1000);
+          // wx.navigateTo({
+          //   url:"list_member"
+          // })
+        }
+      })
+    }
+    onLoad() {}
+    PageInit() {}
+  }
+</script>

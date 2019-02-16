@@ -1,13 +1,14 @@
 <style lang="less">
-  @import 'styles/reset';
-  @import 'styles/icon';
-  @import "styles/common";
-  page {
-    height: 100%;
-    background-color: #f4f4f4;
-    width: 100%;
-    font-family: 'microsoft yahei', '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
-  }
+@import "styles/reset";
+@import "styles/icon";
+@import "styles/common";
+page {
+  height: 100%;
+  background-color: #f4f4f4;
+  width: 100%;
+  font-family: "microsoft yahei", "-apple-system", "Helvetica Neue", "Roboto",
+    "Segoe UI", sans-serif;
+}
 </style>
 <script>
   // let aldstat = require('./untils/ald-stat.js')
@@ -21,9 +22,11 @@
   export default class extends wepy.app {
     config = { 
       pages: [
+        // 'pages/icon',
+        'pages/mycenter/address',
         'pages/mycenter/addresslist',
-        'pages/express',
-        'pages/scancode',
+        // 'pages/express',
+        // 'pages/scancode',
         'pages/test',
         'pages/wxlogin',
       ],
@@ -49,11 +52,17 @@
     //       'selectedIconPath': 'images/mycenter_act.png'
     //     }]
     //   },
+    "permission": {
+        "scope.userLocation": {
+          "desc": "你的位置信息将用于小程序位置接口的效果展示"
+        }
+      },
       window: {
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: '德米特',
         navigationBarTextStyle: 'black',
         backgroundTextStyle: 'dark',
+        // navigationStyle: 'custom'
         // backgroundColor: '#fff'
       },
       debug: true

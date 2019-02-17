@@ -6,7 +6,7 @@ let mode = 'dev'
 const config = {
     dev: {
         api: {
-            default: 'https://wxapi.zxlx123.com/'
+            default: 'http://192.168.5.43:8080'
         },
         imgUrl:'http://test.cn/'
     },

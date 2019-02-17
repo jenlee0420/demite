@@ -1,0 +1,81 @@
+<style lang="less">
+  .address{
+    
+    .addList{
+      &>li{
+        padding: 40rpx 0 40rpx 30rpx;
+        background-color: #fff;
+        border-top: 1px solid @bColor;
+        &:last-child{
+          border-bottom: 1px solid @bColor;
+        }
+      }
+      .item{
+        color: #333; 
+        padding-right: 50rpx;
+        &>span{width: 100%; display: inline-block}
+      }
+      .edit{
+        width: 108rpx;
+        color: #a5a5a5;
+        font-size: 24rpx;
+        text-align: center;
+        position: relative;
+        &::before{
+          content: '';
+          width: 1rpx;
+          height: 32rpx;
+          position: absolute;
+          margin: auto;
+          top:0;
+          bottom:0;
+          left: 0;
+          border-right: 1rpx dashed #e8e8e8;
+        }
+      }
+    }
+  }
+</style>
+
+<template>
+  <view class="container address">
+    <ul class="addList">
+      <li class="flexRow">
+        <div class="item flexCol flex-1">
+          <span class="fs32 mb20">李四<font class="ml20">13511111111</font></span>
+          <span class="fs24 lh30">地址：地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址</span>
+        </div>
+        <div class="edit">
+          编辑
+        </div>
+      </li>
+      <li class="flexRow">
+        <div class="item flexCol flex-1">
+          <span class="fs32 mb20">李四<font class="ml20">13511111111</font></span>
+          <span class="fs24 lh30">地址：地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址</span>
+        </div>
+        <div class="edit">
+          编辑
+        </div>
+      </li>
+    </ul>
+    <div class="addNew btnfull">+ 新增地址</div>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class addresslist extends wepy.page {
+  config = {
+    navigationBarTitleText:'地址管理'
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

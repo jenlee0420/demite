@@ -1,0 +1,31 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+    <button @tap="test">00</button>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class scancode extends wepy.page {
+  config = {
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {
+      test(){
+          wepy.scanCode().then(res=>{
+              console.log(res)
+          })
+      }
+  }
+  onLoad() {
+  }
+}
+</script>

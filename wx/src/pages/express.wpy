@@ -1,0 +1,72 @@
+<style lang="less">
+    .kdnlogin-box {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 900px;
+            height: 600px;
+            border: 1px solid #ccc;
+            margin-left: -350px;
+            margin-top: -300px;
+            background-color: #fff;
+        }
+
+        .kdnlogin-title {
+            height: 40px;
+            line-height: 40px;
+            background-color: #e5e5e5;
+            padding-left: 15px;
+        }
+
+        .kdnlogin-close {
+            color: #333;
+            float: right;
+            vertical-align: middle;
+            margin-top: -1px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+            .kdnlogin-close:hover {
+                color: #555;
+            }
+</style>
+
+<template>
+  <view class="container">
+    <web-view src="http://www.kdniao.com/JSInvoke/MSearchResult.aspx?expCode=ZTO&expNo=73107426109002"></web-view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+// import KDNWidget from '@/js/KDNWidget.js'
+// var KDNWidget = require('@/js/KDNWidget.js')
+// import {KDNWidget} from '@/js/KDNWidget.js'
+export default class Index extends wepy.page {
+  config = {
+      navigationBarTitleText: 'demite',
+  }
+  components = {
+    //   KDNWidget
+  }
+  mixins = [Mixin]
+  data = {
+    //   KDNWidget:null
+  }
+  methods = {}
+  onLoad(e) { 
+    
+    // var t = new KDNWidget()
+    //   console.log(KDNWidget.KDNWidget)
+    //     KDNWidget.KDNWidget.run({
+    //     serviceType: "A",
+    //     expCode: "ZTO",
+    //     expNo: "453428852106",
+    // })
+    //   var test = new KDNWidget()
+    console.log(e,'//')
+  }
+}
+</script>

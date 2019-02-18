@@ -23,6 +23,7 @@ page {
     config = { 
       pages: [
         // 'pages/icon',
+        'pages/mycenter/home',
         'pages/mycenter/address',
         'pages/mycenter/addresslist',
         // 'pages/express',

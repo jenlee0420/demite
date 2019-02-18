@@ -1,0 +1,54 @@
+<style lang="less">
+.myhome{
+  .home_top{
+    padding:52rpx 0;
+    box-sizing:border-box;
+    width: 100%;
+    border-bottom: 1rpx solid @bColor;
+    color: #a5a5a5;
+    font-size: 24rpx;
+    background-color: #fff;
+    text{
+      margin-bottom: 16rpx;
+      &:last-child{margin-bottom: 0;}
+    }
+    .head{
+      display: inline-block;
+      width: 140rpx;
+      height: 140rpx;
+      background-size: cover;
+      border-radius: 50%;
+    }
+  }
+}
+</style>
+
+<template>
+  <view class="container myhome">
+    <view class="home_top flexCol">
+      <text class="head" style="{{'background-image:url('+headPic+')'}}"></text>
+      <text class="maincolor fs32">Michelle</text>
+      <text>ID:123456789</text>
+    </view>
+    <view>
+      
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class home extends wepy.page {
+  config = {
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+    headPic:'https://user-gold-cdn.xitu.io/2018/7/31/164eeff38a480f5c?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1'
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

@@ -2,7 +2,7 @@ import wepy from 'wepy'
 
 export default class Global extends wepy.mixin {
     data = {
-        imgBaseUrl: 'http://118.24.75.118:5004/upload/',
+        imgBaseUrl: 'http://118.24.75.118:5004/',
         baseHeadImg: 'http://zxlx-web.oss-cn-beijing.aliyuncs.com/head.png',
         baseServerImg: 'https://zxlx-web.oss-cn-beijing.aliyuncs.com/tmpimg.png',
         reg: {

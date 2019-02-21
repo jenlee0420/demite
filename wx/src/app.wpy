@@ -1,7 +1,7 @@
 <style lang="less">
 @import "styles/reset";
 @import "styles/icon";
-@import "styles/common";
+@import "styles/common";   
 page {
   height: 100%;
   background-color: #f4f4f4;

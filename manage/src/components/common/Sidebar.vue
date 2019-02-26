@@ -49,6 +49,11 @@
                         index: 'adminlist',
                         title: '管理员列表'
                     },
+                    {
+                        icon: 'el-icon-lx-sort',
+                        index: 'catelist',
+                        title: '商品分类管理'
+                    },
                     /* {
                         icon: 'el-icon-lx-copy',
                         index: 'tabs',

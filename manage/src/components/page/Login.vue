@@ -42,6 +42,9 @@
         },
         methods: {
             submitForm(formName) {
+                localStorage.setItem('ms_username',this.ruleForm.username);
+                                this.$router.push('/');
+                                return
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var formdata ={

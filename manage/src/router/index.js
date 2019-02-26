@@ -30,6 +30,11 @@ export default new Router({
                     meta: { title: '管理员列表' }
                 },
                 {
+                    path: '/catelist',
+                    component: resolve => require(['../components/page/catelist.vue'], resolve),
+                    meta: { title: '商品分类管理' }
+                },
+                {
                     path: '/tabs',
                     component: resolve => require(['../components/page/Tabs.vue'], resolve),
                     meta: { title: 'tab选项卡' }

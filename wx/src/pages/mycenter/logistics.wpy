@@ -1,0 +1,54 @@
+<style lang="less">
+page{
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+.logistics{
+  background-color: #fff;
+  padding: 40rpx 30rpx;
+   box-sizing: border-box;
+  height: 100%;
+  .btn{
+    width: 220rpx;
+    height: 86rpx;
+    line-height: 86rpx;
+    font-size: 32rpx;
+    margin-top: 40rpx;
+    border-radius: 10rpx;
+  }
+  input{
+    width: 100%;
+    background-color: #e8e8e8;
+    border-radius: 10rpx;
+    padding: 35rpx 30rpx;
+    box-sizing: border-box;
+    height: 100rpx;
+  }
+}
+</style>
+
+<template>
+  <view class="container logistics">
+    <view class="flexCol">
+      <input type="text" class="fs32" placeholder="请输入快递单号"/>
+      <button class="btn">查询</button>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class logistics extends wepy.page {
+  config = {
+    navigationBarTitleText: '物流查询',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  } 
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

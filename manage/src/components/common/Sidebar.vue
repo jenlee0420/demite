@@ -44,6 +44,51 @@
                         index: 'dashboard',
                         title: '系统首页'
                     },
+                     {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'drugCategory',
+                        title: '药品分类列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'medicine',
+                        title: '药品列表'
+                    },
+                    /* {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '设备列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '维修组列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '报修列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '远程支持列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '用户管理列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '用户申请列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '用户续保申请'
+                    },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'adminlist',
@@ -54,6 +99,11 @@
                         index: 'catelist',
                         title: '商品分类管理'
                     },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'adminlist',
+                        title: '维修组员管理'
+                    }, */
                     /* {
                         icon: 'el-icon-lx-copy',
                         index: 'tabs',

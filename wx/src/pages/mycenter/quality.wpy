@@ -1,0 +1,53 @@
+<style lang="less">
+.quality{
+    font-size: 32rpx;
+    .panel{
+      border-top: 1rpx solid @bColor;
+      border-bottom: 1rpx solid @bColor;
+      color: #333;
+      font-size: 32rpx;
+      margin-bottom: 20rpx;
+      background-color: #fff;
+      padding:30rpx;
+      line-height: 54rpx;
+      &:first-child {
+        margin-top: 20rpx;
+      }
+    }
+}
+</style>
+
+<template>
+  <view class="container quality">
+    <view class="panel">
+        <view>开始时间：2019年01月01日</view>
+        <view>过保时间：2020年01月01日</view>
+        <view>剩余保修：275天/0天</view>
+    </view>
+    <view class="panel flexRow">
+        <text class="flex-1" @tap="navto">保修声明</text>
+        <text class="arrow_icon"></text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class quality extends wepy.page {
+  config = {
+      navigationBarTitleText: '质保状态',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {
+      navto(){
+        wx.navigateTo({url:'/pages/mycenter/qualityinfo'})
+      },
+  }
+  onLoad() {
+  }
+}
+</script>

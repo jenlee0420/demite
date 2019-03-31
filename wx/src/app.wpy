@@ -1,10 +1,10 @@
 <style lang="less">
-@import "styles/reset";
+@import "styles/reset"; 
 @import "styles/icon";
 @import "styles/common";   
 page {
   height: 100%;
-  background-color: #f4f4f4;
+  background-color: #e8e8e8;
   width: 100%;
   font-family: "microsoft yahei", "-apple-system", "Helvetica Neue", "Roboto",
     "Segoe UI", sans-serif;
@@ -18,12 +18,25 @@ page {
     config,
     init,
     mode
-  } from './untils'
+  } from './untils' 
   export default class extends wepy.app {
-    config = { 
+    config = {
       pages: [
         // 'pages/icon',
         'pages/mycenter/home',
+        'pages/mycenter/logistics',
+        'pages/after_sale/repairDetail',
+        'pages/after_sale/repairorder',
+        'pages/after_sale/afterSale',
+        'pages/after_sale/repairlist',
+        'pages/after_sale/remoteApply',
+        'pages/mycenter/quality',
+        'pages/mycenter/qualityinfo',
+        'pages/mycenter/detail',
+        'pages/mycenter/applies',
+        'pages/mycenter/applies2',
+        'pages/mycenter/repair', 
+        'pages/mycenter/equipment',
         'pages/mycenter/address',
         'pages/mycenter/addresslist',
         // 'pages/express',

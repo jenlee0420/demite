@@ -1,0 +1,148 @@
+<style lang="less">
+  .detail {
+    .panel {
+      border-top: 1rpx solid @bColor;
+      border-bottom: 1rpx solid @bColor;
+      color: #333;
+      font-size: 32rpx;
+      margin-bottom: 20rpx;
+      background-color: #fff;
+      &:first-child {
+        margin-top: 0rpx;
+      }
+      image{
+        height: 186rpx;
+        width: auto;
+      }
+      .item{
+        padding:30rpx;
+        display: flex;
+        border-bottom: 1rpx solid @bColor;
+        align-items: center;
+        text:first-child{
+          flex:1
+        }
+        text:nth-child(2){
+          font-size: 28rpx;
+          line-height: 28rpx;
+          color:@theme;
+          margin-top:-2rpx;
+        }
+        &:first-child{
+          border-top: 0
+        }
+        &:last-child{
+          border-bottom: 0
+        }
+      }
+    }
+    .info {
+      padding: 40rpx 40rpx 40rpx 30rpx;
+      font-size: 32rpx;
+      line-height: 48rpx;
+      display: flex;
+      flex-direction: column;
+    }
+    .p40 {
+      padding: 40rpx 40rpx 40rpx 30rpx;
+    }
+    .opr{
+      
+      .btnline{
+        width: 188rpx;
+      }
+    }
+    .message{
+      height: 210rpx;
+      display: flex;
+      justify-content: center;
+      align-items:  center;
+      border-bottom: 0;
+      margin-bottom: 0;
+      .bluebox{
+        width: 220rpx;
+        height: 60rpx;
+        color:@theme;
+        font-size: 32rpx;
+        background: #e8e8e8;
+        text-align: center;
+        line-height: 60rpx;
+        border-radius: 10rpx;
+      }
+    }
+  }
+</style>
+
+<template>
+  <view class="container detail">
+    <view class="image panel">
+      <image src="https://static.hdslb.com/images/akari.jpg" />
+      <view class="p40">
+        <view class="fs32">
+          液阻质谱ML200
+        </view>
+        <view class="mt20 fs24 ca5a5a5">基于最先进的表面多孔增强核心技术结合固定想键喝；具有多种 可选的固定想且几乎兼容所有仪器。</view>
+      </view>
+    </view>
+    <view class="message panel"><view class="bluebox">申请中...</view></view>
+    <view class="panel info">
+      <text>产品型号：5258455</text>
+      <text>序列号：584156453416</text>
+      <text>检测器型号：755725435</text>
+      <text>自动进样器型号：58575575</text>
+      <text>控制器型号：45325</text>
+      <text>自动耦合仪型号：555454354</text>
+      <text>工作站版本：V1.0</text>
+      <text>装机时间：2018年01月01日 </text>
+    </view>
+    <view class="panel">
+      <view class="item" @tap="navto('applies')">
+        <text>应用信息</text>
+        <text>详情</text>
+        <text class="ml15 arrow_icon"></text>
+      </view>
+      <view class="item" @tap="navto('quality')">
+        <text>质保状态:质保期内</text>
+        <text>详情</text>
+        <text class="ml15 arrow_icon"></text>
+      </view>
+      <view class="item" @tap="renewal">
+        <text>续保</text>
+        <text class="ml15 arrow_icon"></text>
+      </view>
+    </view>
+    <view class="space"></view>
+    <view class="opr">
+      <text class="btnline mr30" @tap="navto('repair')">在线报修</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  export default class detail extends wepy.page {
+    config = {
+      navigationBarTitleText: '设备详情',
+    }
+    components = {}
+    mixins = [Mixin]
+    data = {}
+    methods = {
+      navto(url){
+        wx.navigateTo({url:'/pages/mycenter/'+url})
+      },
+      renewal(){
+        this.showAlert({
+          content:'是否续保',
+          confirmText:'是',
+          cancelText:'否',
+          confirm:()=>{
+            console.log('是')
+          }
+        })
+      }
+    }
+    onLoad() {}
+  }
+</script>

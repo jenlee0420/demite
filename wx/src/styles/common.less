@@ -15,6 +15,7 @@
 .ce02e24{color:#e02e24}
 .cc0bebe{color:#c0bebe}
 .cadaaaa{color: #adaaaa}
+.ca5a5a5{color:#a5a5a5}
 .c5ad{
     color:#5ada78;
 }
@@ -27,6 +28,7 @@
 .r{float: right}
 .t_r{text-align: right}
 .t_c{text-align: center}
+.t_l{text-align:left}
 /* //透明度 */
 .f_opacity_6{
     opacity: 0.6;
@@ -75,6 +77,7 @@
 .mt50{margin-top: 50rpx}
 .mt60{margin-top: 60rpx}
 .ml12{margin-left: 12rpx}
+.ml15{margin-left: 15rpx}
 .ml10{margin-left: 10rpx}
 .ml20{margin-left: 20rpx}
 .ml30{margin-left: 30rpx}
@@ -108,7 +111,6 @@
 .flex-column{display: flex;flex-direction: column}
 .flex-between{justify-content: space-between}
 .flex-algin-center{align-items: center; }
-.flex-1{flex:1}
 
 
 .flexCol { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
@@ -207,11 +209,11 @@
   }
 .btn,.btnline,.btnRdline{
     min-width: 140rpx;
-    height: 80rpx;
-    line-height: 80rpx;
+    height: 56rpx;
+    line-height: 56rpx;
     background-color: @theme;
     color:#fff;
-    font-size: 30rpx;
+    font-size: 28rpx;
     text-align: center;
     padding: 0 20rpx;
     display:inline-block;
@@ -235,9 +237,10 @@
     border:1rpx solid @theme;
 }
 .btnline{
-    color:#333;
+    color:@theme;
     background-color:#fff;
-    border:1rpx solid #f1f1f1;
+    border:1rpx solid @theme;
+    border-radius: 30rpx;
 }
 .btn-search{
     width: 92rpx;
@@ -262,90 +265,19 @@
     line-height: 50rpx;
 }
 
-/* 订单列表  订单详情 卡片样式*/
-.itemlabel{
-    >text{font-size: 20rpx; color: #fff; line-height: 32rpx;height: 32rpx; padding:5rpx 10rpx; border-radius: 5rpx; margin-right: 20rpx;}
-    .redlabel{background-color: #ee8151}
-    .greenlabel{background-color: #91c46c}
+.space{
+    height: 104rpx;
 }
-
-.itemContent {
-    width: 100%;
-    background-color: #fff;
-    margin-bottom: 20rpx;
-    .itemtop {
-        height: 80rpx;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20rpx;
-        align-items: center;
-        >span{line-height: 80rpx;}
-        image {
-            width: 48rpx;
-            height: 48rpx;
-            border-radius: 50%;
-        }
-    }
-    .itemdetail {
-        background-color: #f5f5f5;
-        padding: 0 20rpx;
-        display: flex; // height: 180rpx;
-        line-height: 34rpx;
-        >view {
-            height: 150rpx;
-            padding: 25rpx 0;
-            &:first-child {
-                width: 153rpx;
-                height: 153rpx;
-            }
-        }
-        text {
-            display: inline-block;
-        }
-        .itemname {
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            font-size: 26rpx;
-            color: #333;
-            display: -webkit-box;
-        }
-    }
-    .itemprice {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-end;
-    }
-}
-.itempay{
-        height: 80rpx;
-        line-height: 80rpx;
-        font-size: 25rpx;
-        border-bottom: 1rpx solid @bColor;
-        color: #333;
-        text-align: right;
-        padding-right: 20rpx;
-        padding-left:30rpx;
-}
-.collageImage{
-    display: flex;
-    padding-right:20rpx;
-    image{
-        margin-left: -10rpx;
-        border-radius: 50%;
-        width: 50rpx;
-        height: 50rpx;
-    }
-}
-/* 订单列表  订单详情 卡片样式 end*/
-
-
-#homebtn{
+.opr{
     position: fixed;
-    top:30rpx;
-    left:-59rpx;
-    span{
-      display: inline-block
-    }
+    bottom:0rpx;
+    width: 100%;
+    background: #fff;
+    height: 104rpx;
+    border-top: 1rpx solid @bColor;
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+    font-size: 32rpx;
+    z-index: 1;
   }

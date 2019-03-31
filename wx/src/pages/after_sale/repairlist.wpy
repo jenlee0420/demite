@@ -1,0 +1,86 @@
+<style lang="less">
+.afterSale{
+  .tipsword{
+    font-size: 20rpx;
+    color:#a67748;
+    background-color: #ffe0c1;
+    border: 1rpx solid #f2cda9;
+    padding: 13rpx 30rpx; 
+    line-height: 32rpx;
+    margin-bottom: 20rpx;
+    text{
+      color:@theme;
+      text-decoration: underline;
+      float: right;
+      margin-right: 8rpx;
+    }
+  }
+  .panel{
+      border-bottom: 1rpx solid @bColor;
+      height: 111rpx;
+      padding: 0 30rpx;
+      display: flex;
+      align-items: center;
+      color: #333;
+      font-size: 32rpx;
+      // margin: 20rpx 0; 
+      background-color: #fff;
+      &:first-child{
+        border-top: 1rpx solid @bColor;
+      }
+    }
+}
+</style>
+
+<template>
+  <view class="container afterSale">
+    <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" bindtap="navTo({{item}})">
+      <text class="{{item.class}} mr30"></text>
+      <text class="flex-1">{{item.text}}</text>
+      <text class="arrow_icon"></text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class repairlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '维修单查询',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+    showtips:true,
+    panel:[{
+      link:'',
+      text:'远程记录',
+      class:'remote_ico'
+    },{
+      link:'',
+      text:'维修记录',
+      class:'repairHis_ico'
+    }]
+  }
+  methods = {
+    close(){
+      this.showtips = false
+    },
+    navTo(item){
+      if(item.link){
+        wepy.navigateTo({
+          url: link
+        })
+      }
+      if(item.tel){
+        wx.makePhoneCall({
+          phoneNumber: item.tel
+        })
+      }
+    }
+  }
+  onLoad() {
+  }
+}
+</script>

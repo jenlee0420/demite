@@ -55,13 +55,14 @@ import wepy from 'wepy'
 import Mixin from '@/mixins/global'
 export default class home extends wepy.page {
   config = {
+    navigationBarTitleText: '个人中心',
   }
   components = {}
   mixins = [Mixin]
   data = {
     headPic:'https://user-gold-cdn.xitu.io/2018/7/31/164eeff38a480f5c?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
     panel:[{
-      link:'',
+      link:'/pages/mycenter/equipment',
       text:'设备管理',
       class:'mycenter1'
     },{

@@ -1,0 +1,58 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="container">
+    
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+// import pinyin_dict_firstletter from '@/mixins/pinyin_dict_firstletter'
+// import pinyinUtil from '@/mixins/pinyinUtil'
+export default class department extends wepy.page {
+  config = {
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+      list:[{name:'我'},{name:'基夺'},{name:'大风歌'}],
+      output:[]
+  }
+  methods = {
+      Letters:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
+  }
+  onLoad() {
+    //   this.output = this.pySort(list);
+      console.log(this.output)
+  }
+//   pySort(arr){
+//         var $this = this;
+//         var letters = "ABCDEFGHJKLMNOPQRSTWXYZ".split('');
+//         var result = [];
+//         var curr;
+//         for(var i=0;i<letters.length;i++){
+//             curr = {letter: letters[i], data:[]};
+//                 for(var j =0;j<arr.length;j++){
+//                 	var firstLetter = pinyinUtil.getFirstLetter(arr[j].name)
+//                     var initial = firstLetter.charAt(0);//截取第一个字符
+//                     if(initial==letters[i]||initial==letters[i].toLowerCase()){
+//                         curr.data.push({
+//                         	name:arr[j].name,
+//                         	// Image:arr[j].Image,
+//                         	// MonitorFlag:arr[j].MonitorFlag,
+//                         	// Student_ID:arr[j].Student_ID
+//                         });
+//                     }
+//                 }
+//             if(curr.data.length) {
+//                 result.push(curr);
+//             }
+//         }
+//         return result;
+// }
+}
+</script>

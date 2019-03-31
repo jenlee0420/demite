@@ -1,0 +1,87 @@
+<style lang="less">
+.afterSale{
+  .tipsword{
+    font-size: 20rpx;
+    color:#a67748;
+    background-color: #ffe0c1;
+    border: 1rpx solid #f2cda9;
+    padding: 13rpx 30rpx; 
+    line-height: 32rpx;
+    margin-bottom: 20rpx;
+    text{
+      color:@theme;
+      text-decoration: underline;
+      float: right;
+      margin-right: 8rpx;
+    }
+  }
+  .panel{
+      border-bottom: 1rpx solid @bColor;
+    //   height: 111rpx;
+      padding:34rpx 30rpx;
+      display: flex;
+      align-items: center;
+      color: #333;
+      font-size: 32rpx;
+      // margin: 20rpx 0; 
+      background-color: #fff;
+      &:first-child{
+        border-top: 1rpx solid @bColor;
+      }
+    }
+}
+</style>
+
+<template>
+  <view class="container afterSale">
+    <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" bindtap="navTo({{item}})">
+        <view class="flex-1 flexCol flex-astart">
+          <text class="fs32">液阻质谱ML200</text>
+          <text class="fs24 ca5a5a5 mt12">申请报修</text>
+          <text class="fs24 ca5a5a5">时间：2019-02-02 19:00:00</text>
+        </view>
+      <text class="arrow_icon"></text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class repairorder extends wepy.page {
+  config = {
+    navigationBarTitleText: '工单查询',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+    showtips:true,
+    panel:[{
+      link:'/pages/mycenter/equipment?type=history',
+      text:'液阻质谱ML200',
+    },{
+      link:'',
+      text:'液阻质谱ML200',
+    }]
+  }
+  methods = {
+    close(){
+      this.showtips = false
+    },
+    navTo(item){
+      if(item.link){
+        wepy.navigateTo({
+          url: link
+        })
+      }
+      if(item.tel){
+        wx.makePhoneCall({
+          phoneNumber: item.tel
+        })
+      }
+    }
+  }
+  onLoad() {
+  }
+}
+</script>

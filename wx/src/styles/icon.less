@@ -1,21 +1,85 @@
 @import 'zanui/icon.scss';
 @import 'zanui/badge.scss';
-@imgbaseUrl:"https://zxlx-web.oss-cn-beijing.aliyuncs.com"; /*样式文件中的图片地址前缀*/
+@imgbaseUrl:"http://118.24.75.118:5004"; /*样式文件中的图片地址前缀*/
 
-.pin_yiman{
-  background-image: url('@{imgbaseUrl}/pin_yiman.png');
+.mycenter1{
+  background-image: url('@{imgbaseUrl}/mycenter1.png');
   background-repeat: no-repeat;
-  background-size: 35rpx;
-  width: 35rpx;
-  height: 35rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block;
+  background-size: 100%;
 }
-.public_icon1{
-  background-image: url('@{imgbaseUrl}/icon1.png');
-  background-repeat: no-repeat;
-  background-size: 200rpx;
-  width: 22rpx;
-  height: 22rpx;
+.mycenter2{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/mycenter2.png');
 }
+.mycenter3{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/mycenter3.png');
+}
+.mycenter4{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/mycenter4.png');
+}
+.mycenter5{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/mycenter5.png');
+}
+.arrow_icon{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/arrow.png');
+  width: 12rpx;
+  height: 23rpx;
+}
+
+.scan_icon{
+  background-image: url('@{imgbaseUrl}/scan_icon.png');
+  background-size: 100%;
+  width: 30rpx;
+  height: 30rpx;
+  display: inline-block;
+}
+.addicon{
+  background-image: url('@{imgbaseUrl}/addicon.png');
+  background-size: 100%;
+  width: 90rpx;
+  height: 90rpx;
+  display: inline-block;
+}
+
+//售后服务图标
+.tel{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/tel_ico.png');
+}
+.service_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/service_ico.png');
+}
+.remoteApply_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/remoteApply_ico.png');
+}
+.warranty_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/warranty_ico.png');
+}
+.repair_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/repair_ico.png');
+}
+.remote_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/remote_ico.png');
+}
+.repairHis_ico{
+  &:extend(.mycenter1);
+  background-image: url('@{imgbaseUrl}/repairHis_ico.png');
+}
+////////////////////////////
+
+
 .jingpin{
     background-image: url('@{imgbaseUrl}/jingpin.png');
     background-repeat: no-repeat;

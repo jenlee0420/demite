@@ -1,0 +1,42 @@
+<style lang="less">
+.applies{
+    font-size: 32rpx;
+    .panel{
+        background-color: #fff;
+        padding:40rpx 40rpx 40rpx 30rpx;
+        border-bottom: 1rpx solid @bColor;
+        
+    }
+}
+</style>
+
+<template>
+  <view class="container applies">
+    <view class="panel">
+        <view>仪器</view>
+    </view>
+    <view class="panel">
+        <view>试剂</view>
+        <view class="mt30">
+            <text>试剂名称，试剂名称，试剂名称，试剂名称</text>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class applies2 extends wepy.page {
+  config = {
+      navigationBarTitleText: '应用详情',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

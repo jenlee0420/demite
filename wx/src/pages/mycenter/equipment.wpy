@@ -1,0 +1,82 @@
+<style lang="less">
+  .panel {
+    .image {
+      border: 1rpx solid #efefef;
+      border-radius: 10rpx;
+      width: 137rpx;
+      height: 86rpx;
+      box-sizing: border-box;
+      image {
+        border-radius: 10rpx;
+        object-fit: cover;
+        width: 137rpx;
+        height: 86rpx;
+      }
+    }
+    border-top: 1rpx solid @bColor;
+    border-bottom: 1rpx solid @bColor;
+    height: 166rpx;
+    padding: 40rpx 40rpx 40rpx 30rpx;
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 32rpx;
+    margin: 20rpx 0;
+    background-color: #fff;
+    box-sizing: border-box;
+    font-size : 32rpx;
+    .detail {
+      font-size: 28rpx;
+      line-height: 28rpx;
+      display: flex;
+      align-items: center;
+    }
+  }
+</style>
+
+<template>
+  <view class="container">
+    <view class="panel" @tap="navto">
+      <view class="image">
+        <image src="https://static.hdslb.com/images/akari.jpg" />
+      </view>
+      <view class="flexCol flex-1 flex-astart ml20">
+        <span class="fs32">液阻质谱ML200</span>
+        <span class="fs24 ca5a5a5 mt12">货号：158848898988944</span>
+      </view>
+      <view class="detail maincolor">
+        <text>详情</text>
+        <text class="ml15 arrow_icon"></text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  export default class equipment extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的设备',
+    }
+    components = {}
+    mixins = [Mixin]
+    data = {
+      navUrl:'/pages/mycenter/detail'
+    }
+    methods = {
+      navto() {
+        wepy.navigateTo({
+          url: this.navUrl
+        })
+      }
+    }
+    onLoad(opn) {
+      if(opn && opn.type){
+        if(opn.type=='history'){
+          this.navUrl='/pages/after_sale/repairorder'
+        }
+      }
+    }
+  }
+</script>

@@ -116,6 +116,7 @@
         [],
         []
       ],
+      address_id:''
     }
     methods = {
       clearInput(key) {
@@ -168,7 +169,7 @@
     }
     saveContact() {
       var url = "";
-      if (this.edit) {
+      if (this.address_id) {
         url = "api/address/edit"
       } else {
         url = "api/address/add"
@@ -222,7 +223,7 @@
           setTimeout(() => {
             if (this.user_id) {
               wepy.reLaunch({
-                url: '/pages/index'
+                url: '/pages/mycenter/home'
               })
             } else {
               wx.navigateBack();
@@ -234,7 +235,11 @@
         }
       })
     }
-    onLoad() {}
+    onLoad(opr) {
+      if(opr && opr.id){
+        this.address_id = opr.id
+      }
+    }
     PageInit() {}
   }
 </script>

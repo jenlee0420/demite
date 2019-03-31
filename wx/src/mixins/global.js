@@ -2,7 +2,7 @@ import wepy from 'wepy'
 
 export default class Global extends wepy.mixin {
     data = {
-        imgBaseUrl: 'http://118.24.75.118:5004/upload/',
+        imgBaseUrl: 'http://118.24.75.118:5004/',
         baseHeadImg: 'http://zxlx-web.oss-cn-beijing.aliyuncs.com/head.png',
         baseServerImg: 'https://zxlx-web.oss-cn-beijing.aliyuncs.com/tmpimg.png',
         reg: {
@@ -86,8 +86,8 @@ export default class Global extends wepy.mixin {
             title: data.title ? data.title : '',
             content: data.content ? data.content : '',
             showCancel: data.showCancel == undefined ? true : data.showCancel,
-            confirmColor: data.confirmColor ? data.confirmColor : '#d90000',
-            cancelColor: data.cancelColor ? data.cancelColor : '#a3a3a3',
+            confirmColor: data.confirmColor ? data.confirmColor : '#519ecc',
+            cancelColor: data.cancelColor ? data.cancelColor : '#a5a5a5',
             confirmText: data.confirmText ? data.confirmText : '确定',
             cancelText: data.cancelText ? data.cancelText : '取消',
         }).then(res => {

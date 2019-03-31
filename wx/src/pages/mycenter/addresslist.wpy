@@ -59,7 +59,7 @@
         </div>
       </li>
     </ul>
-    <div class="addNew btnfull">+ 新增地址</div>
+    <div class="addNew btnfull" bindtap="navto">+ 新增地址</div>
   </view>
 </template>
 
@@ -74,7 +74,11 @@ export default class addresslist extends wepy.page {
   mixins = [Mixin]
   data = {
   }
-  methods = {}
+  methods = {
+    navto(id){
+      wepy.navigateTo({url:'/pages/mycenter/address?id='+id})
+    }
+  }
   onLoad() {
   }
 }

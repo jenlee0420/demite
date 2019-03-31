@@ -44,11 +44,14 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var formdata ={
-                            name:this.ruleForm.username,
-                            pwd:this.ruleForm.password
-                        }
-                        this.$axios.post('/user/login', formdata ).then((res) => {
+                        this.$axios({
+                            method:'post',
+                            url:'/login',
+                            data:{
+                                name:this.ruleForm.username,
+                                pwd:this.ruleForm.password
+                            }
+                        }).then((res) => {
                             // this.$refs.md.$img2Url(pos, url);
                             // console.log(data)
                             if(res.status.haserror){

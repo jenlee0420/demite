@@ -1,0 +1,120 @@
+<style lang="less">
+  .Repair {
+    .panel {
+      border-top: 1rpx solid @bColor;
+      border-bottom: 1rpx solid @bColor;
+      color: #333;
+      font-size: 32rpx;
+      margin-bottom: 20rpx;
+      background-color: #fff;
+      min-height: 110rpx;
+      &:first-child {
+        margin-top: 20rpx;
+      }
+      .item {
+        padding: 30rpx;
+        display: flex;
+        
+        border-bottom: 1rpx solid @bColor;
+        align-items: center;
+        picker{flex:1}
+        text {
+          font-size: 28rpx;
+          line-height: 28rpx;
+          color: @theme;
+          margin-top: -2rpx;
+        }
+        &:first-child {
+          border-top: 0
+        }
+        &:last-child {
+          border-bottom: 0
+        }
+      }
+    }
+  }
+  .p_0_30{
+    padding: 0 30rpx;
+  }
+  .p30{
+    padding:40rpx 30rpx;
+  }
+  .opr{
+    justify-content: center;
+    color: @theme;
+  }
+</style>
+
+<template>
+  <view class="container Repair">
+    <view class="panel">
+      <view class="item">
+       <picker bindchange="bindPickerChange" class="flex-1" range-key="name" range="{{array}}">
+        <view class="picker">
+          <input type="text" value="{{thisver}}" disabled placeholder="请选择预约时间" />
+        </view>
+      </picker>
+        <text class="arrow_icon"></text>
+      </view>
+    </view>
+      <view class="panel">
+      <view class="item">
+        <textarea name="" id="" cols="30" rows="10" placeholder="请输入故障描述"></textarea>
+      </view>
+      </view>
+      <view class="panel">
+      <view class="item">
+        <textarea name="" id="" cols="30" rows="10" placeholder="请输入自主处理描述"></textarea>
+      </view>
+      </view>
+    <view class="panel p30">
+      <view>附加信息</view>
+      <view class="mt20">
+        <text class="addicon mr20"></text><text class="addicon mr20"></text>
+      </view>
+    </view>
+    <view class="panel">
+      <view class="item">
+        <input type="text" placeholder="请输入联系人姓名" />
+      </view>
+      <view class="item">
+        <input type="text" placeholder="请输入联系人电话" />
+      </view>
+    </view>
+    <view class="space"></view>
+    <view class="opr">
+      提交
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  export default class remoteApply extends wepy.page {
+    config = {
+      navigationBarTitleText: '远程申请',
+    }
+    components = {}
+    mixins = [Mixin]
+    data = {
+      array:[{id:0,name:'上午'},{id:1,name:'下午'}],
+      thisver:''
+    }
+    methods = {
+      bindPickerChange(e){
+        if(e.detail){
+          this.thisver='预约时间为：'+this.array[e.detail.value].name
+        }
+      },
+      scanCode(){
+        wepy.scanCode({
+          success(res) {
+            console.log(res)
+          }
+        })
+      }
+    }
+    onLoad() {}
+  }
+</script>

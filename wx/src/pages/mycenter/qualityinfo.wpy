@@ -1,0 +1,32 @@
+<style lang="less">
+page{
+    background-color: #fff;
+}
+.container{
+    padding: 30rpx;
+    font-size: 32rpx;
+}
+</style>
+
+<template>
+  <view class="container">
+    保修声明内容
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class qualityinfo extends wepy.page {
+  config = {
+      navigationBarTitleText: '保修声明',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

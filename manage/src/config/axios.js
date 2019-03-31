@@ -12,8 +12,12 @@ axios.interceptors.request.use(function (request) {
     return Promise.reject(error)
 });
 axios.interceptors.response.use(function (response) {
-    if (response.statusCode === 200) {
-
+    if (response.status === 200) {
+        if(response.data.status.errorshowdesc == '未登录'){
+            // this.$route.push('/');
+            console.log('ererere')
+            localStorage.setItem('ms_username','');
+        }   
     }
     if (process.env.NODE_ENV === 'development' && response.data.status.haserror) {
         // alert(response.data.status.errordesc)

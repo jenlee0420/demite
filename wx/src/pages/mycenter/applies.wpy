@@ -1,0 +1,59 @@
+<style lang="less">
+.applies{
+    font-size: 32rpx;
+    .panel{
+        background-color: #fff;
+        padding:40rpx 40rpx 40rpx 30rpx;
+        border-bottom: 1rpx solid @bColor;
+        text{
+            color:@theme;
+            margin-bottom: 14rpx;
+            margin-right: 30rpx;
+            display: inline-block;
+            &:active{
+                color:#91cef2;
+            }
+        }
+    }
+}
+</style>
+
+<template>
+  <view class="container applies">
+    <view class="panel">
+        <view>检测药物</view>
+    </view>
+    <view class="panel">
+        <view>抗精神类药物</view>
+        <view class="mt30">
+            <text @tap="navto">布苯丙胺</text>
+            <text>布苯丙胺</text>
+            <text>布苯丙胺</text>
+            <text>布苯丙胺</text>
+            <text>布苯丙胺</text>
+            <text>布苯丙胺</text>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class applies extends wepy.page {
+  config = {
+      navigationBarTitleText: '应用详情',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {
+      navto(url){
+        wx.navigateTo({url:'/pages/mycenter/applies2'})
+      },
+  }
+  onLoad() {
+  }
+}
+</script>

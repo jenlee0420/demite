@@ -1,0 +1,98 @@
+<style lang="less">
+.myhome{
+  .home_top{
+    padding:52rpx 0;
+    box-sizing:border-box;
+    width: 100%;
+    border-bottom: 1rpx solid @bColor;
+    color: #a5a5a5;
+    font-size: 24rpx;
+    background-color: #fff;
+    text{
+      margin-bottom: 16rpx;
+      &:last-child{margin-bottom: 0;}
+    }
+    .head{
+      display: inline-block;
+      width: 140rpx;
+      height: 140rpx;
+      background-size: cover;
+      border-radius: 50%;
+    }
+  }
+  .panel{
+    border-top: 1rpx solid @bColor;
+    border-bottom: 1rpx solid @bColor;
+    height: 111rpx;
+    padding: 0 30rpx;
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 32rpx;
+    margin: 20rpx 0; 
+    background-color: #fff;
+  }
+}
+</style>
+
+<template>
+  <view class="container myhome">
+    <view class="home_top flexCol">
+      <text class="head" style="{{'background-image:url('+headPic+')'}}"></text>
+      <text class="maincolor fs32">Michelle</text>
+      <text>ID:123456789</text>
+    </view>
+    <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" @tap="navTo({{item.link}})">
+      <text class="{{item.class}} mr30"></text>
+      <text class="flex-1">{{item.text}}</text>
+      <text class="arrow_icon"></text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class home extends wepy.page {
+  config = {
+    navigationBarTitleText: '个人中心',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+    headPic:'https://user-gold-cdn.xitu.io/2018/7/31/164eeff38a480f5c?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1',
+    panel:[{
+      link:'/pages/mycenter/equipment',
+      text:'设备管理',
+      class:'mycenter1'
+    },{
+      link:'',
+      text:'工单查询',
+      class:'mycenter2'
+    },{
+      link:'',
+      text:'订单管理',
+      class:'mycenter3'
+    },{
+      link:'/pages/mycenter/addresslist',
+      text:'收货地址管理',
+      class:'mycenter4'
+    },{
+      link:'',
+      text:'售后联系',
+      class:'mycenter5'
+    }]
+  }
+  methods = {
+    navTo(link){
+      if(link){
+        wepy.navigateTo({
+          url: link
+        })
+      }
+    }
+  }
+  onLoad() {
+  }
+}
+</script>

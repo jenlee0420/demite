@@ -42,7 +42,7 @@
       <text class="maincolor fs32">Michelle</text>
       <text>ID:123456789</text>
     </view>
-    <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" @tap="navTo({{item.link}})">
+    <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" bindtap="navTo({{item.link}})">
       <text class="{{item.class}} mr30"></text>
       <text class="flex-1">{{item.text}}</text>
       <text class="arrow_icon"></text>
@@ -66,19 +66,19 @@ export default class home extends wepy.page {
       text:'设备管理',
       class:'mycenter1'
     },{
-      link:'',
-      text:'工单查询',
+      link:'/pages/after_sale/repairlist',
+      text:'维修查询',
       class:'mycenter2'
     },{
       link:'',
-      text:'订单管理',
+      text:'订货查询',
       class:'mycenter3'
     },{
-      link:'/pages/mycenter/addresslist',
-      text:'收货地址管理',
+      link:'',
+      text:'客户信息',
       class:'mycenter4'
     },{
-      link:'',
+      link:'/pages/after_sale/afterSale',
       text:'售后联系',
       class:'mycenter5'
     }]

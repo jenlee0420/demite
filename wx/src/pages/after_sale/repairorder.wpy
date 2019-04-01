@@ -57,10 +57,10 @@ export default class repairorder extends wepy.page {
   data = {
     showtips:true,
     panel:[{
-      link:'/pages/mycenter/equipment?type=history',
+      link:'/pages/after_sale/repairDetail',
       text:'液阻质谱ML200',
     },{
-      link:'',
+      link:'/pages/after_sale/repairDetail',
       text:'液阻质谱ML200',
     }]
   }
@@ -71,12 +71,7 @@ export default class repairorder extends wepy.page {
     navTo(item){
       if(item.link){
         wepy.navigateTo({
-          url: link
-        })
-      }
-      if(item.tel){
-        wx.makePhoneCall({
-          phoneNumber: item.tel
+          url: item.link
         })
       }
     }

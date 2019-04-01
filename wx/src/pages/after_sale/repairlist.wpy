@@ -54,11 +54,11 @@ export default class repairlist extends wepy.page {
   data = {
     showtips:true,
     panel:[{
-      link:'',
+      link:'/pages/after_sale/equipment',
       text:'远程记录',
       class:'remote_ico'
     },{
-      link:'',
+      link:'/pages/after_sale/equipment',
       text:'维修记录',
       class:'repairHis_ico'
     }]
@@ -70,12 +70,7 @@ export default class repairlist extends wepy.page {
     navTo(item){
       if(item.link){
         wepy.navigateTo({
-          url: link
-        })
-      }
-      if(item.tel){
-        wx.makePhoneCall({
-          phoneNumber: item.tel
+          url: item.link
         })
       }
     }

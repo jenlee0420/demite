@@ -76,7 +76,7 @@
         text: '远程申请',
         class: 'remoteApply_ico'
       }, {
-        link: '/pages/mycenter/addresslist',
+        link: '/pages/mycenter/repair',
         text: '在线报修',
         class: 'warranty_ico'
       }, {

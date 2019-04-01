@@ -26,6 +26,7 @@ page {
         'pages/mycenter/home',
         'pages/mycenter/logistics',
         'pages/after_sale/repairDetail',
+        'pages/after_sale/equipment',
         'pages/after_sale/repairorder',
         'pages/after_sale/afterSale',
         'pages/after_sale/repairlist',

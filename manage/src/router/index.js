@@ -34,6 +34,16 @@ const routes=[
                     meta: { title: '药品分类列表' }
             },
             {
+                path: '/equipment',
+                    component: resolve => require(['../components/page/equipment.vue'], resolve),
+                    meta: { title: '设备列表' }
+            },
+             {
+                path: '/equipmentAdd',
+                component: resolve => require(['../components/page/equipmentAdd.vue'], resolve),
+                meta: { title: '新增设备' }
+            },
+            {
                 path: '/adminlist',
                 component: resolve => require(['../components/page/adminlist.vue'], resolve),
                 meta: { title: '管理员列表' }
@@ -46,6 +56,11 @@ const routes=[
             {
                 path: '/tabs',
                 component: resolve => require(['../components/page/Tabs.vue'], resolve),
+                meta: { title: 'tab选项卡' }
+            },
+            {
+                path: '/BaseTable',
+                component: resolve => require(['../components/page/BaseTable.vue'], resolve),
                 meta: { title: 'tab选项卡' }
             },
             {
@@ -121,7 +136,10 @@ var router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(to)
+    // console.log(to)
+    if(to.meta && to.meta.title){
+        document.title = to.meta.title
+    }
     if(!localStorage.getItem('ms_username') && to.path!='/login'){
         next({
             path:'/login',

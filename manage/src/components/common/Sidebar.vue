@@ -54,12 +54,22 @@
                         index: 'medicine',
                         title: '药品列表'
                     },
-                    /* {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
-                        title: '设备列表'
-                    },
                     {
+                        icon: 'el-icon-lx-calendar',
+                        index: '3',
+                        title: '设备管理',
+                        subs: [
+                            {
+                                index: 'equipment',
+                                title: '设备列表'
+                            },
+                            {
+                                index:'equipmentAdd',
+                                title:'新增设备'
+                            }
+                        ]
+                    },
+                    /*{
                         icon: 'el-icon-lx-cascades',
                         index: 'adminlist',
                         title: '维修组列表'

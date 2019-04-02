@@ -44,7 +44,7 @@
             return {
                 url: './vuetable.json',
                 tableData: [],
-                cur_page: 1,
+                cur_page: 0,
                 limit:10,
                 multipleSelection: [],
                 select_cate: '',
@@ -108,37 +108,48 @@
                 const item = this.tableData[index];
                 this.form = {
                     name: item.name,
-                    date: item.date,
-                    address: item.address
+                    id: item.id
                 }
                 this.editVisible = true;
             },
             handleDelete(index, row) {
                 this.idx = index;
-                this.delVisible = true;
-            },
-            // 保存编辑
-            saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                const item = this.tableData[index];
+                this.idx = item.id;
+                this.$confirm('确认删除该条信息？').then((res)=>{
+                    this.deleteRow()
+                }).catch(_ => {});
             },
             // 确定删除
             deleteRow(){
-                this.tableData.splice(this.idx, 1);
-                this.$message.success('删除成功');
-                this.delVisible = false;
+                this.$loading()
+                this.$axios.post('druclass/del', {classid:this.idx}).then((res) => {
+                    this.$loading().close()
+                    this.idx = -1
+                    if(res.status.haserror){
+                        this.$message.error(res.status.errorshowdesc)
+                    }else{
+                        this.$message({message:'操作成功',type: 'success'})
+                        this.getData()
+                    }
+                })
             },
 
             //新增分类
             add(){
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$loading({target:'.el-dialog'})
-                        this.$axios.post('/druclass/add', {
+                        this.$loading()
+                        let url = '/druclass/add'
+                        if(this.idx != -1){
+                            url = '/druclass/update'
+                        }
+                        this.$axios.post(url, {
                             name: this.form.name,
+                            classid: this.form.id
                         }).then((res) => {
                             this.$loading().close()
+                            this.idx = -1
                             // console.log(this.$loading)
                             if(res.status.haserror){
                                 this.$message.error(res.status.errorshowdesc)

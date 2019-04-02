@@ -10,19 +10,19 @@
                 <el-input v-model="select_word" placeholder="输入药品名称" class="handle-input mr10"></el-input>
                 <label class="">分类筛选</label>
                 <el-select v-model="search_cate" placeholder="请选择" class="mr10">
+                        <el-option label="全部" value = "" ></el-option>
                         <el-option
                         v-for="item in category"
                         :key="item.id"
                         :label="item.name"
                         :value="item.id"
-
                         >
                         </el-option>
                     </el-select>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 <el-button type="primary" plain icon="search" @click="editVisible = true">新增药品</el-button>
             </div>
-            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column prop="id" label="编号">
                 </el-table-column>
                 <el-table-column prop="name" label="药品名称" >
@@ -45,7 +45,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="totalcount">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="limit" :total="totalcount">
                 </el-pagination>
             </div>
         </div>
@@ -54,7 +54,7 @@
         <el-dialog title="新增药品" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                 <el-form-item prop="name" label="药品名称">
-                    <el-input v-model="form.name" placeholder="用户名"></el-input>
+                    <el-input v-model="form.name" placeholder="药品名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="category" label="所属分类">
                     <el-select v-model="form.category" placeholder="请选择">
@@ -95,9 +95,10 @@
         name: 'medicine',
         data() {
             return {
+                loading:false,
                 tableData: [],
-                cur_page: 1,
-                limit:10,
+                cur_page: 0,
+                limit:5,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -154,17 +155,19 @@
         methods: {
             // 分页导航
             handleCurrentChange(val) {
-                this.cur_page = val;
+                this.cur_page = val - 1;
                 this.getData();
             },
             getData() {
+                this.loading = true
                 this.$axios.post('/drug/list', {
                     page: this.cur_page,
                     key: this.select_word,
                     limit: this.limit,
-                    offest: this.limit * this.cur_page,
-                    select_cate:''
+                    offset: this.limit * this.cur_page,
+                    classid:this.search_cate == '' ? 0 : this.search_cate
                 }).then((res) => {
+                    this.loading=false
                     if(res.status.haserror){
                         this.$message.error(res.status.errorshowdesc)
                     }else{
@@ -184,7 +187,7 @@
             },
             search() {
                 this.is_search = true;
-                this.cur_page  = 1
+                this.cur_page  = 0
                 this.getData()
             },
             formatter(row, column) {
@@ -196,7 +199,6 @@
             handleEdit(index, row) {
                 this.idx = index;
                 const item = this.tableData[index];
-                console.log(item)
                 this.form = {
                     id:item.id,
                     name: item.name,
@@ -209,8 +211,24 @@
                 this.editVisible = true;
             },
             handleDelete(index, row) {
-                this.idx = index;
-                this.delVisible = true;
+                const item = this.tableData[index];
+                this.idx = item.id;
+                this.$confirm('确认删除该条信息？').then((res)=>{
+                    this.delItem()
+                }).catch(_ => {});
+            },
+            delItem(){
+                this.$loading()
+                this.$axios.post('drug/del', {id:this.idx}).then((res) => {
+                    this.$loading().close()
+                    this.idx = -1
+                    if(res.status.haserror){
+                        this.$message.error(res.status.errorshowdesc)
+                    }else{
+                        this.$message({message:'操作成功',type: 'success'})
+                        this.getData()
+                    }
+                })
             },
             //新增药品
             addUser(){

@@ -18,7 +18,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="totalcount">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="limit" :total="totalcount">
                 </el-pagination>
             </div>
         </div>
@@ -49,7 +49,7 @@
             return {
                 url: './vuetable.json',
                 tableData: [],
-                cur_page: 1,
+                cur_page: 0,
                 limit:10,
                 multipleSelection: [],
                 select_cate: '',
@@ -102,7 +102,7 @@
         methods: {
             // 分页导航
             handleCurrentChange(val) {
-                this.cur_page = val;
+                this.cur_page = val - 1;
                 this.getData();
             },
             getData() {
@@ -110,7 +110,7 @@
                     page: this.cur_page,
                     key: this.select_word,
                     limit: this.limit,
-                    offest: this.limit * this.cur_page,
+                    offset: this.limit * this.cur_page,
                 }).then((res) => {
                     if(res.status.haserror){
                         this.$message.error(res.status.errorshowdesc)
@@ -122,7 +122,7 @@
             },
             search() {
                 this.is_search = true;
-                this.cur_page  = 1
+                this.cur_page  = 0
                 this.getData()
             },
             formatter(row, column) {

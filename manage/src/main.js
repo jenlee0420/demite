@@ -9,12 +9,23 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
+import global from './tool/global'
+import filters from './tool/filters'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
 });
 Vue.prototype.$axios = axios;
+
+/*全局过滤器*/
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+});
+/*全局变量，方法*/
+Object.keys(global).forEach(key => {
+    Vue.prototype[key] = global[key];
+});
 
 
 //使用钩子函数对路由进行权限跳转

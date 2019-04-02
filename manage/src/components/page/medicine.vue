@@ -8,7 +8,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="输入药品名称" class="handle-input mr10"></el-input>
-                分类筛选
+                <label class="">分类筛选</label>
                 <el-select v-model="search_cate" placeholder="请选择" class="mr10">
                         <el-option
                         v-for="item in category"

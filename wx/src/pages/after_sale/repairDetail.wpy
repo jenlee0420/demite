@@ -68,29 +68,29 @@
     <view class="container repairDetail">
         <view class="panel">
             <view class="image mr30">
-                <image src="https://static.hdslb.com/images/akari.jpg" />
+                <image src="{{goodpic}}" />
             </view>
             <view class="flex-column flex-1">
-                <text class="fs32">设备机型</text>
-                <view class="fs24 ca5a5a5">设备型号：FLC18001</view>
+                <text class="fs32">{{goodname}}</text>
+                <view class="fs24 ca5a5a5">货号：{{uuid}}</view>
             </view>
             <text class="btnline">确认完成</text>
         </view>
         <view class="panel flex-column flex-astart">
-            <text>医院名称：宝安中医院</text>
-            <text>科室：检验科</text>
-            <text>联系人：李先生</text>
-            <text>电话：13692621245</text>
+            <text>医院名称：{{hospital}}</text>
+            <text>科室：{{office}}</text>
+            <text>联系人：{{name}}</text>
+            <text>电话：{{phone}}</text>
         </view>
         <view class="panel flex-column flex-astart">
-            <view class="flexRow"><text class="nowrap">故障类型：</text><text>机器运作不了</text></view>
+            <view class="flexRow"><text class="nowrap">故障类型：</text><text>{{faultType}}</text></view>
             <view class="flexRow flex-astart">
                 <text class="nowrap">故障描述：</text>
-                <text>机器运作不了，机器运作不了机器运作不了，机器运作不了</text>
+                <text>{{faultDesc}}</text>
             </view>
         </view>
         <view class="panel flex-column flex-astart">
-            <view>工程师维修反馈</view>
+            <view>用户图片</view>
             <view class="mt20">
                 <text class="addicon mr20"></text><text class="addicon mr20"></text>
             </view>
@@ -126,8 +126,50 @@
         }
         components = {}
         mixins = [Mixin]
-        data = {}
+        data = {
+            goodname:"",
+            uuid:"",
+            model:"",
+            hospital:"",
+            office:"",
+            phone:"",
+            name:"",
+            faultDesc:"",
+            faultType:"",
+            fileid1:"",
+            fileid2:"",
+            goodpic:"",
+        }
         methods = {}
-        onLoad() {}
+        onLoad(opn) {
+            if (opn && opn.id) {
+                wepy.request({
+                    method: 'post',
+                    url: '/api/wxuser/getrepairapply',
+                    data: {
+                        id: parseInt(opn.id) ,
+                    }
+                    }).then(res => {
+                    if (res.status.haserror == false) {
+                        this.goodname=res.data.goodname
+                        this.gooduuid=res.data.gooduuid
+                        this.name=res.data.name
+                        this.phone=res.data.phone
+                        this.hospital=res.data.hospital
+                        this.office=res.data.office
+                        this.faultDesc=res.data.faultdesc
+                        this.faultType=res.data.faulttype
+                        this.goodpic="http://127.0.0.1:8080/file/"+res.data.goodpic
+
+                        this.$apply()
+                    } else {
+                        wepy.showModal({
+                        content: res.status.errorshowdesc,
+                        showCancel: false
+                        })
+                    }
+                })
+            }
+        }
     }
 </script>

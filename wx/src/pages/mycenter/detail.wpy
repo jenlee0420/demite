@@ -10,28 +10,28 @@
       &:first-child {
         margin-top: 0rpx;
       }
-      image{
+      image {
         height: 186rpx;
-        width: auto;
+        width: 100%;
       }
-      .item{
-        padding:30rpx;
+      .item {
+        padding: 30rpx;
         display: flex;
         border-bottom: 1rpx solid @bColor;
         align-items: center;
-        text:first-child{
-          flex:1
+        text:first-child {
+          flex: 1
         }
-        text:nth-child(2){
+        text:nth-child(2) {
           font-size: 28rpx;
           line-height: 28rpx;
-          color:@theme;
-          margin-top:-2rpx;
+          color: @theme;
+          margin-top: -2rpx;
         }
-        &:first-child{
+        &:first-child {
           border-top: 0
         }
-        &:last-child{
+        &:last-child {
           border-bottom: 0
         }
       }
@@ -46,23 +46,22 @@
     .p40 {
       padding: 40rpx 40rpx 40rpx 30rpx;
     }
-    .opr{
-      
-      .btnline{
+    .opr {
+      .btnline {
         width: 188rpx;
       }
     }
-    .message{
+    .message {
       height: 210rpx;
       display: flex;
       justify-content: center;
-      align-items:  center;
+      align-items: center;
       border-bottom: 0;
       margin-bottom: 0;
-      .bluebox{
+      .bluebox {
         width: 220rpx;
         height: 60rpx;
-        color:@theme;
+        color: @theme;
         font-size: 32rpx;
         background: #e8e8e8;
         text-align: center;
@@ -76,33 +75,33 @@
 <template>
   <view class="container detail">
     <view class="image panel">
-      <image src="https://static.hdslb.com/images/akari.jpg" />
+      <image src="{{ImgBefor}}{{info.goodpicdata}}" mode="aspectFill" />
       <view class="p40">
         <view class="fs32">
-          液阻质谱ML200
+          {{info.name}}
         </view>
-        <view class="mt20 fs24 ca5a5a5">基于最先进的表面多孔增强核心技术结合固定想键喝；具有多种 可选的固定想且几乎兼容所有仪器。</view>
+        <view class="mt20 fs24 ca5a5a5">{{info.goodsdecs}}</view>
       </view>
     </view>
-    <view class="message panel"><view class="bluebox">申请中...</view></view>
+    <view class="message panel" wx:if="{{islock}}">
+      <view class="bluebox" @tap="applyView">{{applystatus[info.lockstatus]}}</view>
+    </view>
     <view class="panel info">
-      <text>产品型号：5258455</text>
-      <text>序列号：584156453416</text>
-      <text>检测器型号：755725435</text>
-      <text>自动进样器型号：58575575</text>
-      <text>控制器型号：45325</text>
-      <text>自动耦合仪型号：555454354</text>
-      <text>工作站版本：V1.0</text>
-      <text>装机时间：2018年01月01日 </text>
+      <text wx:for="{{attrtexthide}}" wx:if="{{!islock}}">
+        <block wx:if="{{item.key}}">{{item.key}}：{{item.value}}</block>
+      </text>
+      <text wx:for="{{attrtext}}">
+        <block wx:if="{{item.key}}">{{item.key}}：{{item.value}}</block>
+      </text>
     </view>
     <view class="panel">
-      <view class="item" @tap="navto('applies')">
+      <view class="item" bindtap="navto({{'applies?uid='+gooduuid}})">
         <text>应用信息</text>
         <text>详情</text>
         <text class="ml15 arrow_icon"></text>
       </view>
       <view class="item" @tap="navto('quality')">
-        <text>质保状态:质保期内</text>
+        <text>质保状态:{{guarantee}}</text>
         <text>详情</text>
         <text class="ml15 arrow_icon"></text>
       </view>
@@ -127,22 +126,114 @@
     }
     components = {}
     mixins = [Mixin]
-    data = {}
-    methods = {
-      navto(url){
-        wx.navigateTo({url:'/pages/mycenter/'+url})
+    data = {
+      gooduuid: '',
+      info: {},
+      attrtext: [],
+      attrtexthide: [],
+      applystatus: {
+        'lock': '申请查看',
+        'applying': '申请中...',
+        'unlock': '',
+        'refuse': '已拒绝',
       },
-      renewal(){
+      guarantee:"质保期内",
+      islock: true
+    }
+    methods = {
+      navto(url) {
+        if(url=="quality"){
+          url=url+"?createtime="+this.info.createtime+"&guaranteetime="+this.info.guaranteetime;
+        }
+
+        if(url=="repair"){
+          url=url+"?uuid="+this.gooduuid;
+        }
+        wx.navigateTo({
+          url: '/pages/mycenter/' + url
+        })
+      },
+      renewal() {
         this.showAlert({
-          content:'是否续保',
-          confirmText:'是',
-          cancelText:'否',
-          confirm:()=>{
-            console.log('是')
+          content: '是否续保',
+          confirmText: '是',
+          cancelText: '否',
+          confirm: () => {
+            wepy.request({
+              method: 'post',
+              url: '/api/wxuser/delaygauaranteeapply',
+              data: {
+                gooduuid: this.gooduuid
+              }
+            }).then(res => {
+            if (res.status.haserror == false) {
+                this.showSuccess('申请已提交')
+                this.$apply()
+              } else {
+                wepy.showModal({
+                  content: res.status.errorshowdesc,
+                  showCancel: false
+                })
+              }
+            })
           }
         })
+      },
+      applyView() {
+        if (this.info.lockstatus == 'lock') {
+          wepy.request({
+            method: 'post',
+            url: '/api/wxuser/unlockapply',
+            data: {
+              gooduuid: this.gooduuid
+            }
+          }).then(res => {
+            if (res.status.haserror == false) {
+              this.showSuccess('申请已提交')
+              this.info.lockstatus = 'applying'
+              this.$apply()
+            } else {
+              wepy.showModal({
+                content: res.status.errorshowdesc,
+                showCancel: false
+              })
+            }
+          })
+        }
       }
     }
-    onLoad() {}
+    getinfo() {
+      wepy.request({
+        method: 'post',
+        url: '/api/wxuser/getgoods',
+        data: {
+          gooduuid: this.gooduuid
+        }
+      }).then(res => {
+        if (res.status.haserror == false) {
+          this.info = res
+          this.attrtext = this.info.goodsteplet ? JSON.parse(this.info.goodsteplet) : []
+          this.attrtexthide = this.info.goodstempletlockcontext ? JSON.parse(this.info.goodstempletlockcontext) : []
+          this.islock = this.info.lockstatus == 'unlock' ? false : true
+          var timestamp = Date.parse(new Date());  
+          timestamp = timestamp / 1000;
+          if(timestamp>res.guaranteetime){
+            this.guarantee="已过质保"
+          }
+          this.$apply()
+        } else {
+          wepy.showModal({
+            content: res.status.errorshowdesc,
+            showCancel: false
+          })
+        }
+      })
+    }
+    onLoad(opn) {
+      if (opn && opn.uid) {
+        this.gooduuid = opn.uid
+        this.getinfo()
+      }
+    }
   }
 </script>

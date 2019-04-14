@@ -23,21 +23,24 @@ page {
     config = {
       pages: [
         // 'pages/icon',
+        'pages/after_sale/equipment',
+        'pages/mycenter/equipment',
+        'pages/mycenter/repair', 
+        'pages/after_sale/repairlist',
+        'pages/mycenter/bindGoods',
         'pages/mycenter/home',
         'pages/mycenter/logistics',
         'pages/after_sale/repairDetail',
-        'pages/after_sale/equipment',
         'pages/after_sale/repairorder',
         'pages/after_sale/afterSale',
-        'pages/after_sale/repairlist',
         'pages/after_sale/remoteApply',
         'pages/mycenter/quality',
         'pages/mycenter/qualityinfo',
         'pages/mycenter/detail',
         'pages/mycenter/applies',
         'pages/mycenter/applies2',
-        'pages/mycenter/repair', 
-        'pages/mycenter/equipment',
+        
+        
         'pages/mycenter/address',
         'pages/mycenter/addresslist',
         // 'pages/express',
@@ -106,8 +109,8 @@ page {
       /* 启动先调用微信登录 => 服务器登录 */
       this.wxLogin().then(code => {
         /* 用户登录 */
-        console.log('code',code)
-        // this.userlogin(code, options)
+        // console.log('code',code)
+        this.userlogin(code, options)
       })
     }
     wxLogin() {
@@ -131,30 +134,29 @@ page {
       if (debug.debug == 'test' || this.globalData.mode == 'dev') {
         // data.is_bug = 'test'
       }
+      this.oncallback = true
       wepy.request({
-        url: 'api/user/login',
+        url: '/api/login',
         method: 'POST',
         noToken: true,
         data: data
       }).then(res => {
-        if (res.code == '1') {
-          wepy.setStorageSync('userid', res.data.user_id)
-          this.updateLoginInfo(res.data)
+        if (res.status.haserror == false) {
+          var pages = getCurrentPages() // get all current pages
+          var currentPage = pages[pages.length - 1]  // Get current loading page
+          console.log(currentPage)
+          if (typeof (currentPage.callback) === 'function') {
+              currentPage.callback(); // Callback
+          }
+          this.oncallback = false; // Callback called
+          
         } else {
           wepy.showModal({
-            content: res.msg,
+            content: res.status.errorshowdesc,
             showCancel: false
           })
         }
       })
     }
-    updateLoginInfo(data) {
-            let userData = JSON.stringify(data)
-            wepy.setStorageSync('userData', userData)
-            wepy.setStorageSync('token', data.token)
-            if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(data)
-            }
-        }
   }
 </script>

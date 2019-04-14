@@ -18,7 +18,8 @@ export default class Global extends wepy.mixin {
             price: /^\d+(\.{0,1}\d+){0,1}$/ // 只能是正数
         },
         loadloop: true,
-        page_size: 10
+        page_size: 10,
+        ImgBefor:'data:image/jpeg;base64,'
     }
     methods = {
         scrollTop() {
@@ -45,7 +46,10 @@ export default class Global extends wepy.mixin {
         res = res.join('，');
         return res;
     }
-
+    getFullImg(src){
+        if(!src){return}
+        return 'data:image/jpeg;base64,'+src
+    }
     //	金额格式化 千分位
     formatCurrency(num) {
         num != undefined || (num = '0.00');
@@ -186,10 +190,9 @@ export default class Global extends wepy.mixin {
                         file: fileArr[i]
                     }
                     this.imgupfile(data).then(res => {
-
                         if (res.statusCode === 200) {
-                            let tmp = JSON.parse(res.data).data
-                            resUrl.push({ id: tmp.file_id, url: tmp.file_path })
+                            let tmp = JSON.parse(res.data)
+                            resUrl.push({ id: tmp.id })
                         } else {
                             reject(res.errMsg)
                         }
@@ -214,9 +217,9 @@ export default class Global extends wepy.mixin {
     imgupfile(file) {
         return new Promise((resolve, reject) => {
             let data = {
-                url: 'https://wxapi.zxlx123.com/api/upload/image',
+                url: 'http://192.168.5.34:8080/api/wxuser/uploadfile',
                 filePath: file.filePath,
-                name: 'iFile'
+                name: 'iFile',
             }
             wepy.uploadFile(data).then(res => {
                 resolve(res)
@@ -465,16 +468,21 @@ export default class Global extends wepy.mixin {
 
     }
     onShow(opation) {
- 
-        // if (wepy.getStorageSync('token')) {
-        //     if (typeof (this.PageInit) === 'function') { this.PageInit(opation) }
-        // } else {
-        //     this.$parent.userInfoReadyCallback = res => {
-        //         if (typeof (this.PageInit) === 'function') {
-        //             this.PageInit(opation)
-        //         }
+        // this.$parent.userInfoReadyCallback = res => {
+        //     console.log('ddd')
+        //     if (typeof (this.PageInit) === 'function') {
+        //         this.PageInit(opation)
         //     }
         // }
+        if (wepy.getStorageSync('token')) {
+            if (typeof (this.PageInit) === 'function') { this.PageInit(opation) }
+        } else {
+            this.$parent.userInfoReadyCallback = res => {
+                if (typeof (this.PageInit) === 'function') {
+                    this.PageInit(opation)
+                }
+            }
+        }
     }
 
     onLoad() {

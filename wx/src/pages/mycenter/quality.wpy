@@ -20,9 +20,9 @@
 <template>
   <view class="container quality">
     <view class="panel">
-        <view>开始时间：2019年01月01日</view>
-        <view>过保时间：2020年01月01日</view>
-        <view>剩余保修：275天/0天</view>
+        <view>开始时间：{{startTime}}</view>
+        <view>过保时间：{{endTime}}</view>
+        <view>剩余保修：{{total}}天/{{residue}}天</view>
     </view>
     <view class="panel flexRow">
         <text class="flex-1" @tap="navto">保修声明</text>
@@ -41,13 +41,39 @@ export default class quality extends wepy.page {
   components = {}
   mixins = [Mixin]
   data = {
+    createtime:"",
+    guaranteetime:"",
+    total:0,
+    residue:0,
+    startTime:"",
+    endTime:"",
   }
   methods = {
       navto(){
         wx.navigateTo({url:'/pages/mycenter/qualityinfo'})
       },
   }
-  onLoad() {
+  onLoad(opn) {
+     if (opn && opn.createtime &&opn.guaranteetime) {
+        var timestamp = Date.parse(new Date());  
+        timestamp = timestamp / 1000;
+        this.createtime = opn.createtime
+        this.guaranteetime = opn.guaranteetime
+        this.total=parseInt((this.guaranteetime-this.createtime)/60/60/24)
+        if(this.total<0){
+          this.total=0
+        }
+
+        this.residue=parseInt((this.guaranteetime-timestamp)/60/60/24)
+        if(this.residue<0){
+          this.residue=0
+        }
+
+        var s=new Date(parseInt(this.createtime) * 1000)
+        var e=new Date(parseInt(this.guaranteetime) * 1000)
+        this.startTime=s.getFullYear()+"年"+(s.getMonth()+1)+"月"+s.getDate()+"日"
+        this.endTime=e.getFullYear()+"年"+(e.getMonth()+1)+"月"+e.getDate()+"日"
+      }
   }
 }
 </script>

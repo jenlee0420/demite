@@ -1,0 +1,88 @@
+<style lang="less">
+page{
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+.logistics{
+  background-color: #fff;
+  padding: 40rpx 30rpx;
+   box-sizing: border-box;
+  height: 100%;
+  .btn{
+    width: 220rpx;
+    height: 86rpx;
+    line-height: 86rpx;
+    font-size: 32rpx;
+    margin-top: 40rpx;
+    border-radius: 10rpx;
+  }
+  .panel{
+    width: 100%;
+    background-color: #e8e8e8;
+    border-radius: 10rpx;
+    padding: 35rpx 30rpx;
+    box-sizing: border-box;
+    height: 100rpx;
+  }
+}
+</style>
+
+<template>
+  <view class="container logistics">
+    <view class="panel flexRow p_0_30">
+      <input class="flex-1" type="text" value="{{uuid}}" @input="getvalue" placeholder="输入设备号或扫码录入（可选）"/>
+      <text class="scan_icon"></text>
+    </view>
+    <view class="flexCol">
+      <button @tap="bind" class="btn">绑定</button>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+export default class bindGoods extends wepy.page {
+  config = {
+    navigationBarTitleText: '绑定设备',
+  }
+  components = {}
+  mixins = [Mixin]
+  data = {
+    uuid:"",
+  } 
+  methods = {
+    getvalue(e){
+      this.uuid = e.detail.value
+    },
+
+    bind(e){
+      this.bindGood()
+    }
+  }
+  onLoad() {
+  }
+
+  bindGood(){
+    wepy.request({
+      method:'post',
+      url:'/api/wxuser/bindgood',
+      data:{
+        gooduuid:this.uuid
+      }
+    }).then(res=>{
+      if(res.status.haserror){
+        wepy.showModal({
+          content: res.status.errorshowdesc,
+          showCancel: false
+        })
+        return
+      }
+
+      wepy.navigateTo({
+        url: "/pages/mycenter/equipment",
+      })
+    })
+  }
+}
+</script>

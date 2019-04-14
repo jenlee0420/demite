@@ -48,7 +48,7 @@
 <template>
   <view class="container Repair">
     <view class="panel flexRow p_0_30">
-      <input class="flex-1" type="text" disabled placeholder="输入设备号或扫码录入（可选）"/>
+      <input class="flex-1" type="text" value="{{uuid}}" @input="getUuid" placeholder="输入设备号或扫码录入（可选）"/>
       <text class="scan_icon" @tap="scanCode"></text>
     </view>
     <view class="panel">
@@ -61,33 +61,44 @@
         <text class="arrow_icon"></text>
       </view>
       <view class="item">
-        <picker bindchange="bindPickerChange" class="flex-1" range-key="name" range="{{array}}">
+        <picker bindchange="bindPickerChange2" class="flex-1" range-key="name" range="{{array2}}">
         <view class="picker">
-          <input type="text" value="{{thisver}}" placeholder="请选择故障类型" />
+          <input type="text" value="{{faultType}}" disabled placeholder="请选择故障类型" />
         </view>
       </picker>
         <text class="arrow_icon"></text>
       </view>
       <view class="item">
-        <textarea name="" id="" cols="30" rows="10"  placeholder="请输入故障描述"></textarea>
+        <textarea name="" id="" cols="30" rows="10"  value="{{faultDesc}}" @input="getFaultDesc" placeholder="请输入故障描述"></textarea>
       </view>
     </view>
     <view class="panel p30">
       <view>附加信息</view>
       <view class="mt20">
-        <text class="addicon mr20"></text><text class="addicon mr20"></text>
+        <image wx:if="{{fileid1}}" src='{{fileid1url}}' class="mr20" mode='aspectFit' />
+        <text wx:else class="addicon mr20" bindtap="addfile(1)"></text>
+
+        <image wx:if="{{fileid2}}" src='{{fileid2url}}' class="mr20" mode='aspectFit' />
+        <text wx:else class="addicon mr20" bindtap="addfile(2)"></text>
+        
       </view>
     </view>
     <view class="panel">
       <view class="item">
-        <input type="text" placeholder="请输入联系人姓名" />
+        <input type="text" value="{{name}}" @input="getName" placeholder="请输入联系人姓名" />
       </view>
       <view class="item">
-        <input type="text" placeholder="请输入联系人电话" />
+        <input type="text" value="{{phone}}" @input="getPhone" placeholder="请输入联系人电话" />
+      </view>
+      <view class="item">
+        <input type="text" value="{{hospital}}" @input="getHospital" placeholder="请输入联系人医院" />
+      </view>
+      <view class="item">
+        <input type="text" value="{{office}}" @input="getOffice" placeholder="请输入联系人科室" />
       </view>
     </view>
     <view class="space"></view>
-    <view class="opr">
+    <view class="opr" @tap="submit">
       提交
     </view>
   </view>
@@ -104,13 +115,120 @@
     mixins = [Mixin]
     data = {
       array:[{id:0,name:'设备1'},{id:1,name:'设备2'}],
-      thisver:''
+      array2:[{id:0,name:'故障1'},{id:1,name:'故障2'}],
+      thisver:'',
+      uuid:"",
+      faultType:"",
+      faultDesc:"",
+      name:"",
+      phone:"",
+      hospital:"",
+      office:"",
+      fileid1:"",
+      fileid1url:"",
+      fileid2:"",
+      fileid1ur2:""
     }
     methods = {
+      submit(e){
+        if(this.uuid==""){
+          return
+        }
+
+        if(this.name==""){
+          return
+        }
+
+        if(this.phone==""){
+          return
+        }
+
+        var data={
+          "gooduuid":this.uuid,
+          "goodmodel":this.thisver,
+          "phone":this.phone,
+          "name":this.name,
+          "hospital":this.hospital,
+          "office":this.office,
+          "faultdesc":this.faultDesc,
+          "faulttype":this.faultType,
+          "fileid1":"",
+          "fileid2":""
+        }
+        console.log(data);
+
+        wepy.request({
+          method:'post',
+          url:'/api/wxuser/repairapply',
+          data:data,
+        }).then(res=>{
+          if(res.status.haserror){
+            wepy.showModal({
+              content: res.status.errorshowdesc,
+              showCancel: false
+            })
+            return
+          }
+
+          wepy.navigateTo({
+            url: "/pages/after_sale/repairlist",
+          })
+        })
+      },
+      
+      getOffice(e){
+        this.office = e.detail.value
+      },
+
+      getHospital(e){
+        this.hospital = e.detail.value
+      },
+
+      getPhone(e){
+        this.phone = e.detail.value
+      },
+
+      getName(e){
+        this.name = e.detail.value
+      },
+
+      getUuid(e){
+        this.uuid = e.detail.value
+      },
+
+      // getFaultType(e){
+      //   this.faultType = e.detail.value
+      // },
+
+      getFaultDesc(e){
+        this.faultDesc = e.detail.value
+      },
+
       bindPickerChange(e){
         if(e.detail){
           this.thisver=this.array[e.detail.value].name
         }
+      },
+
+      bindPickerChange2(e){
+        if(e.detail){
+          this.faultType=this.array2[e.detail.value].name
+        }
+      },
+      addfile(type){
+        this.chooseImage({
+          count:1
+        }).then((res)=>{
+          console.log(res)
+          if(type == 1){
+            this.fileid1 = res[0].id
+            this.fileid1url="http://127.0.0.1:8080/file/"+res[0].id
+          }else{
+            this.fileid2 = res[0].id
+            this.fileid2url="http://127.0.0.1:8080/file/"+res[0].id
+          }
+          this.$apply()
+        })
       },
       scanCode(){
         wepy.scanCode({
@@ -120,6 +238,24 @@
         })
       }
     }
-    onLoad() {}
+    // getImg(){
+    //   return new Promise((resolve, reject) => {
+    //    wepy.request({
+    //       method:'post',
+    //       url:'/api/wxuser/repairapply',
+    //       data:data,
+    //     }).then(res=>{
+
+    //     })
+    //   })
+    //}
+    onLoad(opn) {
+      if (opn && opn.uuid) {
+        this.uuid = opn.uuid
+        this.$apply()
+      }
+    }
+
+   
   }
 </script>

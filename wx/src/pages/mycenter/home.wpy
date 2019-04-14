@@ -47,6 +47,13 @@
       <text class="flex-1">{{item.text}}</text>
       <text class="arrow_icon"></text>
     </view>
+
+    <!-- <view class="fullscreen">
+      获取你的昵称、头像、地区和性别
+      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="sharebtn flexRow flex-jcenter">
+              同意
+      </button>
+    </view> -->
   </view>
 </template>
 
@@ -84,6 +91,13 @@ export default class home extends wepy.page {
     }]
   }
   methods = {
+    bindgetuserinfo(e) {
+        console.log(e)
+        if (!e.detail.signature) {
+          return
+        }
+        let detail = e.detail.userInfo
+    },
     navTo(link){
       if(link){
         wepy.navigateTo({
@@ -92,7 +106,22 @@ export default class home extends wepy.page {
       }
     }
   }
+  bindGood(){
+      wepy.request({
+        method:'post',
+        url:'/api/wxuser/bindgood',
+        data:{
+          gooduuid:'retret'
+        }
+      }).then(res=>{
+        console.log(res)
+      })
+    }
   onLoad() {
+  }
+
+  callback(){
+    this.bindGood()
   }
 }
 </script>

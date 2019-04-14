@@ -6,7 +6,7 @@ let mode = 'dev'
 const config = {
     dev: {
         api: {
-            default: 'http://192.168.5.43:8080'
+            default: 'http://192.168.5.34:8080'
         },
         imgUrl:'http://test.cn/'
     },
@@ -25,19 +25,22 @@ const init = {
                     let data = request.data
                     let baseUrl = currentConfig.api.default
                     let token = wepy.getStorageSync('token')
+                    let cookie= wepy.getStorageSync('Cookie')
                     if (request.urlKey) baseUrl = currentConfig.api[request.urlKey]
                     if (request.baseUrl !== undefined) baseUrl = request.baseUrl
                     request.url = baseUrl + request.url
-                    request.header = Object.assign({}, {'Content-Type': 'application/x-www-form-urlencoded'}, request.header)
-                    if (!request.noToken && !!token){
-                        if(data){
-                            data.token = token
-                        }
-                        // request.data = Object.assign({'token':token}, request.data)
-                    }
-                    if (request.method === 'POST') {
-                        request.data = qs.stringify(data)
-                    }
+                    // request.header = Object.assign({}, {'Content-Type': 'application/x-www-form-urlencoded'}, request.header)
+                    request.header = Object.assign({}, {'Content-Type': 'application/json;charset=UTF-8'}, request.header)
+                    request.header = Object.assign({}, {'Cookie': cookie}, request.header)
+                    // if (!request.noToken && !!token){
+                    //     if(data){
+                    //         data.token = token
+                    //     }
+                    //     // request.data = Object.assign({'token':token}, request.data)
+                    // }
+                    // if (request.method === 'POST') {
+                    //     request.data = qs.stringify(data)
+                    // }
                     return request
                 },
                 success(response, re) {
@@ -45,15 +48,13 @@ const init = {
                         wepy.clearStorageSync()
                     }*/
                     if (response.statusCode === 200) {
-                        if ((response.data.code === '870101' || response.data.code === '870104' || response.data.code === '990016'|| response.data.code === '990013')) {
-                            if(!wepy.getStorageSync('relogin')){
-                                wepy.setStorageSync('relogin','true')
-                                this.relogin('/' + this.getCurrentPageUrl())
-                            }
+                        if(response.header['Set-Cookie']){
+                            wepy.setStorageSync('Cookie',response.header['Set-Cookie'])
                         }
-                        if(response.data.code){
-                            response.data.code = String(response.data.code)
-                        }
+                        
+                        // if(response.data.code){
+                        //     response.data.code = String(response.data.code)
+                        // }
                         return response.data
                     } else {
                         let msg = `服务器异常错误码：${response.statusCode}，联系管理员`

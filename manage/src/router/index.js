@@ -49,6 +49,11 @@ const routes=[
                 meta: { title: '管理员列表' }
             },
             {
+                path: '/stafflist',
+                component: resolve => require(['../components/page/stafflist.vue'], resolve),
+                meta: { title: '员工列表' }
+            },
+            {
                 path: '/catelist',
                 component: resolve => require(['../components/page/catelist.vue'], resolve),
                 meta: { title: '商品分类管理' }

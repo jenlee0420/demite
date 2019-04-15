@@ -108,12 +108,12 @@
                         icon: 'el-icon-lx-sort',
                         index: 'catelist',
                         title: '商品分类管理'
-                    },
+                    },*/
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
+                        index: 'stafflist',
                         title: '维修组员管理'
-                    }, */
+                    }, 
                     /* {
                         icon: 'el-icon-lx-copy',
                         index: 'tabs',

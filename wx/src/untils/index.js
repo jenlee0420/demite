@@ -7,7 +7,7 @@ const config = {
     dev: {
         api: {
             //default: 'http://118.24.75.118:8080'
-            default:'http://127.0.0.1:8080'
+            default:'http://192.168.5.60:8080'
         },
         imgUrl:'http://test.cn/'
     },

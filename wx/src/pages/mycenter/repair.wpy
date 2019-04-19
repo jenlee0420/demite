@@ -132,7 +132,7 @@
       fileid1:"",
       fileid1url:"",
       fileid2:"",
-      fileid1ur2:""
+      fileid2url:""
     }
     methods = {
       submit(e){
@@ -157,8 +157,8 @@
           "office":this.office,
           "faultdesc":this.faultDesc,
           "faulttype":this.faultType,
-          "fileid1":"",
-          "fileid2":""
+          "fileid1":this.fileid1,
+          "fileid2":this.fileid2
         }
         console.log(data);
 
@@ -224,8 +224,7 @@
         this.chooseImage({
           count:1
         }).then((res)=>{
-          console.log(res)
-          if(type == 1){
+          if(type == '1'){
             this.fileid1 = res[0].id
             this.fileid1url=this.configApi+"/file/"+res[0].id
           }else{

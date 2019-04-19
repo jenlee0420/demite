@@ -33,14 +33,28 @@
     background-color: #fff;
   }
 }
+.fullscreen{background-color: rgba(0, 0, 0, .3)}
+.prop{
+  background-color: #fff;
+  height: 240rpx;
+  position: absolute;
+  bottom:0;
+  width: 100%;
+  padding: 30rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 30rpx;
+}
 </style>
 
 <template>
   <view class="container myhome">
     <view class="home_top flexCol">
-      <text class="head" style="{{'background-image:url('+headPic+')'}}"></text>
-      <text class="maincolor fs32">Michelle</text>
-      <text>ID:123456789</text>
+      <text class="head" style="{{'background-image:url('+wxinfo.avatarurl+')'}}"></text>
+      <text class="maincolor fs32">{{wxinfo.nickname}}</text>
+      <text>{{wxinfo.gender}}</text>
     </view>
     <view class="panel" wx:for="{{panel}}" wx:key="{{index}}" bindtap="navTo({{item.link}})">
       <text class="{{item.class}} mr30"></text>
@@ -48,12 +62,18 @@
       <text class="arrow_icon"></text>
     </view>
 
-    <!-- <view class="fullscreen">
-      获取你的昵称、头像、地区和性别
-      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="sharebtn flexRow flex-jcenter">
+    <view class="fullscreen" wx:if="{{showips}}">
+      <view class="prop">
+      申请获取你的昵称、头像、地区和性别
+      <view class="flex flex-jcenter">
+      <button open-type="getUserInfo" @getuserinfo="bindgetuserinfo" class="btn mr20">
               同意
       </button>
-    </view> -->
+      <button class="btn" @tap="hidetips">取消</button>
+      </view>
+      </view>
+    </view>
+
   </view>
 </template>
 
@@ -88,16 +108,31 @@ export default class home extends wepy.page {
       link:'/pages/after_sale/afterSale',
       text:'售后联系',
       class:'mycenter5'
-    }]
+    }],
+    showips:false,
+    wxinfo:''
   }
   methods = {
     bindgetuserinfo(e) {
-        console.log(e)
+        // console.log(e)
         if (!e.detail.signature) {
           return
         }
         let detail = e.detail.userInfo
+        detail.gender = detail.gender == 1 ?'男':'女'
+        wepy.request({
+          method:'post',
+          url:'/api/wxuser/uploaduserinfo',
+          data:detail
+        }).then(res=>{
+          // console.log(res)
+          this.showips = false
+          this.getuserinfo()
+        })
     },
+    hidetips(){
+      this.showips = false
+    }, 
     navTo(link){
       if(link){
         wepy.navigateTo({
@@ -105,6 +140,23 @@ export default class home extends wepy.page {
         })
       }
     }
+  }
+  getuserinfo(){
+    wepy.request({
+        method:'post',
+        url:'/api/wxuser/getduserinfo',
+        data:{}
+      }).then(res=>{
+        if (res.status.haserror == false) {
+          this.wxinfo = res
+          this.$apply()
+        }else {
+          wepy.showModal({
+            content: res.status.errorshowdesc,
+            showCancel: false
+          })
+        }
+      })
   }
   bindGood(){
       wepy.request({
@@ -114,14 +166,21 @@ export default class home extends wepy.page {
           gooduuid:'retret'
         }
       }).then(res=>{
-        console.log(res)
+        // console.log(res)
+        this.showSuccess()
       })
     }
   onLoad() {
+    this.getLocalSetting().then(res=>{
+      if(res == false){
+        this.showips = true
+      }
+    })
   }
 
   callback(){
-    this.bindGood()
+    this.getuserinfo()
+    // this.bindGood()
   }
 }
 </script>

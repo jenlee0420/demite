@@ -23,12 +23,13 @@ page {
     config = {
       pages: [
         // 'pages/icon',
+        'pages/mycenter/home',
         'pages/after_sale/equipment',
         'pages/mycenter/equipment',
         'pages/mycenter/repair', 
         'pages/after_sale/repairlist',
         'pages/mycenter/bindGoods',
-        'pages/mycenter/home',
+        
         'pages/mycenter/logistics',
         'pages/after_sale/repairDetail',
         'pages/after_sale/repairorder',
@@ -39,7 +40,8 @@ page {
         'pages/mycenter/detail',
         'pages/mycenter/applies',
         'pages/mycenter/applies2',
-        
+        'pages/after_sale/remoteorder',
+        'pages/after_sale/remoteDetail',
         
         'pages/mycenter/address',
         'pages/mycenter/addresslist',
@@ -144,7 +146,7 @@ page {
         if (res.status.haserror == false) {
           var pages = getCurrentPages() // get all current pages
           var currentPage = pages[pages.length - 1]  // Get current loading page
-          console.log(currentPage)
+          // console.log(currentPage)
           if (typeof (currentPage.callback) === 'function') {
               currentPage.callback(); // Callback
           }

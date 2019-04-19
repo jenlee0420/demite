@@ -54,7 +54,7 @@ export default class repairlist extends wepy.page {
   data = {
     showtips:true,
     panel:[{
-      link:'/pages/after_sale/equipment',
+      link:'/pages/after_sale/remoteorder',
       text:'远程记录',
       class:'remote_ico'
     },{

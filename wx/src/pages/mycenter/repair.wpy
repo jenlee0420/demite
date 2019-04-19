@@ -32,6 +32,10 @@
         }
       }
     }
+    image{
+            width: 90rpx;
+            height: 90rpx;
+        }
   }
   .p_0_30{
     padding: 0 30rpx;
@@ -43,6 +47,7 @@
     justify-content: center;
     color: @theme;
   }
+  
 </style>
 
 <template>
@@ -222,10 +227,10 @@
           console.log(res)
           if(type == 1){
             this.fileid1 = res[0].id
-            this.fileid1url="http://127.0.0.1:8080/file/"+res[0].id
+            this.fileid1url=this.configApi+"/file/"+res[0].id
           }else{
             this.fileid2 = res[0].id
-            this.fileid2url="http://127.0.0.1:8080/file/"+res[0].id
+            this.fileid2url=this.configApi+"/file/"+res[0].id
           }
           this.$apply()
         })

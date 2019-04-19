@@ -60,7 +60,7 @@ export default class repairorder extends wepy.page {
     showtips:true,
     panel:[],
     currpage:0,
-    totalcount:-1
+      totalcount:-1
   }
   methods = {
     close(){
@@ -74,28 +74,19 @@ export default class repairorder extends wepy.page {
       }
     }
   }
-  onLoad(opn) {
-    if (opn && opn.uid) {
-      this.gooduuid = opn.uid
-      //this.getinfo()
-    }
-    this.getlist()
-  }
   getlist(){
     wepy.request({
         method: 'post',
-        url: '/api/wxuser/lsitrepairapply',
+        url: '/api/wxuser/lsitremoteapply',
         data: {
-          gooduuid: this.gooduuid,
           limit:this.page_size,
           offset:this.currpage * this.page_size
         }
       }).then(res => {
         if (res.status.haserror == false) {
-          let data =[]
-
+          let data = []
           for(var i=0;i<res.data.length;i++){
-            
+           
             var applystatus=""
             if(res.data[i].applystatus=="applying"){
               applystatus="申请维修"
@@ -105,14 +96,14 @@ export default class repairorder extends wepy.page {
               applystatus="维修完成"
             }
             
-
             data.push({
-              link:'/pages/after_sale/repairDetail?id='+res.data[i].id,
-              text:res.data[i].goodname,
+              link:'/pages/after_sale/remoteDetail?id='+res.data[i].id,
+              text:"申请远程日期:"+this.transTime(res.data[i].remotetime,"yyyy-MM-dd"),
               createtime:this.transTime(res.data[i].createtime,"yyyy-MM-dd"),
               applystatus:applystatus,
             })
           }
+
           //分页
           this.totalcount = res.count
           if(this.totalcount>this.panel.length){
@@ -122,6 +113,7 @@ export default class repairorder extends wepy.page {
               this.panel = data
             }
           }
+
           this.$apply()
         } else {
           wepy.showModal({
@@ -130,6 +122,9 @@ export default class repairorder extends wepy.page {
           })
         }
       })
+  }
+  onLoad(opn) {
+    this.getlist()
   }
   onReachBottom(e){
       if(this.totalcount>this.panel.length){

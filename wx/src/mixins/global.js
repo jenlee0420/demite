@@ -18,8 +18,9 @@ export default class Global extends wepy.mixin {
             price: /^\d+(\.{0,1}\d+){0,1}$/ // 只能是正数
         },
         loadloop: true,
-        page_size: 10,
-        ImgBefor:'data:image/jpeg;base64,'
+        page_size: 7,
+        ImgBefor:'data:image/jpeg;base64,',
+        configApi:''
     }
     methods = {
         scrollTop() {
@@ -282,6 +283,7 @@ export default class Global extends wepy.mixin {
     }
     //	时间格式化   (YYYY-MM-DD HH:mm)
     transTime(time, opt = 'yyyy-MM-dd hh:mm') {
+        console.log(time,'time')
         if (time === '' || time === undefined) {
             return 0;
         } else {
@@ -486,5 +488,6 @@ export default class Global extends wepy.mixin {
     }
 
     onLoad() {
+        this.configApi = this.$parent.globalData.config.dev.api.default
     }
 }

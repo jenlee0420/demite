@@ -11,7 +11,7 @@
         margin-top: 0rpx;
       }
       image {
-        height: 186rpx;
+        height: 386rpx;
         width: 100%;
       }
       .item {
@@ -203,6 +203,7 @@
       }
     }
     getinfo() {
+      this.showloading()
       wepy.request({
         method: 'post',
         url: '/api/wxuser/getgoods',
@@ -210,6 +211,7 @@
           gooduuid: this.gooduuid
         }
       }).then(res => {
+        this.showloading(false)
         if (res.status.haserror == false) {
           this.info = res
           this.attrtext = this.info.goodsteplet ? JSON.parse(this.info.goodsteplet) : []

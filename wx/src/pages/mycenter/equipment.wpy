@@ -45,7 +45,7 @@ page{
   <view class="container">
     <view class="panel" bindtap="navto({{item.uuid}})" wx:for="{{tableData}}" wx:key="index">
       <view class="image">
-        <image src="{{ImgBefor}}{{item.goodpicdata}}"  mode="aspectFill"/>
+        <image src="{{configApi}}/file/{{item.fileid}}"  mode="aspectFill"/>
       </view>
       <view class="flexCol flex-1 flex-astart ml20">
         <span class="fs32">{{item.name}}</span>
@@ -56,10 +56,12 @@ page{
         <text class="ml15 arrow_icon"></text>
       </view>
     </view>
+    <view class="nodata" wx:if="{{totalcount==0}}">暂无数据</view>
     <view class="space"></view>
       <navigator class="opr" url="/pages/mycenter/bindGoods">
       绑定设备
     </navigator>
+    
   </view>
 </template>
 
@@ -74,7 +76,9 @@ page{
     mixins = [Mixin]
     data = {
       navUrl:'/pages/mycenter/detail',
-      tableData:[]
+      tableData:[],
+      currpage:0,
+      totalcount:-1
     }
     methods = {
       navto(id) {
@@ -85,16 +89,25 @@ page{
     }
 
     getlist(){
+      this.showloading()
       wepy.request({
         method:'post',
         url:'/api/wxuser/listgoods',
         data:{
           limit:this.page_size,
-          offset:0
+          offset:this.currpage * this.page_size
         }
       }).then(res=>{
+        this.showloading(false)
         if (res.status.haserror == false) {
-          this.tableData = res.data
+          this.totalcount = res.count
+          if(this.totalcount>this.tableData.length){
+            if(this.currpage>0){
+              this.tableData = this.tableData.concat(res.data)
+            }else{
+              this.tableData = res.data
+            }
+          }
           this.$apply()
         }else {
           wepy.showModal({
@@ -105,29 +118,19 @@ page{
       })
     }
     onLoad(opn) {
-      if(opn && opn.type){
-        if(opn.type=='history'){
-          this.navUrl='/pages/after_sale/repairorder'
-        }
+      
+    }
+    onShow(){
+      this.getlist()
+    }
+    // callback(){
+    //   this.getlist()
+    // }
+    onReachBottom(e){
+      if(this.totalcount>this.tableData.length){
+        this.currpage++
+        this.getlist()
       }
-
-      //FIXME
-      this.getlist()
-    }
-    bindGood(){
-      wepy.request({
-        method:'post',
-        url:'/api/wxuser/bindgood',
-        data:{
-          gooduuid:'retret'
-        }
-      }).then(res=>{
-        console.log(res)
-      })
-    }
-    callback(){
-      this.getlist()
-      // this.bindGood()
     }
   }
   

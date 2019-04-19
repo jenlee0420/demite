@@ -71,13 +71,13 @@
 <template>
     <view class="container repairDetail">
         <view class="panel">
-            <view class="image mr30">
+            <!-- <view class="image mr30">
                 <image src="{{goodpic}}"  mode="aspectFill" />
             </view>
             <view class="flex-column flex-1">
                 <text class="fs32">{{goodname}}</text>
                 <view class="fs24 ca5a5a5">货号：{{uuid}}</view>
-            </view>
+            </view> -->
             <text wx:if="{{comfirm}}" @tap="renewal" class="btnline">确认完成</text>
         </view>
         <view class="panel flex-column flex-astart">
@@ -87,10 +87,17 @@
             <text>电话：{{phone}}</text>
         </view>
         <view class="panel flex-column flex-astart">
-            <view class="flexRow"><text class="nowrap">故障类型：</text><text>{{faultType}}</text></view>
             <view class="flexRow flex-astart">
                 <text class="nowrap">故障描述：</text>
                 <text>{{faultDesc}}</text>
+            </view>
+            <view class="flexRow flex-astart">
+                <text class="nowrap">故障自主描述：</text>
+                <text>{{faultDescSelf}}</text>
+            </view>
+            <view class="flexRow flex-astart">
+                <text class="nowrap">预约时间：</text>
+                <text>{{remoteTime}}</text>
             </view>
         </view>
         <view class="panel flex-column flex-astart">
@@ -142,19 +149,16 @@
         components = {}
         mixins = [Mixin]
         data = {
-            repairId:"",
-            goodname:"",
-            uuid:"",
-            model:"",
+            remoteId:"",
             hospital:"",
             office:"",
             phone:"",
             name:"",
             faultDesc:"",
-            faultType:"",
+            faultDescSelf:"",
             fileid1:"",
             fileid2:"",
-            goodpic:"",
+            remoteTime:"",
             detal:[],
             comfirm:false,
         }
@@ -167,7 +171,7 @@
                 confirm: () => {
                     wepy.request({
                     method: 'post',
-                    url: '/api/wxuser/dealrepairapply',
+                    url: '/api/wxuser/dealremoteapply',
                     data: {
                         id: parseInt(this.repairId),
                     }
@@ -192,23 +196,19 @@
                 this.repairId=opn.id
                 wepy.request({
                     method: 'post',
-                    url: '/api/wxuser/getrepairapply',
+                    url: '/api/wxuser/getremoteapply',
                     data: {
                         id: parseInt(opn.id) ,
                     }
                     }).then(res => {
                     if (res.status.haserror == false) {
-                        this.goodname=res.data.goodname
-                        this.uuid=res.data.gooduuid
                         this.name=res.data.name
                         this.phone=res.data.phone
                         this.hospital=res.data.hospital
                         this.office=res.data.office
                         this.faultDesc=res.data.faultdesc
-                        this.faultType=res.data.faulttype
-
-                    
-                        this.goodpic=this.configApi+"/file/"+res.data.goodpic
+                        this.faultDescSelf=res.data.faultdescself
+                        this.remoteTime=this.transTime(res.data.remotetime,"yyyy-MM-dd")
 
                         if(res.data.fileid1!=""){
                             this.fileid1=this.configApi+"/file/"+res.data.fileid1
@@ -225,7 +225,7 @@
                             }else if(res.data.list[i].currentstatus=="comfirm"){
                                 text="后台确认工单，派出工作人员 "+res.data.list[i].staffname+";电话:"+
                                 res.data.list[i].staffphone+";工号:"+res.data.list[i].staffno+";维修时间:"+
-                                this.transTime(res.data.list[i].repairtime)
+                                this.transTime(res.data.list[i].dealtime)
 
                                 this.comfirm=true
                             }else if(res.data.list[i].currentstatus=="finish"){

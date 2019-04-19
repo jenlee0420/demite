@@ -72,7 +72,7 @@ export default class quality extends wepy.page {
         var s=new Date(parseInt(this.createtime) * 1000)
         var e=new Date(parseInt(this.guaranteetime) * 1000)
         this.startTime=s.getFullYear()+"年"+(s.getMonth()+1)+"月"+s.getDate()+"日"
-        this.endTime=e.getFullYear()+"年"+(e.getMonth()+1)+"月"+e.getDate()+"日"
+        this.endTime=this.transTime(this.guaranteetime,"yyyy年MM月dd日")
       }
   }
 }

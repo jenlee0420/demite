@@ -43,13 +43,18 @@
     justify-content: center;
     color: @theme;
   }
+
+  image{
+            width: 90rpx;
+            height: 90rpx;
+        }
 </style>
 
 <template>
   <view class="container Repair">
     <view class="panel">
       <view class="item">
-       <picker bindchange="bindPickerChange" class="flex-1" range-key="name" range="{{array}}">
+       <picker bindchange="bindPickerChange" mode="date" value="{{thisver}}" class="flex-1" bindchange="bindTimeChange">
         <view class="picker">
           <input type="text" value="{{thisver}}" disabled placeholder="请选择预约时间" />
         </view>
@@ -59,30 +64,41 @@
     </view>
       <view class="panel">
       <view class="item">
-        <textarea name="" id="" cols="30" rows="10" placeholder="请输入故障描述"></textarea>
+        <textarea value="{{faultDesc}}" @input="getFaultDesc" name="" id="" cols="30" rows="10" placeholder="请输入故障描述"></textarea>
       </view>
       </view>
       <view class="panel">
       <view class="item">
-        <textarea name="" id="" cols="30" rows="10" placeholder="请输入自主处理描述"></textarea>
+        <textarea value="{{faultDescSelf}}" @input="getFaultDescSelf" name="" id="" cols="30" rows="10" placeholder="请输入自主处理描述"></textarea>
       </view>
       </view>
     <view class="panel p30">
       <view>附加信息</view>
       <view class="mt20">
-        <text class="addicon mr20"></text><text class="addicon mr20"></text>
+        <image wx:if="{{fileid1}}" src='{{fileid1url}}' class="mr20" mode='aspectFit' />
+        <text wx:else class="addicon mr20" bindtap="addfile(1)"></text>
+
+        <image wx:if="{{fileid2}}" src='{{fileid2url}}' class="mr20" mode='aspectFit' />
+        <text wx:else class="addicon mr20" bindtap="addfile(2)"></text>
+        
       </view>
     </view>
     <view class="panel">
       <view class="item">
-        <input type="text" placeholder="请输入联系人姓名" />
+        <input type="text" value="{{name}}" @input="getName" placeholder="请输入联系人姓名" />
       </view>
       <view class="item">
-        <input type="text" placeholder="请输入联系人电话" />
+        <input type="text" value="{{phone}}" @input="getPhone" placeholder="请输入联系人电话" />
+      </view>
+      <view class="item">
+        <input type="text" value="{{hospital}}" @input="getHospital" placeholder="请输入联系人医院" />
+      </view>
+      <view class="item">
+        <input type="text" value="{{office}}" @input="getOffice" placeholder="请输入联系人科室" />
       </view>
     </view>
     <view class="space"></view>
-    <view class="opr">
+    <view class="opr" @tap="submit">
       提交
     </view>
   </view>
@@ -99,12 +115,109 @@
     mixins = [Mixin]
     data = {
       array:[{id:0,name:'上午'},{id:1,name:'下午'}],
-      thisver:''
+      thisver:'',
+      name:"",
+      phone:"",
+      hospital:"",
+      office:"",
+      fileid1:"",
+      fileid1url:"",
+      fileid2:"",
+      fileid1ur2:"",
+      faultDesc:"",
+      faultDescSelf:"",
+      remoteTime:"",
     }
     methods = {
-      bindPickerChange(e){
+      submit(e){
+        if(this.name==""){
+          return
+        }
+
+        if(this.phone==""){
+          return
+        }
+
+        if(this.remoteTime==""){
+          return
+        }
+
+        var data={
+          "phone":this.phone,
+          "name":this.name,
+          "hospital":this.hospital,
+          "office":this.office,
+          "faultdesc":this.faultDesc,
+          "faultDescSelf":this.faultDescSelf,
+          "fileid1":this.fileid1,
+          "fileid2":this.fileid2,
+          "remoteTime":this.remoteTime,
+        }
+
+        wepy.request({
+          method:'post',
+          url:'/api/wxuser/remoteapply',
+          data:data,
+        }).then(res=>{
+          if(res.status.haserror){
+            wepy.showModal({
+              content: res.status.errorshowdesc,
+              showCancel: false
+            })
+            return
+          }
+
+          wepy.navigateTo({
+            url: "/pages/after_sale/repairlist",
+          })
+        })
+      },
+
+      getOffice(e){
+        this.office = e.detail.value
+      },
+
+      getHospital(e){
+        this.hospital = e.detail.value
+      },
+
+      getPhone(e){
+        this.phone = e.detail.value
+      },
+
+      getName(e){
+        this.name = e.detail.value
+      },
+
+      getFaultDesc(e){
+        this.faultDesc = e.detail.value
+      },
+
+      getFaultDescSelf(e){
+        this.faultDescSelf = e.detail.value
+      },
+
+      addfile(type){
+        this.chooseImage({
+          count:1
+        }).then((res)=>{
+          console.log(res)
+          if(type == 1){
+            this.fileid1 = res[0].id
+            this.fileid1url=this.configApi+"/file/"+res[0].id
+          }else{
+            this.fileid2 = res[0].id
+            this.fileid2url=this.configApi+"/file/"+res[0].id
+          }
+          this.$apply()
+        })
+      },
+
+      bindTimeChange(e){
+        console.log(e)
         if(e.detail){
-          this.thisver='预约时间为：'+this.array[e.detail.value].name
+          this.remoteTime=this.transdate2Time(e.detail.value);
+          this.thisver='预约时间为：'+e.detail.value
         }
       },
       scanCode(){

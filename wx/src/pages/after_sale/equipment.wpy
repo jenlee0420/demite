@@ -45,7 +45,7 @@ page{
   <view class="container">
     <view class="panel" bindtap="navto({{item.uuid}})" wx:for="{{tableData}}" wx:key="index">
       <view class="image">
-        <image src="{{ImgBefor}}{{item.goodpicdata}}"  mode="aspectFill"/>
+        <image src="{{configApi}}/file/{{item.fileid}}"  mode="aspectFill"/>
       </view>
       <view class="flexCol flex-1 flex-astart ml20">
         <span class="fs32">{{item.name}}</span>
@@ -56,6 +56,7 @@ page{
         <text class="ml15 arrow_icon"></text>
       </view>
     </view>
+    <view class="nodata" wx:if="{{totalcount==0}}">暂无数据</view>
   </view>
 </template>
 
@@ -70,7 +71,9 @@ page{
     mixins = [Mixin]
     data = {
       navUrl:'/pages/after_sale/repairorder',
-      tableData:[]
+      tableData:[],
+      totalcount:-1,
+      currpage:0
     }
     methods = {
       navto(id) {
@@ -86,11 +89,18 @@ page{
         url:'/api/wxuser/listgoods',
         data:{
           limit:this.page_size,
-          offset:0
+          offset:this.currpage * this.page_size
         }
       }).then(res=>{
         if (res.status.haserror == false) {
-          this.tableData = res.data
+          this.totalcount = res.count
+          if(this.totalcount>this.tableData.length){
+            if(this.currpage>0){
+              this.tableData = this.tableData.concat(res.data)
+            }else{
+              this.tableData = res.data
+            }
+          }
           this.$apply()
         }else {
           wepy.showModal({
@@ -102,6 +112,12 @@ page{
     }
     onLoad(opn) {
       this.getlist()
+    }
+    onReachBottom(e){
+      if(this.totalcount>this.tableData.length){
+        this.currpage++
+        this.getlist()
+      }
     }
   }
   

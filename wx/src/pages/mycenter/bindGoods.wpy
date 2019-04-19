@@ -31,7 +31,7 @@ page{
   <view class="container logistics">
     <view class="panel flexRow p_0_30">
       <input class="flex-1" type="text" value="{{uuid}}" @input="getvalue" placeholder="输入设备号或扫码录入（可选）"/>
-      <text class="scan_icon"></text>
+      <text class="scan_icon" @tap="scanCode"></text>
     </view>
     <view class="flexCol">
       <button @tap="bind" class="btn">绑定</button>
@@ -58,7 +58,14 @@ export default class bindGoods extends wepy.page {
 
     bind(e){
       this.bindGood()
-    }
+    },
+    scanCode(){
+        wepy.scanCode({
+          success(res) {
+            console.log(res)
+          }
+        })
+      }
   }
   onLoad() {
   }
@@ -79,8 +86,8 @@ export default class bindGoods extends wepy.page {
         return
       }
 
-      wepy.navigateTo({
-        url: "/pages/mycenter/equipment",
+      wepy.navigateBack({
+        delta:1
       })
     })
   }

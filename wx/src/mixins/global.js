@@ -218,7 +218,7 @@ export default class Global extends wepy.mixin {
     imgupfile(file) {
         return new Promise((resolve, reject) => {
             let data = {
-                url: 'http://192.168.5.34:8080/api/wxuser/uploadfile',
+                url: this.configApi+'/api/wxuserex/uploadfile',
                 filePath: file.filePath,
                 name: 'iFile',
             }

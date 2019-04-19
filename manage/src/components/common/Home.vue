@@ -7,7 +7,7 @@
             <div class="content">
                 <transition name="move" mode="out-in">
                     <!-- <keep-alive :include="tagsList"> -->
-                        <router-view></router-view>
+                        <router-view :key="activeDate"></router-view>
                     <!-- </keep-alive> -->
                 </transition>
             </div>
@@ -24,7 +24,8 @@
         data(){
             return {
                 tagsList: [],
-                collapse: false
+                collapse: false,
+                activeDate: 1
             }
         },
         components:{
@@ -43,6 +44,11 @@
             //     }
             //     this.tagsList = arr;
             // })
+        },
+        mounted(){
+            
+        },
+        methods:{
         }
     }
 </script>

@@ -6,7 +6,7 @@ Vue.use(Router);
 const routes=[
     {
         path: '/',
-        redirect: '/dashboard'
+        redirect: '/drugCategory'
     },
     {
         path: '/',
@@ -51,11 +51,36 @@ const routes=[
             {
                 path: '/stafflist',
                 component: resolve => require(['../components/page/stafflist.vue'], resolve),
+                meta: { title: '申请列表' }
+            },
+            {
+                path: '/applylist',
+                component: resolve => require(['../components/page/applylist.vue'], resolve),
                 meta: { title: '员工列表' }
+            },
+            {
+                path: '/repairapply',
+                component: resolve => require(['../components/page/repairapply.vue'], resolve),
+                meta: { title: '报修列表' }
+            },
+            {
+                path: '/remoteapply',
+                component: resolve => require(['../components/page/remoteapply.vue'], resolve),
+                meta: { title: '远程申请列表' }
+            },
+            {
+                path: '/wxuserlist',
+                component: resolve => require(['../components/page/wxuserlist.vue'], resolve),
+                meta: { title: '微信用户列表' }
             },
             {
                 path: '/catelist',
                 component: resolve => require(['../components/page/catelist.vue'], resolve),
+                meta: { title: '商品分类管理' }
+            },
+            {
+                path: '/delayguaranteeapply',
+                component: resolve => require(['../components/page/delayguaranteeapply.vue'], resolve),
                 meta: { title: '商品分类管理' }
             },
             {

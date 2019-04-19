@@ -2,45 +2,41 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 设备列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 用户列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="select_word" placeholder="输入设备名称" class="handle-input mr10"></el-input>  
+                <el-input v-model="select_word" placeholder="输入用户名称" class="handle-input mr10"></el-input>  
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" plain icon="search" @click="$router.push('/equipmentAdd')">新增设备</el-button>
+                
             </div>
-            <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column prop="goodsuuid" label="编号">
+            <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" >
+                <el-table-column prop="id" label="编号">
                 </el-table-column>
-                <el-table-column prop="" label="图片" >
+                <el-table-column prop="" label="头像" >
                     <template slot-scope="scope">
-                        <img :src="getImgSrc(scope.row.goodpicdata)" width="80" />
+                        <img :src="getImgSrc(scope.row.avatarUrl)" width="80" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="设备名称" >
+                <el-table-column prop="nickname" label="昵称">
                 </el-table-column>
-                <el-table-column label="属性" >
-                    <template slot-scope="scope">
-                        <span v-for="(item,index) in displayJSON(scope.row.goodsteplet) " :key="index" v-if="item.key!=''">
-                           {{item.key}}:{{item.value}}<br>
-                        </span>
+                <el-table-column prop="gender" label="性别" >
+                   <template slot-scope="scope">
+                        {{scope.row.gender | gender}}
                     </template>
                 </el-table-column>
-                <el-table-column label="隐藏属性" >
-                    <template slot-scope="scope">
-                        <span v-for="(item,index) in displayJSON(scope.row.goodstempletlockcontext) " :key="index" v-if="item.key!=''">
-                            {{item.key}}:{{item.value}}<br>
-                        </span>
-                    </template>
+                <el-table-column prop="province" label="省" >
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column prop="city" label="城市" >
+                </el-table-column>
+                
+                <!-- <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row.goodsuuid)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.row.goodsuuid)">删除</el-button>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="limit" :total="totalcount">
@@ -88,16 +84,7 @@
             this.getData();
         },
         computed: {
-            data() {
-                return this.tableData.map((d,index) => {
-                    if(!d.img && d.goodspic){
-                        this.downloadImg(d.goodspic).then(res=>{
-                            this.$set(d,'img','data:image/png;base64,'+res)
-                        })
-                    }
-                    return d
-                })
-            }
+            
         },
         methods: {
             // 分页导航
@@ -107,7 +94,7 @@
             },
             getData() {
                 this.loading = true
-                this.$axios.post('/goods/list', {
+                this.$axios.post('/wxuser/list', {
                     page: this.cur_page,
                     key: this.select_word,
                     limit: this.limit,
@@ -159,48 +146,9 @@
                     }
                 })
             },
-            //新增药品
-            addUser(){
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        this.$loading()
-                        let url = '/drug/add'
-                        let data = {
-                            name: this.form.name,
-                            classid: this.form.category,
-                            reagent:this.form.reagent,
-                            chromatographiccolumn:this.form.column,
-                            controls:this.form.controls,
-                            testmethod:this.form.testmethod
-                        }
-                        if(this.idx != -1){
-                            url = '/drug/update'
-                            data.id = this.form.id
-                        }
-                        this.$axios.post(url, data).then((res) => {
-                            this.$loading().close()
-                            this.idx = -1
-                            if(res.status.haserror){
-                                this.$message.error(res.status.errorshowdesc)
-                            }else{
-                                this.$message({message:'操作成功',type: 'success'})
-                                this.editVisible = false;
-                                Object.keys(this.form).map((key)=>{
-                                    this.form[key] = ''
-                                })
-                                this.getData()
-                            }
-                        })
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                })
-            },
             
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
+            
+           
         }
     }
 

@@ -8,8 +8,8 @@
         </div>
         <div class="container">
             <div class="form-box">
+                <el-button type="primary" class="mb20" v-if="edit" @click="$router.push({path:'/equipmentAdd'})">新增设备</el-button>
                 <el-form ref="form" :model="form" label-width="120px">
-                    
                     <el-form-item label="设备编号">
                         <el-input v-model="form.goodsuuid" :disabled="edit?true:false"></el-input>
                     </el-form-item>
@@ -17,14 +17,15 @@
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     <el-form-item label="设备型号">
-                        <el-input v-model="form.goodmodel"></el-input>
+                        <el-input v-model="form.goodsmodel"></el-input>
                     </el-form-item>
                     <el-form-item label="保修日期">
                         <el-date-picker
                             v-model="form.guaranteetime"
                             type="date"
                             value-format='timestamp'
-                            placeholder="选择日期">
+                            placeholder="选择日期"
+                            :picker-options="pickerOptions1">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="绑定相关药品">
@@ -107,7 +108,7 @@
                     druglist: '',
                     goodsteplet: '',
                     goodstempletlockcontext:'',
-                    goodmodel:'',
+                    goodsmodel:'',
                     guaranteetime:''
                 },
                 titleLabel:'添加设备',
@@ -128,13 +129,24 @@
                 attribute:[{key:'',value:''},{key:'',value:''}],
                 attributehide:[{key:'',value:''},{key:'',value:''}],
                 edit:false,
-                fileList:[]
+                fileList:[],
+                pickerOptions1: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now();
+                    },
+                }
+            }
+        },
+        watch:{
+            $route(e){
+                this.reloadView()
             }
         },
         created() {
           
         },
         mounted(){
+            // console.log(this)
             this.edit = false
             if(this.$route.query && this.$route.query.id){
                 this.edit = this.$route.query.id
@@ -147,6 +159,9 @@
     
         },
         methods: {
+            reloadView(){
+                this.$parent.activeDate = new Date().getTime()
+            },
             addAttrItem(){
                 this.attribute.push({key:'',value:''})
             },
@@ -228,7 +243,7 @@
                 data.goodsteplet = JSON.stringify(this.attribute)
                 data.goodstempletlockcontext = JSON.stringify(this.attributehide)
                 data.druglist = this.checkboxlist
-                data.guaranteetime = data.guaranteetime /1000
+                data.guaranteetime = this.form.guaranteetime / 1000
                 let url = '/goods/add'
                 if(this.edit){
                     data.uuid = this.edit
@@ -244,12 +259,15 @@
                         this.$message.success('提交成功！');
                         if(this.edit){
                             this.getInfo()
+                        }else{
+                            //刷新页面
+                            this.reloadView()
                         }
                     }
                 })
-                
             },
             getInfo(){
+                this.$loading()
                 this.$axios.post('/goods/getgood',{goodsuuid:this.edit}).then((res) => {
                     this.$loading().close()
                     if (res.status.haserror) {
@@ -318,6 +336,9 @@
 .mr10{
         margin-right: 10px;
     }
+.mb20{
+    margin-bottom: 20px;
+}
 .center{
     text-align: center
 }

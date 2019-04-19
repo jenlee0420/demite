@@ -39,11 +39,11 @@
                 collapse: false,
                 handleOpen:true,
                 items: [
-                    {
-                        icon: 'el-icon-lx-home',
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
+                    // {
+                    //     icon: 'el-icon-lx-home',
+                    //     index: 'dashboard',
+                    //     title: '系统首页'
+                    // },
                      {
                         icon: 'el-icon-lx-cascades',
                         index: 'drugCategory',
@@ -69,42 +69,33 @@
                             }
                         ]
                     },
-                    /*{
-                        icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
-                        title: '维修组列表'
-                    },
+                
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
+                        index: 'repairapply',
                         title: '报修列表'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
+                        index: 'remoteapply',
                         title: '远程支持列表'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
-                        title: '用户管理列表'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
+                        index: 'applylist',
                         title: '用户申请列表'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
+                        index: 'delayguaranteeapply',
                         title: '用户续保申请'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'adminlist',
-                        title: '管理员列表'
+                        index: 'wxuserlist',
+                        title: '微信用户列表'
                     },
-                    {
+                   /*   {
                         icon: 'el-icon-lx-sort',
                         index: 'catelist',
                         title: '商品分类管理'

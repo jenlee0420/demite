@@ -19,13 +19,29 @@
                     <el-form-item label="设备型号">
                         <el-input v-model="form.goodsmodel"></el-input>
                     </el-form-item>
+                    <el-form-item label="医院">
+                        <el-input v-model="form.hospital"></el-input>
+                    </el-form-item>
+                    <el-form-item label="省">
+                        <el-select v-model="form.province" placeholder="请选择省" class="mr10">
+                        <el-option
+                        v-for="item in provincelist"
+                        :key="item.placeid"
+                        :label="item.placename"
+                        :value="item.placename"
+                        >
+                        </el-option>
+                    </el-select> 
+                    </el-form-item>
+                    
                     <el-form-item label="保修日期">
                         <el-date-picker
                             v-model="form.guaranteetime"
                             type="date"
                             value-format='timestamp'
                             placeholder="选择日期"
-                            :picker-options="pickerOptions1">
+                            :picker-options="pickerOptions1"
+                            :disabled="edit?true:false">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="绑定相关药品">
@@ -101,6 +117,7 @@
         name: 'baseform',
         data: function() {
             return {
+                provincelist:[],
                 form: {
                     name: '',
                     goodsdecs: '',
@@ -109,7 +126,9 @@
                     goodsteplet: '',
                     goodstempletlockcontext:'',
                     goodsmodel:'',
-                    guaranteetime:''
+                    guaranteetime:'',
+                    province:"",
+                    hospital:"",
                 },
                 titleLabel:'添加设备',
                 loading:false,
@@ -147,12 +166,21 @@
         },
         mounted(){
             // console.log(this)
-            this.edit = false
-            if(this.$route.query && this.$route.query.id){
-                this.edit = this.$route.query.id
-                this.titleLabel = '修改设备信息'
-                this.getInfo()
-            }
+
+            this.$axios.post('/place/list',{upplaceid:0}).then((res) => {
+                if (res.status.haserror) {
+                    this.$message.error(res.status.errorshowdesc)
+                } else {              
+                    this.provincelist=res.data
+                    this.edit = false
+                    if(this.$route.query && this.$route.query.id){
+                        this.edit = this.$route.query.id
+                        this.titleLabel = '修改设备信息'
+                        this.getInfo()
+                    }
+                }
+            })
+            
             
         },
         computed: {
@@ -324,7 +352,8 @@
             //         });
             //     });
             // },
-        }
+        },
+        
     }
 </script>
 

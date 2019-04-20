@@ -25,6 +25,7 @@
                 </el-table-column>
                 <el-table-column label="图片">
                     <template slot-scope="scope">
+                        <label v-if="!scope.row.fileid1 && !scope.row.fileid2">无图片信息</label>
                         <el-button type="text" class="mr10" v-if="scope.row.fileid1" @click="showImg(scope.row.fileid1)"> 查看图片</el-button>
                         <el-button type="text" v-if="scope.row.fileid2" @click="showImg(scope.row.fileid2)"> 查看图片</el-button>
                         

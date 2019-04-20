@@ -29,7 +29,7 @@
                 </el-table-column>
                 <el-table-column label="图片">
                     <template slot-scope="scope">
-                        <label v-if="!scope.row.fileid1 && !scope.row.fileid1">无图片信息</label>
+                        <label v-if="!scope.row.fileid1 && !scope.row.fileid2">无图片信息</label>
                         <el-button type="text" class="mr10" v-if="scope.row.fileid1" @click="showImg(scope.row.fileid1)"> 查看图片</el-button>
                         <el-button type="text" v-if="scope.row.fileid2" @click="showImg(scope.row.fileid2)"> 查看图片</el-button>
                     </template>
@@ -45,9 +45,12 @@
                 </template>
                 </el-table-column> -->
                 <el-table-column label="操作" width="180" align="center">
-            <template slot-scope="scope" v-if="scope.row.applystatus == 'applying'">
-                <el-button type="text" @click="dealapply(scope.row.id)"> 确认</el-button>
-                <!-- <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+            <template slot-scope="scope">
+                <div v-if="scope.row.applystatus == 'applying'">
+                <el-button type="text" @click="dealapply(scope.row.id,true)"> 确认</el-button>
+                <el-button type="text" class="red" @click="dealapply(scope.row.id,false)">拒绝</el-button>
+                </div>
+                <label v-else>{{scope.row.applystatus | applystatus2}}</label>
             </template>
                 </el-table-column>
             </el-table>
@@ -78,6 +81,14 @@
                 <el-button type="primary" @click="agreeapply">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog title="拒绝理由及建议" :visible.sync="refuse" width="30%">
+            <el-input type="textarea" rows="5" v-model="reason"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="refuse = false">取 消</el-button>
+                <el-button type="primary" @click="refuseapply">确 定</el-button>
+            </span>
+        </el-dialog>
+
         <!-- 查看图片 -->
         <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
@@ -110,6 +121,7 @@
                 del_list: [],
                 is_search: false,
                 timepicker: false,
+                refuse: false,
                 delVisible: false,
                 select_word: '',
                 totalcount: 1,
@@ -125,7 +137,7 @@
                 staffid:"",
 
                 staffList:[],
-                
+                reason:'',
                 
                 pickerOptions1: {
                     disabledDate(time) {
@@ -181,28 +193,33 @@
             filterTag(value, row) {
                 return row.tag === value;
             },
-            dealapply(id) {
+            dealapply(id,agree) {
                 this.idx = id
-                this.$axios.post('/staff/list', {
-                    limit: 99999,
-                    offset: 0,
-                    key: ""
-                }).then((res) => {
-                    this.$loading().close()
-                    if (res.status.haserror) {
-                        this.$message.error(res.status.errorshowdesc)
-                    } else {
-                        this.staffList=[]
-                        for(var i=0;i<res.data.length;i++){
-                            this.staffList.push({
-                                id:res.data[i].id,
-                                name:"工号:"+res.data[i].staffno+" 姓名:"+res.data[i].name,
-                            })
+                if(agree){
+                    this.$axios.post('/staff/list', {
+                        limit: 99999,
+                        offset: 0,
+                        key: ""
+                    }).then((res) => {
+                        this.$loading().close()
+                        if (res.status.haserror) {
+                            this.$message.error(res.status.errorshowdesc)
+                        } else {
+                            this.staffList=[]
+                            for(var i=0;i<res.data.length;i++){
+                                this.staffList.push({
+                                    id:res.data[i].id,
+                                    name:"工号:"+res.data[i].staffno+" 姓名:"+res.data[i].name,
+                                })
+                            }
+                            
+                            this.timepicker = true 
                         }
-                        
-                        this.timepicker = true 
-                    }
-                })
+                    })
+                }else{
+                    this.refuse = true
+                }
+                
                 
                 
             },
@@ -217,17 +234,29 @@
                     return
                 }
 
-                this.deal(this.idx, this.timetime)
-                this.timepicker = false
+                this.deal(this.idx, this.timetime,"",true)
+                this.timepicker = false  
+            },
+
+            refuseapply(){
+                if(this.reason==''){
+                    this.$message.error('请输入拒绝理由及建议')
+                    return
+                }
+
                 
+                this.deal(this.idx, 0,this.reason,false)
+                this.refuse = false  
             },
            
-            deal(id, time) {
+            deal(id, time,reason,agree) {
                 this.$loading()
                 this.$axios.post('/repairapply/deal', {
                     id: id,
                     staffid:parseInt(this.staffid) ,
-                    dealtime: parseInt(time)
+                    dealtime: parseInt(time),
+                    agree:agree,
+                    reason:reason,
                 }).then((res) => {
                     this.$loading().close()
                     if (res.status.haserror) {

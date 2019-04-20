@@ -8,20 +8,35 @@
         <div class="container">
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="输入设备名称" class="handle-input mr10"></el-input>  
+                <el-input v-model="hospital" placeholder="输入医院名称" class="handle-input mr10"></el-input> 
+                <el-select v-model="province" placeholder="请选择省" class="mr10">
+                    <el-option
+                    v-for="item in provincelist"
+                    :key="item.placeid"
+                    :label="item.placename"
+                    :value="item.placename"
+                    >
+                    </el-option>
+                </el-select> 
+                  
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
                 <el-button type="primary" plain icon="search" @click="$router.push('/equipmentAdd')">新增设备</el-button>
             </div>
             <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column prop="goodsuuid" label="编号">
                 </el-table-column>
-                <el-table-column prop="" label="图片" >
+                <!-- <el-table-column prop="" label="图片" >
                     <template slot-scope="scope">
                         <img :src="getImgSrc(scope.row.goodpicdata)" width="80" />
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column prop="name" label="设备名称" >
                 </el-table-column>
-                <el-table-column label="属性" >
+                <el-table-column prop="hospital" label="医院">
+                </el-table-column>
+                <el-table-column prop="province" label="省">
+                </el-table-column>
+                <!-- <el-table-column label="属性" >
                     <template slot-scope="scope">
                         <span v-for="(item,index) in displayJSON(scope.row.goodsteplet) " :key="index" v-if="item.key!=''">
                            {{item.key}}:{{item.value}}<br>
@@ -34,7 +49,7 @@
                             {{item.key}}:{{item.value}}<br>
                         </span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row.goodsuuid)">编辑</el-button>
@@ -56,7 +71,21 @@
         name: 'medicine',
         components:{
             vAdd
-        },        
+        },   
+        mounted(){
+            this.$axios.post('/place/list',{upplaceid:0}).then((res) => {
+                if (res.status.haserror) {
+                    this.$message.error(res.status.errorshowdesc)
+                } else {
+
+                    this.provincelist=res.data
+                    this.provincelist.unshift({
+                        "placeid":0,
+                        "placename":"请选择"
+                    })
+                }
+            })
+        },     
         data() {
             return {
                 loading:false,
@@ -80,6 +109,8 @@
                 },
                 category:[],
                 search_cate:'',
+                hospital:"",
+                province:"请选择",
                 idx: -1,
                
             }
@@ -106,12 +137,17 @@
                 this.getData();
             },
             getData() {
+                if(this.province=="请选择"){
+                    this.province=""
+                }
                 this.loading = true
                 this.$axios.post('/goods/list', {
                     page: this.cur_page,
                     key: this.select_word,
                     limit: this.limit,
                     offset: this.limit * this.cur_page,
+                    hospital:this.hospital,
+                    province:this.province,
                 }).then((res) => {
                     this.loading=false
                     if(res.status.haserror){

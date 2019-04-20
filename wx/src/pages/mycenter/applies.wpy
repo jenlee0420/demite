@@ -52,6 +52,7 @@ export default class applies extends wepy.page {
       },
   }
   getinfo(){
+      this.showloading()
       wepy.request({
         method:'post',
         url:'/api/wxuser/listdrugbygood',
@@ -59,6 +60,7 @@ export default class applies extends wepy.page {
           gooduuid: this.gooduuid,
         }
       }).then(res=>{
+          this.showloading(false)
         if (res.status.haserror == false) {
             this.tableData = res.data
             let data = res.data

@@ -103,6 +103,8 @@ export default class repairorder extends wepy.page {
               applystatus="后台已确认"
             }else if(res.data[i].applystatus=="finish"){
               applystatus="维修完成"
+            }else if(res.data[i].applystatus=="refuse"){
+              applystatus="申请已拒绝"
             }
             
 

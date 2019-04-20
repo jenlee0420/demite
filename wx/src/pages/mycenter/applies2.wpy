@@ -13,7 +13,10 @@
 <template>
   <view class="container applies">
     <view class="panel">
-        <view>仪器</view>
+        <view>仪器:</view>
+        <view class="mt30">
+            {{goodsname}}
+        </view>
     </view>
     <view class="panel">
         <view>试剂</view>
@@ -54,10 +57,12 @@ export default class applies2 extends wepy.page {
   data = {
     gooduuid:'',
     currid:'',
-    currdata:{}
+    currdata:{},
+    goodsname:''
   }
   methods = {}
   getinfo(){
+      this.showloading()
       wepy.request({
         method:'post',
         url:'/api/wxuser/listdrugbygood',
@@ -65,11 +70,13 @@ export default class applies2 extends wepy.page {
           gooduuid: this.gooduuid,
         }
       }).then(res=>{
+          this.showloading(false)
         if (res.status.haserror == false) {
             let data = res.data
             data.forEach(e => {
                 if(e.id == this.currid){
-                  this.currdata = e
+                    this.goodsname = res.goodname
+                    this.currdata = e
                 }
             });
             this.$apply()

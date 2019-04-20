@@ -231,6 +231,8 @@
                             }else if(res.data.list[i].currentstatus=="finish"){
                                 text="客户已确认"
                                 this.comfirm=false
+                            }else if(res.data.list[i].currentstatus=="refuse"){
+                                text="已拒绝。   拒绝原因："+res.data.list[i].reason
                             }
 
                             this.detal.unshift({

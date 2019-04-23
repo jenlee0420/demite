@@ -10,7 +10,7 @@ page{
 
 <template>
   <view class="container">
-    保修声明内容
+    <rich-text type = text nodes="{{info}}"></rich-text>
   </view>
 </template>
 
@@ -24,9 +24,103 @@ export default class qualityinfo extends wepy.page {
   components = {}
   mixins = [Mixin]
   data = {
+    info:`<p style="text-align: center;">
+    <strong><span style="color:black">保修声明</span></strong>
+</p>
+<p>
+    <strong><span style="color:black"></span></strong>
+</p>
+<p>
+    <strong><span style="font-size:16px;color:black">一：Anax为全自动二维液相色谱产品提供一年有限保修</span></strong>
+</p>
+<p>
+    <span style="font-size: 12pt; font-family: 等线;">&nbsp; &nbsp; 我们一直在为做出卓越性能的分析仪器而努力。为了实现这一承诺，我们始终遵循最严苛的制造标准。我们承诺您购买的产品自购买之日起一年内享有有限保修服务，保障产品不会因材料的物理缺陷或工艺缺陷而影响正常使用。</span>
+</p>
+<p>
+    <span style="font-size: 12pt; font-family: 等线;"></span>
+</p>
+<p>
+    <strong><span style="font-size:16px;color:black">二：保修服务</span></strong>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">提供每年至少1名的客户培训服务名额，免除培训费用，价值4500元；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">工程师每年至少两次对仪器进行免费的巡检，主动判断仪器工况，提前预警，提前处理；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">合同期内，工作时间内提供免费的远程服务；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">合同期内，出现诊断故障，优先提供电话、视频等远程技术指导，及时消除故障，如确认超出用户处理能力范畴，工程免费上门服务；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">保养期内，提供不高于五次免费上门服务，所有非人为损坏和不可抗力故障均免费诊断，维修材料及配件费用用户承担；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">对发生故障的仪器进行快速响应，优先应对，24小时内派出工程师处理；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">每年一次的仪器全面检修维护保养服务：</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">1</span><span style="font-size:15px;line-height:150%;color:black">、外部条件检查，包括电源、气源或流动相等，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">2</span><span style="font-size:15px;line-height:150%;color:black">、仪器内部清洁、润滑，如检测器、电路板和电机等，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">3</span><span style="font-size:15px;line-height:150%;color:black">、仪器关键部件的检查和校正，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">4</span><span style="font-size:15px;line-height:150%;color:black">、更换消耗品和易损件，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">5</span><span style="font-size:15px;line-height:150%;color:black">、软件运行检查并更新至最新版本，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">6</span><span style="font-size:15px;line-height:150%;color:black">、仪器性能测试，</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px;text-indent:0;line-height:150%">
+    <span style="font-size:15px;line-height:150%;color:black">7</span><span style="font-size:15px;line-height:150%;color:black">、维护保养结果和文件确认；</span>
+</p>
+<p class="MsoListParagraph" style="margin-left:28px">
+    <span style="font-size:16px;font-family:Wingdings;color:black">l<span style="font:9px &#39;Times New Roman&#39;">&nbsp; </span></span><span style="font-size:16px;color:black">所有消耗性材料不在免费维修保养范围之内，如试剂、质控、色谱柱等。</span>
+</p>
+<p>
+    <span style="font-size:16px;color:black">&nbsp;</span>
+</p>
+<p style="text-indent:32px">
+    <span style="font-size:16px;color:black">本保修条款的有限保修不涵盖因操作不当、意外或保养不当而造成的产品损坏，也不对任何因产品日常使用“老化或磨损”而造成的损伤负责。如产品发生任何形式的改装，外形或结构被任意形式的篡改，保修条款将自动失效。我们保留升级产品、更改附件、修改文件的权利。 </span>
+</p>
+<p>
+    <span style="font-size:16px;color:black">&nbsp;</span>
+</p>
+<p style="text-indent:32px">
+    <span style="font-size:16px;color:black">如您在正常使用情况下，产品发生任何故障，请发送邮件至 office@anax.com.cn 联络售后客服中心。请保管好您的三包凭证及相关凭据，作为保修服务的重要依据。 </span>
+</p>
+<p>
+    <span style="font-size:16px;color:black">&nbsp;</span>
+</p>
+<p>
+    <strong><span style="font-size:16px;color:black">三：延展保修计划</span></strong>
+</p>
+<p style="text-indent:32px">
+    <span style="font-size:16px;color:black">若您产品超过时限，希望您能及时延展保修，您可选择全面型保养服务和实用型保养服务两种延展保修方案。详细请可咨询在线客服或致电4000176898。</span>
+</p>
+<p>
+    <span style="font-size:16px;color:black">&nbsp;</span>
+</p>
+<p style="text-indent:32px">
+    <span style="font-size:16px;color:black">Anax</span><span style="font-size:16px;color:black">致力于为全世界的医师和医学科研工作者提供卓越的分析仪器，您使用的产品按照高标准设计制造，合理的使用及适当的保养，能让设备更久更好的的伴您工作。</span>
+</p>
+<p>
+    <span style="font-size: 12pt; font-family: 等线;"></span><br/>
+</p>`
   }
   methods = {}
   onLoad() {
+    this.transContent(this.info)
   }
 }
 </script>

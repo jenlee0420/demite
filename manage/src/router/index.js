@@ -64,9 +64,19 @@ const routes=[
                 meta: { title: '报修列表' }
             },
             {
+                path: '/repairapplyDetail',
+                component: resolve => require(['../components/page/repairapplyDetail.vue'], resolve),
+                meta: { title: '报修详情' }
+            },
+            {
                 path: '/remoteapply',
                 component: resolve => require(['../components/page/remoteapply.vue'], resolve),
                 meta: { title: '远程申请列表' }
+            },
+            {
+                path: '/remoteapplyDetail',
+                component: resolve => require(['../components/page/remoteapplyDetail.vue'], resolve),
+                meta: { title: '远程申请详情' }
             },
             {
                 path: '/wxuserlist',

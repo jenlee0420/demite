@@ -37,6 +37,9 @@ const filters = {
             case 'comfirm':
                 re = '已确认'
                 break;
+            case 'finish':
+                re = '已完成'
+                break;
             case 'refuse':
                 re = '已拒绝'
                 break;

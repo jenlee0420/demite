@@ -34,23 +34,18 @@
                         <el-button type="text" v-if="scope.row.fileid2" @click="showImg(scope.row.fileid2)"> 查看图片</el-button>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column label="创建时间">
+                <el-table-column label="状态">
                     <template slot-scope="scope">
-                            {{transTime(scope.row.createtime)}}
+                        {{scope.row.applystatus | applystatus2}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="applystatus" label="申请状态" >
-                <template slot-scope="scope">
-                    {{scope.row.applystatus | applystatus2}}
-                </template>
-                </el-table-column> -->
                 <el-table-column label="操作" width="180" align="center">
             <template slot-scope="scope">
                 <div v-if="scope.row.applystatus == 'applying'">
                 <el-button type="text" @click="dealapply(scope.row.id,true)"> 确认</el-button>
                 <el-button type="text" class="red" @click="dealapply(scope.row.id,false)">拒绝</el-button>
                 </div>
-                <label v-else>{{scope.row.applystatus | applystatus2}}</label>
+                <el-button type="text" v-else @click="$router.push({path:'/repairapplyDetail?id='+scope.row.id})">查看详情</el-button>
             </template>
                 </el-table-column>
             </el-table>

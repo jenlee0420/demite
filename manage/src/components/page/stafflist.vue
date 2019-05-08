@@ -23,7 +23,7 @@
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <!-- <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -184,13 +184,13 @@
             handleDelete(index, row) {
                 const item = this.tableData[index];
                 this.idx = item.id;
-                this.$confirm('确认删除该条信息？').then((res)=>{
+                this.$confirm('确认删除该员工？').then((res)=>{
                     this.delItem()
                 }).catch(_ => {});
             },
             delItem(){
                 this.$loading()
-                this.$axios.post('staff/del', {id:this.idx}).then((res) => {
+                this.$axios.post('/staff/del', {id:this.idx}).then((res) => {
                     this.$loading().close()
                     this.idx = -1
                     if(res.status.haserror){

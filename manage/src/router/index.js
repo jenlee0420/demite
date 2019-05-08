@@ -84,6 +84,16 @@ const routes=[
                 meta: { title: '微信用户列表' }
             },
             {
+                path: '/wxuserinfo',
+                component: resolve => require(['../components/page/wxUserInfo.vue'], resolve),
+                meta: { title: '微信用户列表' }
+            },
+            {
+                path: '/userlist',
+                component: resolve => require(['../components/page/userlist.vue'], resolve),
+                meta: { title: '用户列表' }
+            },
+            {
                 path: '/catelist',
                 component: resolve => require(['../components/page/catelist.vue'], resolve),
                 meta: { title: '商品分类管理' }

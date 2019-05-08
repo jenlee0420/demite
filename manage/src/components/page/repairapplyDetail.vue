@@ -7,7 +7,7 @@
         </div>
         <div class="container">
             <div class="form-box">
-                <label>状态：{{data.status | applystatus2}}</label><br/>
+                <label>状态：{{data.status | applystatus2}}</label><br/><br>
                 <div  v-if="data.status == 'applying'">
                     <label>操作：</label>
                     <el-button type="primary" class="mb20" @click="dealapply(id,true)">确认</el-button>

@@ -8,6 +8,16 @@
         <div class="container">
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="筛选设备名" class="handle-input mr10"></el-input>
+                <label  class="mr10">状态筛选</label>
+                <el-select v-model="applystatus" placeholder="请选择" class="mr10">
+                        <el-option
+                        v-for="item in statuslist"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>  
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable">
@@ -130,7 +140,7 @@
                 idx: -1,
                 timetime:'',
                 staffid:"",
-
+                
                 staffList:[],
                 reason:'',
                 
@@ -138,7 +148,24 @@
                     disabledDate(time) {
                         return time.getTime() < Date.now();
                     },
-                }
+                },
+                applystatus:'',
+                statuslist:[
+                    {
+                    id:'',
+                    name:'全部'
+                },{
+                    id:'applying',
+                    name:'申请中'
+                },
+                {
+                    id:'finish',
+                    name:'已完成'
+                },
+                {
+                    id:'refuse',
+                    name:'已拒绝'
+                }]  
             }
         },
         created() {
@@ -167,6 +194,7 @@
                     name: this.select_word,
                     limit: this.limit,
                     offset: this.limit * this.cur_page,
+                    applystatus: this.applystatus
                 }).then((res) => {
                     this.loading = false
                     if (res.status.haserror) {

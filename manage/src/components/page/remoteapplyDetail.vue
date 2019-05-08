@@ -43,7 +43,7 @@
             </div>
             <div class="panel ">
                 <div class="timeline">
-                    <div class="timeItem" v-for="item in datalist">
+                    <div class="timeItem" v-for="(item,index) in datalist" :key="index">
                         <span class="dot"></span>
                         <div class="r_text">
                             <span>{{item.text}}</span>

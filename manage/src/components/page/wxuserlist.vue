@@ -25,15 +25,21 @@
                 </el-table-column>
                 <el-table-column prop="gender" label="性别" >
                 </el-table-column>
-<!--                 
-                
+                <el-table-column prop="status" label="状态" >
+                </el-table-column>   
                 
                 <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope" v-if="scope.row.applystatus != 'unlock'">
-                        <el-button type="text"  @click="dealapply(scope.row.id,true)">同意</el-button>
-                        <el-button type="text"  class="red" @click="dealapply(scope.row.id,false)">拒绝</el-button>
+                    <template slot-scope="scope">
+                    <div v-if="scope.row.shield==false">
+                        <el-button type="text"  @click="dealapply(scope.row.id,!scope.row.shield)" prop=scope.row.deal>屏蔽</el-button>
+                    </div>
+                    <div v-if="scope.row.shield==true">
+                        <el-button type="text"  @click="dealapply(scope.row.id,!scope.row.shield)" prop=scope.row.deal>取消屏蔽</el-button>
+                    </div>
+                    <el-button type="text" @click="$router.push({path:'/wxuserinfo?id='+scope.row.id})">详情</el-button>
                     </template>
-                </el-table-column> -->
+                </el-table-column>
+                
             </el-table>
             <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="limit" :total="totalcount">
@@ -111,6 +117,18 @@
                         this.$message.error(res.status.errorshowdesc)
                     }else{
                         this.tableData = res.data?res.data:[];
+
+                        for(var i=0;i<res.data.length;i++){
+                            if(res.data[i].shield){
+                                this.tableData[i].status="已屏蔽"
+                                this.tableData[i].deal="取消屏蔽"
+                            }else{
+                                this.tableData[i].status="正常"
+                                this.tableData[i].deal="屏蔽"
+                            }
+                            
+                        }
+
                         this.totalcount = res.count
                     }
                 })
@@ -136,7 +154,7 @@
             },
             deal(id,bool){
                 this.$loading()
-                this.$axios.post('/unlockapply/dealapply', {id:id,agree:bool}).then((res) => {
+                this.$axios.post('/wxuser/shield', {id:id,shield:bool}).then((res) => {
                     this.$loading().close()
                     if(res.status.haserror){
                         this.$message.error(res.status.errorshowdesc)

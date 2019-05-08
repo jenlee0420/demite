@@ -181,7 +181,7 @@
             },
             delItem(uid){
                 this.$loading()
-                this.$axios.post('drug/del', {id:this.idx}).then((res) => {
+                this.$axios.post('/goods/del', {id:this.idx}).then((res) => {
                     this.$loading().close()
                     this.idx = -1
                     if(res.status.haserror){

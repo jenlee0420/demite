@@ -6,7 +6,7 @@
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
-                            <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
+                            <i></i><span slot="title">{{ item.title }}</span>
                         </template>
                         <template v-for="subItem in item.subs">
                             <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
@@ -23,7 +23,7 @@
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
+                        <i></i><span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
@@ -94,6 +94,11 @@
                         icon: 'el-icon-lx-cascades',
                         index: 'wxuserlist',
                         title: '微信用户列表'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'userlist',
+                        title: '用户列表'
                     },
                    /*   {
                         icon: 'el-icon-lx-sort',
@@ -189,9 +194,9 @@
         },
         created(){
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
-            bus.$on('collapse', msg => {
-                this.collapse = msg;
-            })
+            // bus.$on('collapse', msg => {
+            //     this.collapse = msg;
+            // })
         }
     }
 </script>
@@ -209,7 +214,7 @@
         width: 0;
     }
     .sidebar-el-menu:not(.el-menu--collapse){
-        width: 250px;
+        width: 160px;
     }
     .sidebar > ul {
         height:100%;

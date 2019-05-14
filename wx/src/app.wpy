@@ -23,13 +23,13 @@ page {
     config = {
       pages: [
         // 'pages/icon',
+        'pages/mycenter/repair', 
         'pages/mycenter/home',
         'pages/after_sale/equipment',
         'pages/mycenter/equipment',
-        'pages/mycenter/repair', 
+        // 'pages/mycenter/repair', 
         'pages/after_sale/repairlist',
         'pages/mycenter/bindGoods',
-        
         'pages/mycenter/logistics',
         'pages/after_sale/repairDetail',
         'pages/after_sale/repairorder',

@@ -9,13 +9,30 @@
             <div class="handle-box">
                 <el-button type="primary" plain icon="search" @click="editVisible = true">新增分类</el-button>
             </div>
+            
             <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left">
+                            <el-form-item>
+                                <span>{{ props.row.name}}</span>
+                                <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            </el-form-item>
+                            <el-form-item>
+                                <span>{{ props.row.name}}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+            
                 <el-table-column prop="name" label="名称" >
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button type="text" icon="el-icon-plus" @click="editVisible">新增</el-button>
+                        <!-- <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
                     </template>
                 </el-table-column>
             </el-table>

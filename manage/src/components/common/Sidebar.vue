@@ -69,41 +69,41 @@
                             }
                         ]
                     },
-                    {
-                        icon: 'el-icon-lx-copy',
-                        index: 'appcenter',
-                        title: '应用中心',
-                        subs: [
-                            {
-                                index: 'appcenter',
-                                title: '视频中心'
-                            },
-                            {
-                                index:'equipmentAdd',
-                                title:'资料中心'
-                            },
-                            {
-                                index:'documentlist?type=case',
-                                title:'解决方案'
-                            },
-                            {
-                                index:'document',
-                                title:'资质认证'
-                            },
-                            {
-                                index:'document',
-                                title:'科学项目'
-                            },
-                            {
-                                index:'equipmentAdd',
-                                title:'软件下载'
-                            },
-                            {
-                                index:'equipmentAdd',
-                                title:'应用问答'
-                            }
-                        ]
-                    },
+                    // {
+                    //     icon: 'el-icon-lx-copy',
+                    //     index: 'appcenter',
+                    //     title: '应用中心',
+                    //     subs: [
+                    //         {
+                    //             index: 'appcenter',
+                    //             title: '视频中心'
+                    //         },
+                    //         {
+                    //             index:'equipmentAdd',
+                    //             title:'资料中心'
+                    //         },
+                    //         {
+                    //             index:'documentlist?type=case',
+                    //             title:'解决方案'
+                    //         },
+                    //         {
+                    //             index:'document',
+                    //             title:'资质认证'
+                    //         },
+                    //         {
+                    //             index:'document',
+                    //             title:'科学项目'
+                    //         },
+                    //         {
+                    //             index:'equipmentAdd',
+                    //             title:'软件下载'
+                    //         },
+                    //         {
+                    //             index:'equipmentAdd',
+                    //             title:'应用问答'
+                    //         }
+                    //     ]
+                    // },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'repairapply',

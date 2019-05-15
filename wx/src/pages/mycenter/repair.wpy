@@ -58,7 +58,7 @@
     </view>
     <view class="panel">
       <view class="item">
-       <picker bindchange="bindPickerChange" class="flex-1" range-key="name" range="{{array}}">
+       <picker mode="multiSelector" bindcolumnchange="bindMultiPickerColumnChange" bindchange="bindPickerChange" class="flex-1" range-key="name" range="{{array}}">
         <view class="picker">
           <input type="text" value="{{thisver}}" disabled placeholder="请选择设备机型" />
         </view>
@@ -119,7 +119,8 @@
     components = {}
     mixins = [Mixin]
     data = {
-      array:[{id:0,name:'设备1'},{id:1,name:'设备2'}],
+      array:[[{id:0,name:'设备1'},{id:1,name:'设备2'}],[{id:1,name:'设备22'}]],
+      arraylist:[[{id:0,name:'设备122'},{id:1,name:'设备211'}],[{id:0,name:'设备a122'},{id:1,name:'a设备211'}]],
       array2:[{id:0,name:'故障1'},{id:1,name:'故障2'}],
       thisver:'',
       uuid:"",
@@ -132,7 +133,8 @@
       fileid1:"",
       fileid1url:"",
       fileid2:"",
-      fileid2url:""
+      fileid2url:"",
+      thisver:''
     }
     methods = {
       submit(e){
@@ -210,9 +212,16 @@
       },
 
       bindPickerChange(e){
+        //多列选择器要有默认值
         if(e.detail){
-          this.thisver=this.array[e.detail.value].name
+          this.thisver=this.array[e.detail.value[1]].name 
         }
+      },
+      bindMultiPickerColumnChange(e){
+        if(e.detail.column == 0){
+          this.array[1] = this.arraylist[e.detail.value]
+        }
+        this.$apply()
       },
 
       bindPickerChange2(e){

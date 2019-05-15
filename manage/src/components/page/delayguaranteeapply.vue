@@ -8,6 +8,16 @@
         <div class="container">
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="筛选设备名" class="handle-input mr10"></el-input>
+                <label  class="mr10">状态筛选</label>
+                <el-select v-model="applystatus" placeholder="请选择" class="mr10">
+                        <el-option
+                        v-for="item in statuslist"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                        >
+                        </el-option>
+                    </el-select> 
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable">
@@ -73,6 +83,23 @@
         name: 'basetable',
         data() {
             return {
+                statuslist:[
+                    {
+                    id:'',
+                    name:'全部'
+                },{
+                    id:'applying',
+                    name:'申请中'
+                },
+                {
+                    id:'finish',
+                    name:'已完成'
+                },
+                {
+                    id:'refuse',
+                    name:'已拒绝'
+                }],
+                applystatus:"",
                 tableData: [],
                 cur_page: 0,
                 limit: 10,
@@ -136,7 +163,7 @@
                     page: this.cur_page,
                     goodname: this.select_word,
                     nickname: "",
-                    applystatus: "",
+                    applystatus: this.applystatus,
                     limit: this.limit,
                     offset: this.limit * this.cur_page,
                 }).then((res) => {

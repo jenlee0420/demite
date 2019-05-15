@@ -13,6 +13,7 @@ import wepy from 'wepy'
 import Mixin from '@/mixins/global'
 export default class Index extends wepy.page {
   config = {
+      navigationBarTitleText: '应用详情',
   }
   components = {}
   mixins = [Mixin]

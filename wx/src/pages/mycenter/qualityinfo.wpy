@@ -10,7 +10,7 @@ page{
 
 <template>
   <view class="container">
-    <rich-text type = text nodes="{{info}}"></rich-text>
+    <rich-text type = 'text' nodes="{{info}}"></rich-text>
   </view>
 </template>
 

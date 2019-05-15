@@ -1,84 +1,95 @@
 <style lang="less">
-
-  @primary-color: #d74a45;
-  @default-Fcolor: #2d2d2d;
-  @nav-top-h: 80rpx;
-
-  .nav-container {
-    position: fixed;
-    background: #fff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    height: @nav-top-h;
-    padding: 0 100rpx;
-    font-size: 28rpx;
-    color: @default-Fcolor;
-    top:0;
-    width:100%;
-    box-sizing:border-box;
-
-    .active {
+  .navTop {
+    padding: 0 40rpx;
+    border-top: 1rpx solid #dcdcdc;
+    border-bottom: 1rpx solid #dcdcdc;
+    // height: 90rpx;
+    .scroll {
       display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      color: @primary-color;
-      position: relative;
-      .public_icon2_location {
-        left:-32rpx;
-        top:2rpx;
-        position: absolute;
+      white-space: nowrap;
+      width: 1600rpx;
+      
+      .items {
+        min-width: 100rpx;
+        
+        margin-right: 30rpx;
+        display: inline-block;
+        color: #333;
+        font-size: 32rpx;
+        .active {
+          color: @theme;
+          border-bottom: 5rpx solid @theme;
+          height:90rpx;
+          line-height: 90rpx;
+          box-sizing: border-box;
+        }
       }
     }
-    .zhuanfa {
-      position: absolute;
-      right: 48rpx;
-      width: 42rpx;
-      height: 42rpx;
-      button{
-        background-color: transparent;
-            outline: none;
-            border-radius: 0px;
-            border: none;
-      }
-      button::after {
-            border: none;
-        }
+    .appIcon {
+      margin-right: 10rpx;
+      margin-top: 5rpx;
     }
   }
 </style>
 <template>
-  <view class="nav-container">
-    <repeat for="{{tab}}" key="index" index="index" item="item">
-      <view class="{{index == activeIndex ? 'active' : ''}}" bindtap="changeindex({{index}})">
-          <span wx:if="{{index == activeIndex}}" class="public_icon2_location" ></span>
-          {{index == 0 ? words.combination_one : item}}</view>
-    </repeat>
-    <view class="zhuanfa">
-      <button open-type="share" class="public_icon1_share"> </button>
-    </view>
+  <view class="navTop">
+    <scroll-view scroll-x class="scroll" style="width: 100%">
+      <view wx:for="{{navArr}}" wx:key="{{index}}" class="items" bindtap="changeindex({{index}})">
+        <view class="flex flex-acenter">
+          <text class="{{item.class}} appIcon"></text>
+          <text class=" {{index == activeIndex ? 'active' : ''}}">{{item.text}}</text>
+        </view> 
+      </view>
+    </scroll-view>
   </view>
 </template>
 <script>
   import wepy from 'wepy'
-
   export default class TopNav extends wepy.component {
     components = {};
-
-    data = {
-      tab: ['游学', '详情', '须知', '评价']
-    };
-
     props = {
       activeIndex: String,
-      words:Object,
+      words: Object,
+    };
+    data = {
+      navArr: [{
+        link: '/pages/mycenter/equipment',
+        text: '推荐',
+        class: 'mycenter1'
+      }, {
+        link: '/pages/mycenter/equipment',
+        text: '视频中心',
+        class: 'mycenter1'
+      }, {
+        link: '/pages/after_sale/repairlist',
+        text: '资料中心',
+        class: 'mycenter2'
+      }, {
+        link: '',
+        text: '解决方案',
+        class: 'mycenter3'
+      }, {
+        link: '',
+        text: '资质认证',
+        class: 'mycenter4'
+      }, {
+        link: '/pages/after_sale/afterSale',
+        text: '科学项目',
+        class: 'mycenter5'
+      }, {
+        link: '/pages/after_sale/afterSale',
+        text: '软件下载',
+        class: 'mycenter5'
+      }, {
+        link: '/pages/after_sale/afterSale',
+        text: '应用问答',
+        class: 'mycenter5'
+      }],
     };
     methods = {
-        changeindex(index){
-            this.$emit('changeactiveIndex',index)
-        }
+      changeindex(index) {
+        this.$emit('changeactiveIndex', index)
+      }
     }
   }
 </script>

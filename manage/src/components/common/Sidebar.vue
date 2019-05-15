@@ -39,20 +39,20 @@
                 collapse: false,
                 handleOpen:true,
                 items: [
-                    // {
-                    //     icon: 'el-icon-lx-home',
-                    //     index: 'dashboard',
-                    //     title: '系统首页'
-                    // },
-                     {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'drugCategory',
-                        title: '药品分类列表'
-                    },
                     {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'medicine',
-                        title: '药品列表'
+                        icon: 'el-icon-lx-home',
+                        index: 'dashboard',
+                        title: '药品管理',
+                        subs: [
+                            {
+                                index: 'drugCategory',
+                                title: '药品分类列表'
+                            },
+                            {
+                                 index: 'medicine',
+                                title: '药品列表'
+                            }
+                        ]
                     },
                     {
                         icon: 'el-icon-lx-calendar',
@@ -69,7 +69,41 @@
                             }
                         ]
                     },
-                
+                    {
+                        icon: 'el-icon-lx-copy',
+                        index: 'appcenter',
+                        title: '应用中心',
+                        subs: [
+                            {
+                                index: 'appcenter',
+                                title: '视频中心'
+                            },
+                            {
+                                index:'equipmentAdd',
+                                title:'资料中心'
+                            },
+                            {
+                                index:'documentlist?type=case',
+                                title:'解决方案'
+                            },
+                            {
+                                index:'document',
+                                title:'资质认证'
+                            },
+                            {
+                                index:'document',
+                                title:'科学项目'
+                            },
+                            {
+                                index:'equipmentAdd',
+                                title:'软件下载'
+                            },
+                            {
+                                index:'equipmentAdd',
+                                title:'应用问答'
+                            }
+                        ]
+                    },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'repairapply',
@@ -98,7 +132,7 @@
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'userlist',
-                        title: '用户列表'
+                        title: '管理员列表'
                     },
                    /*   {
                         icon: 'el-icon-lx-sort',
@@ -111,11 +145,6 @@
                         title: '维修组员管理'
                     }, 
                     /* {
-                        icon: 'el-icon-lx-copy',
-                        index: 'tabs',
-                        title: 'tab选项卡'
-                    },
-                    {
                         icon: 'el-icon-lx-calendar',
                         index: '3',
                         title: '表单相关',

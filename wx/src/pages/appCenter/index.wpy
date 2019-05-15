@@ -1,0 +1,127 @@
+<style lang="less">
+  page {
+    background-color: #fff;
+  }
+  .appcenter {
+    .Recommend {
+      height: 280rpx;
+      background-color: #e8e8e8;
+      swiper {
+        height: 280rpx;
+      }
+    }
+    .videobox {
+      width: 620rpx;
+      height: 200rpx;
+      border-radius: 10rpx;
+      background-color: cadetblue;
+      transition: all 0.3s;
+      &.active {
+        height: 226rpx;
+      }
+    }
+    .videolist {
+      width: 100%;
+      margin-top: 30rpx;
+      font-size: 32rpx;
+      image {
+        width: 220rpx;
+        height: 120rpx;
+      }
+      &>view {
+        border-top: 1rpx solid @bColor;
+        border-bottom: 1rpx solid @bColor;
+        min-height: 90rpx;
+        padding: 0 30rpx;
+      }
+      .videoitem {
+        padding: 30rpx;
+        border-top: 0rpx solid @bColor;
+        .title{
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          display: -webkit-box;
+        }
+        .desc {
+          font-size: 24rpx;
+          color: #a5a5a5;
+          margin-top: 15rpx;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+          display: -webkit-box;
+        }
+      }
+    }
+  }
+</style>
+
+<template>
+  <view class="container appcenter">
+    <TopNav activeIndex='0'></TopNav>
+    <view class="Recommend">
+      <swiper circular="{{true}}" previous-margin="50rpx" next-margin="50rpx" @change="bannerChange">
+        <repeat for="{{bannerData}}" key="index">
+          <swiper-item class="flex flex-jcenter flex-acenter">
+            <view class="videobox {{currentBannerIndex == index?'active':''}}">{{item.id}}
+            </view>
+          </swiper-item>
+        </repeat>
+      </swiper>
+    </view>
+    <view class="videolist">
+      <view class="flex flex-acenter"><text class="flex-1">专家讲堂</text>
+        <text class="arrow_icon"></text>
+      </view>
+      <view class="flex videoitem">
+        <view class="flex-1 mr40">
+          <text class="title">热门视频，专家讲堂热门视频专家  讲堂专家讲堂，专家讲堂？</text>
+          <text class="desc">简短介绍简短介绍简短介绍简短介绍简短介绍简短介绍简短介绍简短介绍</text>
+        </view>
+        <view>
+          <image mode="aspectFill" src="https://user-gold-cdn.xitu.io/2018/7/31/164eeff38a480f5c?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1" />
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Mixin from '@/mixins/global'
+  import TopNav from '@/components/TopNav'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '应用中心',
+    }
+    components = {
+      TopNav
+    }
+    mixins = [Mixin]
+    data = {
+      bannerData: [{
+          src: '',
+          id: 0
+        },
+        {
+          src: '',
+          id: 1
+        },
+        {
+          src: '',
+          id: 2
+        },
+      ],
+      currentBannerIndex: 0,
+    }
+    methods = {
+      navTo() {},
+      bannerChange(e) {
+        let current = e.detail.current;
+        this.currentBannerIndex = current;
+      }
+    }
+    onLoad() {}
+  }
+</script>

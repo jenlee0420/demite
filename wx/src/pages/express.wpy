@@ -41,9 +41,6 @@
 <script>
 import wepy from 'wepy'
 import Mixin from '@/mixins/global'
-// import KDNWidget from '@/js/KDNWidget.js'
-// var KDNWidget = require('@/js/KDNWidget.js')
-// import {KDNWidget} from '@/js/KDNWidget.js'
 export default class Index extends wepy.page {
   config = {
       navigationBarTitleText: 'demite',

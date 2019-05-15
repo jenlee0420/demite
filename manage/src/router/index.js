@@ -104,6 +104,16 @@ const routes=[
                 meta: { title: '商品分类管理' }
             },
             {
+                path: '/document',
+                component: resolve => require(['../components/page/appcenter/document.vue'], resolve),
+                meta: { title: '图文管理' }
+            },
+            {
+                path: '/documentlist',
+                component: resolve => require(['../components/page/appcenter/documentlist.vue'], resolve),
+                meta: { title: '文档管理' }
+            },
+            {
                 path: '/tabs',
                 component: resolve => require(['../components/page/Tabs.vue'], resolve),
                 meta: { title: 'tab选项卡' }

@@ -16,7 +16,6 @@
                     :value="search_cate"
                     clearable
                     change-on-select
-                    show-all-levels="false"
                     >
                 </el-cascader>
                 <!-- <el-select v-model="search_cate" placeholder="请选择" class="mr10">

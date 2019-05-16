@@ -10,34 +10,10 @@
                 <el-button type="primary" plain icon="search" @click="editVisible = true;subCmd =false">新增一级分类</el-button>
             </div>
             
-            <!-- <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="expand">
-                    <template slot-scope="props">
-                        <el-form label-position="left">
-                            <el-form-item>
-                                <span>{{ props.row.name}}</span>
-                                <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                                <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                            </el-form-item>
-                            <el-form-item>
-                                <span>{{ props.row.name}}</span>
-                            </el-form-item>
-                        </el-form>
-                    </template>
-                </el-table-column>
             
-                <el-table-column prop="name" label="名称" >
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-plus" @click="addSub(scope.row.name)">添加子类</el-button>
-                    </template>
-                </el-table-column>
-            </el-table> -->
             <el-tree
                 class="tree"
                 :data="tableData"
-                :props="defaultProps"
                 default-expand-all
                 node-key="id"
                 :expand-on-click-node="false"
@@ -89,9 +65,9 @@
                 },
                 idx: -1,
                 defaultProps: {
-          children: 'data',
-          label: 'name'
-        },
+                    children: 'data',
+                    label: 'name'
+                },
                 rules: {
                     name: [
                         { required: true, message: '请输入用户名', trigger: 'blur' }

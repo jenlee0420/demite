@@ -8,8 +8,18 @@
         <div class="container">
             <div class="handle-box">
                 <el-input v-model="select_word" placeholder="输入药品名称" class="handle-input mr10"></el-input>
-                <label class="">分类筛选</label>
-                <el-select v-model="search_cate" placeholder="请选择" class="mr10">
+                <label class="mr10">分类筛选</label>
+                <el-cascader class="mr10"
+                    :options="category"
+                    v-model="search_cate"
+                    :props="defaultProps"
+                    :value="search_cate"
+                    clearable
+                    change-on-select
+                    show-all-levels="false"
+                    >
+                </el-cascader>
+                <!-- <el-select v-model="search_cate" placeholder="请选择" class="mr10">
                         <el-option label="全部" value = "" ></el-option>
                         <el-option
                         v-for="item in category"
@@ -18,9 +28,9 @@
                         :value="item.id"
                         >
                         </el-option>
-                    </el-select>
+                    </el-select> -->
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" plain icon="search" @click="editVisible = true">新增药品</el-button>
+                <el-button type="primary" plain icon="search" @click="addprop">新增药品</el-button>
             </div>
             <el-table v-loading="loading" :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column prop="id" label="编号">
@@ -51,22 +61,28 @@
         </div>
 
         <!-- 新增弹出框 -->
-        <el-dialog title="新增药品" :visible.sync="editVisible" width="30%">
+        <el-dialog :title="propTitle" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                 <el-form-item prop="name" label="药品名称">
                     <el-input v-model="form.name" placeholder="药品名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="category" label="所属分类">
-                    <el-select v-model="form.category" placeholder="请选择">
+                    <el-cascader class="mr10"
+                        :options="category"
+                        :props="defaultProps"
+                        v-model="form.category"
+                        >
+                    </el-cascader>
+                    <!-- <el-select class="mr10" v-model="form.category" @change="setSub" placeholder="请选择">
                         <el-option
                         v-for="item in category"
                         :key="item.id"
                         :label="item.name"
                         :value="item.id"
-
                         >
                         </el-option>
-                    </el-select>
+                    </el-select> -->
+                   
                 </el-form-item>
                 <el-form-item prop="reagent" label="试剂">
                     <el-input placeholder="试剂" v-model="form.reagent"></el-input>
@@ -95,10 +111,11 @@
         name: 'medicine',
         data() {
             return {
+                propTitle:'新增药品',
                 loading:false,
                 tableData: [],
                 cur_page: 0,
-                limit:5,
+                limit:10,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -109,13 +126,19 @@
                 totalcount:1,
                 form: {
                     name: '',
-                    category: '',
+                    category: [],
                     column: '',
                     controls:'',
                     testmethod:''
                 },
                 category:[],
-                search_cate:'',
+                subcategory:[],
+                search_cate:[],
+                defaultProps: {
+                    children: 'data',
+                    label: 'name',
+                    value:'id'
+                },
                 idx: -1,
                 rules: {
                     name: [
@@ -153,6 +176,11 @@
             }
         },
         methods: {
+            addprop(){
+                this.editVisible = true
+                this.propTitle = '新增药品'
+                this.clearForm()
+            },
             // 分页导航
             handleCurrentChange(val) {
                 this.cur_page = val - 1;
@@ -165,7 +193,7 @@
                     key: this.select_word,
                     limit: this.limit,
                     offset: this.limit * this.cur_page,
-                    classid:this.search_cate == '' ? 0 : this.search_cate
+                    classid:this.search_cate == '' ? 0 : this.search_cate[this.search_cate.length-1]
                 }).then((res) => {
                     this.loading=false
                     if(res.status.haserror){
@@ -197,25 +225,40 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
+                this.propTitle = '编辑药品'
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
                     id:item.id,
                     name: item.name,
-                    category:item.classid,
+                    category:this.getparentID(item.classid),
                     reagent:item.reagent,
                     column:item.chromatographiccolumn,
                     controls:item.controls,
                     testmethod:item.testmethod,
                 }
+                console.log(this.form,item)
                 this.editVisible = true;
             },
             handleDelete(index, row) {
                 const item = this.tableData[index];
                 this.idx = item.id;
-                this.$confirm('确认删除该条信息？').then((res)=>{
+                this.$confirm('确认删除该药品信息？').then((res)=>{
                     this.delItem()
                 }).catch(_ => {});
+            },
+            getparentID(target){
+                let re = []
+                this.category.forEach(e => {
+                    if(e.data){
+                        e.data.forEach(data => {
+                            if(data.id == target){
+                                re= [e.id, target]
+                            }
+                        });
+                    }
+                });
+                return re
             },
             delItem(){
                 this.$loading()
@@ -238,7 +281,7 @@
                         let url = '/drug/add'
                         let data = {
                             name: this.form.name,
-                            classid: this.form.category,
+                            classid: this.form.category?this.form.category[this.form.category.length-1]:'',
                             reagent:this.form.reagent,
                             chromatographiccolumn:this.form.column,
                             controls:this.form.controls,
@@ -256,9 +299,7 @@
                             }else{
                                 this.$message({message:'操作成功',type: 'success'})
                                 this.editVisible = false;
-                                Object.keys(this.form).map((key)=>{
-                                    this.form[key] = ''
-                                })
+                                this.clearForm()
                                 this.getData()
                             }
                         })
@@ -268,7 +309,12 @@
                     }
                 })
             },
-            
+            clearForm(){
+                Object.keys(this.form).map((key)=>{
+                    this.form[key] = ''
+                })
+                this.form.category=[]
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },

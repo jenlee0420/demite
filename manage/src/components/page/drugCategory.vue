@@ -14,6 +14,7 @@
             <el-tree
                 class="tree"
                 :data="tableData"
+                :props="defaultProps"
                 default-expand-all
                 node-key="id"
                 :expand-on-click-node="false"
@@ -109,34 +110,35 @@
             
             renderContent(h, { node, data, store }) {
                 let sub=false
+                let isDel=true
                 if(typeof(data.data) != 'undefined'){
                     sub=true
+                    if(data.data.length>0){
+                        isDel = false
+                    }
                 }
-                if(sub){
-                    return (
-                    <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;">
+                return (
+                    <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 15px; padding-right: 8px;">
                         <span>
                         <span>{node.label}</span>
                         </span>
                         <span>
-                        <el-button style="font-size: 12px;" type="text" on-click={ () => this.addSub(data) }>添加子类</el-button>
+                        {
+                            sub==true?
+                            <el-button style="font-size: 12px;" type="text" on-click={ () => this.addSub(data) }>添加子类</el-button>
+                            :
+                            ''
+                        }
                         <el-button style="font-size: 12px;" type="text" on-click={ () => this.handleEdit(data) }>编辑</el-button>
-                        <el-button style="font-size: 12px;" type="text" on-click={ () => this.handleDelete(data) }>删除分类</el-button>
-                        </span>
-                    </span>);
-                }else{
-                    return (
-                    <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;">
-                        <span>
-                        <span>{node.label}</span>
-                        </span>
-                        <span>
-                        <el-button style="font-size: 12px;" type="text" on-click={ () => this.handleEdit(data) }>编辑</el-button>
-                        <el-button style="font-size: 12px;" type="text" on-click={ () => this.handleDelete(data) }>删除分类</el-button>
-                        </span>
+                        {
+                            isDel==true?
+                            <el-button style="font-size: 12px;" type="text" on-click={ () => this.handleDelete(data) }>删除</el-button>
+                            :
+                            <el-button disabled style="font-size: 12px;" type="text">删除</el-button>
+                        }
                         
+                        </span>
                     </span>);
-                }
                 
             },
             getData() {

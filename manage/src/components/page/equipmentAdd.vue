@@ -96,7 +96,7 @@
                 </el-table-column>
                 <el-table-column prop="name" label="药品名称">
                 </el-table-column>
-                <el-table-column prop="reagent" label="试剂 ">
+                <el-table-column prop="id" label="编号 ">
                 </el-table-column>
             </el-table>
 

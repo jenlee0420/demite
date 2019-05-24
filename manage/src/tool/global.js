@@ -30,11 +30,11 @@ const global = {
             return 0;
         } else {
             var time1 = new Date(time * 1000)
-            var time2 = this.dateFormat(time1, opt);
+            var time2 = this.dateFormatFun(time1, opt);
             return time2;
         }
     },
-    dateFormat(time1, fmt) {
+    dateFormatFun(time1, fmt) {
         var o = {
             "M+": time1.getMonth() + 1, //月份
             "d+": time1.getDate(), //日

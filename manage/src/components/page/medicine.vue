@@ -46,6 +46,10 @@
                 </el-table-column>
                 <el-table-column prop="testmethod" label="检测方法" >
                 </el-table-column>
+                <el-table-column prop="preprocessing" label="样品预处理" >
+                </el-table-column>
+                <el-table-column prop="range" label="治疗浓度范围" >
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -95,6 +99,12 @@
                 <el-form-item prop="testmethod" label="检测方法">
                     <el-input placeholder="检测方法" v-model="form.testmethod"></el-input>
                 </el-form-item>
+                <el-form-item prop="preprocessing" label="样品预处理">
+                    <el-input placeholder="样品预处理" v-model="form.testmethod"></el-input>
+                </el-form-item>
+                <el-form-item prop="range" label="治疗浓度范围">
+                    <el-input placeholder="治疗浓度范围" v-model="form.testmethod"></el-input>
+                </el-form-item>
 
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -128,7 +138,9 @@
                     category: [],
                     column: '',
                     controls:'',
-                    testmethod:''
+                    testmethod:'',
+                    range:'',
+                    preprocessing:''
                 },
                 category:[],
                 subcategory:[],
@@ -235,8 +247,10 @@
                     column:item.chromatographiccolumn,
                     controls:item.controls,
                     testmethod:item.testmethod,
+                    preprocessing:item.preprocessing,
+                    range:item.range
                 }
-                console.log(this.form,item)
+                // console.log(this.form,item)
                 this.editVisible = true;
             },
             handleDelete(index, row) {
@@ -284,7 +298,9 @@
                             reagent:this.form.reagent,
                             chromatographiccolumn:this.form.column,
                             controls:this.form.controls,
-                            testmethod:this.form.testmethod
+                            testmethod:this.form.testmethod,
+                            range:this.form.range,
+                            preprocessing:this.form.preprocessing
                         }
                         if(this.idx != -1){
                             url = '/drug/update'

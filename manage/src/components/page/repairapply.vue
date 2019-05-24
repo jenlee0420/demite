@@ -74,10 +74,11 @@
                 >
                 </el-option>
             </el-select> 
+
             <el-date-picker
                             v-model="timetime"
-                            type="date"
-                            value-format='timestamp'
+                            type="datetime"
+                            value-format="timestamp"
                             placeholder="选择日期"
                             :picker-options="pickerOptions1">
              </el-date-picker>
@@ -140,13 +141,12 @@
                 idx: -1,
                 timetime:'',
                 staffid:"",
-                
                 staffList:[],
                 reason:'',
                 
                 pickerOptions1: {
                     disabledDate(time) {
-                        return time.getTime() < Date.now();
+                        return time.getTime() < (Date.now() - 86400000);
                     },
                 },
                 applystatus:'',

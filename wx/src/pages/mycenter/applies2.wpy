@@ -42,6 +42,18 @@
             {{currdata.testmethod}}
         </view>
     </view>
+    <view class="panel">
+        <view>样品预处理 </view>
+        <view class="mt30">
+            {{currdata.preprocessing}}
+        </view>
+    </view>
+    <view class="panel">
+        <view>治疗浓度范围 </view>
+        <view class="mt30">
+            {{currdata.range}}
+        </view>
+    </view>
   </view>
 </template>
 

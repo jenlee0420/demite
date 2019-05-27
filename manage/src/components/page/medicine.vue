@@ -65,7 +65,7 @@
 
         <!-- 新增弹出框 -->
         <el-dialog :title="propTitle" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+            <el-form ref="form" :rules="rules" :model="form" label-width="110px">
                 <el-form-item prop="name" label="药品名称">
                     <el-input v-model="form.name" placeholder="药品名称"></el-input>
                 </el-form-item>
@@ -100,10 +100,10 @@
                     <el-input placeholder="检测方法" v-model="form.testmethod"></el-input>
                 </el-form-item>
                 <el-form-item prop="preprocessing" label="样品预处理">
-                    <el-input placeholder="样品预处理" v-model="form.testmethod"></el-input>
+                    <el-input placeholder="样品预处理" v-model="form.preprocessing"></el-input>
                 </el-form-item>
                 <el-form-item prop="range" label="治疗浓度范围">
-                    <el-input placeholder="治疗浓度范围" v-model="form.testmethod"></el-input>
+                    <el-input placeholder="治疗浓度范围" v-model="form.range"></el-input>
                 </el-form-item>
 
             </el-form>

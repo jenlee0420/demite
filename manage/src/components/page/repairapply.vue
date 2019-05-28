@@ -79,7 +79,7 @@
                             v-model="timetime"
                             type="datetime"
                             value-format="timestamp"
-                            placeholder="选择日期"
+                            placeholder="选择日期和时间"
                             :picker-options="pickerOptions1">
              </el-date-picker>
             <span slot="footer" class="dialog-footer">

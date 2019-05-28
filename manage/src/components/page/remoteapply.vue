@@ -85,9 +85,9 @@
             </el-select> 
             <el-date-picker
                             v-model="timetime"
-                            type="date"
-                            value-format='timestamp'
-                            placeholder="选择日期"
+                            type="datetime"
+                            value-format="timestamp"
+                            placeholder="选择日期和时间"
                             :picker-options="pickerOptions1">
              </el-date-picker>
             <span slot="footer" class="dialog-footer">
@@ -170,7 +170,7 @@
                 ,
                 pickerOptions1: {
                     disabledDate(time) {
-                        return time.getTime() < Date.now();
+                        return time.getTime() < (Date.now() - 86400000);
                     },
                 }
             }

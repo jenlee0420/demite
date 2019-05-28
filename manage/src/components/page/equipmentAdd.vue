@@ -138,10 +138,10 @@
                 tableData: [],
                 cur_page: 0,
                 totalcount:0,
-                limit: 15,
+                limit: 6,
                 select_word: '',
                 search_cate: '',
-                multipleSelection:[],
+                multipleSelection:{},
                 checkboxlist:[],
                 checkboxStr:[],
                 rows:[],
@@ -204,10 +204,10 @@
                     this.tableData.forEach((v,index) => {
                         if(v.id == e){
                             this.$refs.multipleTable.toggleRowSelection(this.tableData[index],true);   
-
                         }
                     });
                 });
+                console.log(this.$refs.multipleTable)
             },
             getdrugData() {
                 this.druglistshow = true
@@ -228,18 +228,25 @@
                         
                         setTimeout(()=>{
                             this.checkboxFill()
+                            this.saveDrug()
                         },200)
                     }
                 })
             },
             submitMult(){
                 this.druglistshow = false
+                this.saveDrug()
+            },
+            //保存药品选项
+            saveDrug(){
                 this.checkboxlist = []
                 this.checkboxStr = []
-                this.multipleSelection.forEach(e => {
-                    this.checkboxlist.push(e.id)
-                    this.checkboxStr.push(e.name)
-                });
+                Object.keys(this.multipleSelection).map(index => {
+                    this.multipleSelection[index].forEach(val => {
+                        this.checkboxlist.push(val.id)
+                        this.checkboxStr.push(val.name)
+                    })
+                })
             },
             // 分页导航
             handleCurrentChange(val) {
@@ -257,12 +264,15 @@
                 this.form.goodspic = file.id
             },
             handleSelectionChange(val) {
-                // this.multipleSelection = val;
-                this.multipleSelection=[]
+                if(!this.multipleSelection[this.cur_page]){
+                    this.multipleSelection[this.cur_page] = []
+                }
+                let t = []
                 Object.keys(val).map((e,index)=>{
-                    this.multipleSelection.push({id:val[e].id,name:val[e].name})
+                    t.push({id:val[e].id,name:val[e].name})
                 })
-                // console.log(this.multipleSelection)
+                this.multipleSelection[this.cur_page] = t
+                // this.saveDrug()
             },
             onSubmit() {
                 this.$loading()

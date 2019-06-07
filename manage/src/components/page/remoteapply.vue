@@ -36,8 +36,8 @@
                 <el-table-column label="图片">
                     <template slot-scope="scope">
                         <label v-if="!scope.row.fileid1 && !scope.row.fileid2">无图片信息</label>
-                        <el-button type="text" class="mr10" v-if="scope.row.fileid1" @click="showImg(scope.row.fileid1)"> 查看图片</el-button>
-                        <el-button type="text" v-if="scope.row.fileid2" @click="showImg(scope.row.fileid2)"> 查看图片</el-button>
+                        <el-button type="text" class="mr10" v-if="scope.row.fileid1" @click="showImg(scope.row.fileid1)">查看图片</el-button>
+                        <el-button type="text" v-if="scope.row.fileid2" @click="showImg(scope.row.fileid2)">查看图片</el-button>
                         
                     </template>
                 </el-table-column>
@@ -272,7 +272,6 @@
                     return
                 }
 
-                
                 this.deal(this.idx, 0,this.reason,false)
                 this.refuse = false  
             },
@@ -282,7 +281,7 @@
                 this.$axios.post('/remoteapply/deal', {
                     id: id,
                     staffid:parseInt(this.staffid) ,
-                    repairtime: parseInt(time),
+                    dealtime: parseInt(time) / 1000,
                     agree:agree,
                     reason:reason,
                 }).then((res) => {
@@ -329,5 +328,8 @@
     }
     .mr10 {
         margin-right: 10px;
+    }
+    .el-button+.el-button{
+        margin-left: 0px;
     }
 </style>

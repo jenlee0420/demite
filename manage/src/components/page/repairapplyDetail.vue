@@ -267,8 +267,9 @@
                         for (var i=0;i<res.data.data.length;i++){
                             var text=""
                             if(res.data.data[i].currentstatus=="applying"){
-                                text="微信用户："+res.data.data[i].wxusername+"提出申请于"+
-                                this.transTime(res.data.data[i].remotetime,"yyyy-MM-dd")+"报修"
+                                // text="微信用户："+res.data.data[i].wxusername+"提出申请于"+
+                                // this.transTime(res.data.data[i].repairtime,"yyyy-MM-dd")+"报修"
+                                text="微信用户："+res.data.data[i].wxusername+"提出申请"
                             }else if(res.data.data[i].currentstatus=="comfirm"){
                                 text="后台用户:"+res.data.data[i].username+"确认，指派"+
                                 res.data.data[i].staffname+"维修"

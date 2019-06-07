@@ -277,7 +277,7 @@
                 this.$axios.post('/repairapply/deal', {
                     id: id,
                     staffid:parseInt(this.staffid) ,
-                    dealtime: parseInt(time),
+                    repairtime: parseInt(time) / 1000,
                     agree:agree,
                     reason:reason,
                 }).then((res) => {
@@ -324,5 +324,8 @@
     }
     .mr10 {
         margin-right: 10px;
+    }
+    .el-button+.el-button{
+        margin-left: 0px;
     }
 </style>

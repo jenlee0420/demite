@@ -1,0 +1,75 @@
+<style lang="less">
+  .question{
+    .keyword{
+        color: #a5a5a5;
+        font-size: 24rpx;
+        // margin: 15rpx auto;
+        width: 100%;
+        text-align: center;
+      }
+    .inputpanel{
+      // margin-top: 42rpx;
+      margin: 42rpx auto;
+      margin-bottom: 15rpx;
+      border:1rpx solid #333;
+      height: 60rpx;
+      box-sizing: border-box;
+      width: 540rpx;
+      display: flex;
+      align-items: center;
+      input{
+        width: 420rpx;
+        padding: 0 15rpx;
+      }
+    }
+    .searchbut{
+      width: 120rpx;
+      height: 100%;
+      background-color: #333;
+      color: #fff;
+      font-size: 32rpx;
+      border-radius: 0;
+      line-height: 58rpx;
+    }
+    .title{
+      color: #333;
+      padding: 30rpx 20rpx;
+    }
+  }
+</style>
+
+<template>
+  <view class="container question">
+    <view class="searchbox">
+      <view class="inputpanel">
+        <input placeholder="请输入关键字" type="text"/>
+        <button class="searchbut">搜索</button>
+      </view>
+      <view class="keyword">关键词：仪器   积分   定量  分子量</view>
+    </view>
+    <view class="title fs32">最新问答：</view>
+    <flod2 subtitle="Q1">
+        <view slot="maindata" class="listitem">
+          sfefefewefweffeeeeffe
+        </view>
+    </flod2>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+import flod2 from '@/components/flod2'
+export default class question extends wepy.page {
+  config = {
+      navigationBarTitleText: '应用详情',
+  }
+  components = {flod2}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

@@ -1,0 +1,142 @@
+<style lang="less">
+    .videolist {
+        .attribute {
+            height: 60rpx;
+            padding: 0 30rpx;
+            background-color: #fff;
+            .scroll {
+                display: flex;
+                white-space: nowrap;
+                width: 1600rpx;
+            }
+            view {
+                color: #a5a5a5;
+                font-size: 24rpx;
+                display: inline-block;
+                height: 34rpx;
+                background-color: #eee;
+                border-radius: 20rpx;
+                width: auto;
+                padding: 5rpx 15rpx;
+                margin-right: 30rpx;
+                &.active {
+                    background-color: @theme;
+                    color: #fff;
+                }
+            }
+        }
+        .attrName {
+            margin-top: 20rpx;
+            color: #a5a5a5;
+            font-size: 24rpx;
+            padding-left: 30rpx;
+            background-color: #fff;
+            border-bottom: 1rpx solid #e8e8e8;
+            height: 60rpx;
+            line-height: 60rpx;
+        }
+        .box {
+            padding: 15rpx;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+            .item {
+                margin: 15rpx;
+                margin-bottom: 25rpx;
+                width: 330rpx;
+                .imagebox {
+                    height: 240rpx;
+                    width: 330rpx;
+                    overflow: hidden;
+                    border-radius: 10rpx;
+                    background-color: rgba(0, 0, 0, .5);
+                    image {
+                        height: 240rpx;
+                        width: 330rpx;
+                    }
+                } // view {
+                //     padding: 18rpx;
+                //     height: 140rpx;
+                // }
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="container videolist">
+        <!-- <TopNav activeIndex='1'></TopNav> -->
+        <view class="attribute">
+            <scroll-view scroll-x class="scroll">
+                <view wx:for="{{attrlist}}" wx:key="index" bindtap="changeindex({{index}})" class=" {{index == currid ? 'active' : ''}}">
+                    {{item.name}}
+                </view>
+            </scroll-view>
+        </view>
+        <view class="attrName">热门视频</view>
+        <view class="box">
+            <view class="flexCol fs24 item">
+                <view class="imagebox">
+                    <image src='' mode="aspectFill" />
+                </view>
+                <view class="c333 oneEle mt20">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+                </view>
+            </view>
+            <view class="flexCol fs24 item">
+                <view class="imagebox">
+                    <image src='' mode="aspectFill" />
+                </view>
+                <view class="c333 oneEle mt20">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+                </view>
+            </view>
+            <view class="flexCol fs24 item">
+                <view class="imagebox">
+                    <image src='' mode="aspectFill" />
+                </view>
+                <view class="c333 oneEle mt20">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import TopNav from '@/components/TopNav'
+    export default class videolist extends wepy.page {
+        config = {
+            navigationBarTitleText: '视频中心',
+        }
+        components = {
+            TopNav
+        }
+        mixins = [Mixin]
+        data = {
+            attrlist: [{
+                    id: 0,
+                    name: '全部'
+                },
+                {
+                    id: 1,
+                    name: '产品介绍'
+                },
+                {
+                    id: 2,
+                    name: '公司宣传'
+                },
+                {
+                    id: 3,
+                    name: '维护保养'
+                },
+            ],
+            currid: 0,
+        }
+        methods = {
+            changeindex(index) {
+                this.currid = index
+            }
+        }
+        onLoad() {}
+    }
+</script>

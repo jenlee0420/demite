@@ -1,0 +1,61 @@
+<style lang="less">
+.softlist{
+  .listitem{
+    color: #333;
+    font-size: 24rpx;
+    background-color: #fff;
+    &>view{
+      border-top: 1rpx solid #E8e8e8;
+      height: 60rpx;
+      line-height: 60rpx;
+      padding: 0 30rpx;
+      &:first-child{
+        border:none
+      }
+    }
+}
+}
+
+</style>
+
+<template>
+  <view class="container softlist">
+    <!-- <TopNav activeIndex='6'></TopNav> -->
+    <flod subtitle="操作说明书">
+        <view slot="maindata" class="listitem">
+            <view class="flex flex-acenter">
+              <text class="pdfico mr30"></text>
+              <text class="oneEle">LCSolution lite软件安装</text>
+            </view>
+        </view>
+    </flod>
+    <flod subtitle="操作说明书2">
+        <view slot="maindata" class="listitem">
+            <view class="flex flex-acenter">
+              <text class="pdfico mr30"></text>
+              <text class="oneEle">LCSolution lite软件安装</text>
+            </view>
+        </view>
+    </flod>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+import flod from '@/components/flod'
+import TopNav from '@/components/TopNav'
+
+export default class softlist extends wepy.page {
+  config = {
+      navigationBarTitleText: '软件下载',
+  }
+  components = {flod,TopNav}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

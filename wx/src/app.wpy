@@ -23,6 +23,11 @@ page {
     config = {
       pages: [
         // 'pages/icon',
+        'pages/appCenter/main',
+        // 'pages/appCenter/question',
+        // 'pages/appCenter/videolist',
+        // 'pages/appCenter/softlist',
+        // 'pages/appCenter/solution',
         // 'pages/appCenter/index',
         'pages/mycenter/home',
         'pages/after_sale/equipment',

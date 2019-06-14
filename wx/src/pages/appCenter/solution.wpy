@@ -1,0 +1,70 @@
+<style lang="less">
+page{
+    background: #e8e8e8;
+}
+.solution{
+    .box{
+        padding: 15rpx;
+        display:flex;
+        flex-wrap: wrap
+    }
+    .item{
+        margin: 15rpx;
+        margin-bottom: 25rpx;
+        background: #fff;
+        width: 330rpx;
+        view{
+            padding: 18rpx;
+            height: 140rpx;
+        }
+        .border{
+            border-bottom: 1rpx solid #e8e8e8;
+        }
+    }
+}
+</style>
+
+<template>
+  <view class="container solution">
+    <!-- <TopNav activeIndex='1'></TopNav> -->
+    <view class="box">
+         <view class="flexCol fs24 item">
+             <image src='' mode="aspectFill"/>
+             <view class="c333 twoEle border">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+             </view>
+             <view class="ca5a5a5 twoEle">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清</view>
+         </view>
+
+         <view class="flexCol fs24 item">
+             <image src='' />
+             <view class="c333 twoEle border">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+             </view>
+             <view class="ca5a5a5 twoEle">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清</view>
+         </view>
+         <view class="flexCol fs24 item">
+             <image src='' />
+             <view class="c333 twoEle border">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清
+             </view>
+             <view class="ca5a5a5 twoEle">泵内柱塞干及密封圈清洗清清洗洗干及密封圈清</view>
+         </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Mixin from '@/mixins/global'
+import TopNav from '@/components/TopNav'
+export default class solution extends wepy.page {
+  config = {
+      navigationBarTitleText: '解决方案',
+  }
+  components = {TopNav}
+  mixins = [Mixin]
+  data = {
+  }
+  methods = {}
+  onLoad() {
+  }
+}
+</script>

@@ -1,0 +1,62 @@
+<style lang="less">
+    .flod {
+        margin-bottom: 40rpx;
+        .listTitle {
+            height: 61rpx;
+            color: #333;
+            font-size: 24rpx; // line-height: 61rpx;
+            padding: 0 30rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &.border {
+            border-bottom: 1rpx solid #cecece;
+        }
+        .arrow_icon{
+            transition: all .2s 
+        }
+        .tran{
+            transform: rotate(90deg)
+        }
+    }
+</style>
+
+<template>
+    <view class="container flod">
+        <view class="listTitle" @tap="flodItem">
+            <text>{{subtitle}}</text>
+            <text wx:if="{{itemlength>5}}" class="arrow_icon {{display?'tran':''}}"></text>
+        </view>
+        <view wx:if="{{display || itemlength <6}}">
+            <slot name="maindata">
+            </slot>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    export default class flod extends wepy.component {
+        config = {}
+        components = {}
+        mixins = [Mixin]
+        props = {
+            subtitle: String,
+            itemlength:{
+                default:0
+            }
+        }
+        data = {
+            display: false
+        }
+        methods = {
+            flodItem(){
+                if(this.itemlength<6){return}
+                this.display = !this.display
+            }
+        }
+        onLoad() {}
+    }
+</script>

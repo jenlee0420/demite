@@ -1,8 +1,7 @@
 <style lang="less">
-  page {
-    background-color: #fff;
-  }
+  
   .appcenter {
+    background-color: #fff;
     .Recommend {
       height: 280rpx;
       background-color: #e8e8e8;
@@ -59,7 +58,7 @@
 
 <template>
   <view class="container appcenter">
-    <TopNav activeIndex='0'></TopNav>
+    <!-- <TopNav activeIndex='0'></TopNav> -->
     <view class="Recommend">
       <swiper circular="{{true}}" previous-margin="50rpx" next-margin="50rpx" @change="bannerChange">
         <repeat for="{{bannerData}}" key="index">
@@ -91,7 +90,7 @@
   import wepy from 'wepy'
   import Mixin from '@/mixins/global'
   import TopNav from '@/components/TopNav'
-  export default class Index extends wepy.page {
+  export default class Index extends wepy.component {
     config = {
       navigationBarTitleText: '应用中心',
     }

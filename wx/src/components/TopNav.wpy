@@ -3,6 +3,7 @@
     padding: 0 40rpx;
     border-top: 1rpx solid #dcdcdc;
     border-bottom: 1rpx solid #dcdcdc;
+    background-color: #fff;
     // height: 90rpx;
     .scroll {
       display: flex;
@@ -16,6 +17,8 @@
         display: inline-block;
         color: #333;
         font-size: 32rpx;
+        
+        
         .active {
           color: @theme;
           border-bottom: 5rpx solid @theme;
@@ -33,7 +36,7 @@
 </style>
 <template>
   <view class="navTop">
-    <scroll-view scroll-x class="scroll" style="width: 100%">
+    <scroll-view scroll-x class="scroll" style="width:100%">
       <view wx:for="{{navArr}}" wx:key="{{index}}" class="items" bindtap="changeindex({{index}})">
         <view class="flex flex-acenter">
           <text class="{{item.class}} appIcon"></text>
@@ -48,46 +51,48 @@
   export default class TopNav extends wepy.component {
     components = {};
     props = {
-      activeIndex: String,
+      // activeIndex: String,
       words: Object,
     };
     data = {
+      activeIndex:0,
       navArr: [{
         link: '/pages/mycenter/equipment',
         text: '推荐',
-        class: 'mycenter1'
+        class: 'app01'
       }, {
         link: '/pages/mycenter/equipment',
         text: '视频中心',
-        class: 'mycenter1'
+        class: 'app02'
       }, {
         link: '/pages/after_sale/repairlist',
         text: '资料中心',
-        class: 'mycenter2'
+        class: 'app03'
       }, {
         link: '',
         text: '解决方案',
-        class: 'mycenter3'
+        class: 'app04'
       }, {
         link: '',
         text: '资质认证',
-        class: 'mycenter4'
+        class: 'app05'
       }, {
         link: '/pages/after_sale/afterSale',
         text: '科学项目',
-        class: 'mycenter5'
+        class: 'app06'
       }, {
         link: '/pages/after_sale/afterSale',
         text: '软件下载',
-        class: 'mycenter5'
+        class: 'app07'
       }, {
         link: '/pages/after_sale/afterSale',
         text: '应用问答',
-        class: 'mycenter5'
+        class: 'app08'
       }],
     };
     methods = {
       changeindex(index) {
+        this.activeIndex =index
         this.$emit('changeactiveIndex', index)
       }
     }

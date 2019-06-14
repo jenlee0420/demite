@@ -1,0 +1,89 @@
+<style lang="less">
+
+</style>
+
+<template>
+    <view class="container">
+        <TopNav></TopNav>
+        <home wx:if="{{showindex == 0}}" />
+        <videolist wx:if="{{showindex == 1}}" />
+        <!-- <home wx:if="{{showindex == 2}}"/> -->
+        <solution wx:if="{{showindex == 3}}" />
+        <!-- <home wx:if="{{showindex == 4}}"/> -->
+        <!-- <home wx:if="{{showindex == 5}}"/> -->
+        <softlist wx:if="{{showindex == 6}}" />
+        <question wx:if="{{showindex == 7}}" />
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    import TopNav from '@/components/TopNav'
+    import home from '@/pages/appCenter/index'
+    import question from '@/pages/appCenter/question'
+    import softlist from '@/pages/appCenter/softlist'
+    import solution from '@/pages/appCenter/solution'
+    import videolist from '@/pages/appCenter/videolist'
+    export default class main extends wepy.page {
+        config = {
+            navigationBarTitleText: '应用详情',
+        }
+        components = {
+            TopNav,
+            home,
+            question,
+            softlist,
+            solution,
+            videolist
+        }
+        mixins = [Mixin]
+        data = {
+            showindex: 7,
+            navArr: [{
+                link: '/pages/mycenter/equipment',
+                text: '推荐',
+                class: 'app01'
+            }, {
+                link: '/pages/mycenter/equipment',
+                text: '视频中心',
+                class: 'app02'
+            }, {
+                link: '/pages/after_sale/repairlist',
+                text: '资料中心',
+                class: 'app03'
+            }, {
+                link: '',
+                text: '解决方案',
+                class: 'app04'
+            }, {
+                link: '',
+                text: '资质认证',
+                class: 'app05'
+            }, {
+                link: '/pages/after_sale/afterSale',
+                text: '科学项目',
+                class: 'app06'
+            }, {
+                link: '/pages/after_sale/afterSale',
+                text: '软件下载',
+                class: 'app07'
+            }, {
+                link: '/pages/after_sale/afterSale',
+                text: '应用问答',
+                class: 'app08'
+            }],
+        }
+        events = {
+            changeactiveIndex(index) {
+                // console.log(index, '////')
+                this.showindex = index
+                wx.setNavigationBarTitle({
+                    title: this.navArr[index].text
+                })
+            }
+        }
+        methods = {}
+        onLoad() {}
+    }
+</script>

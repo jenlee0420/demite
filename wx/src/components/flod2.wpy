@@ -1,0 +1,66 @@
+<style lang="less">
+    .flodwhite {
+        // margin-bottom: 40rpx;
+        border-bottom: 1rpx solid #e8e8e8;
+        .listTitle {
+            height: 60rpx;
+            color: #333;
+            font-size: 24rpx; // line-height: 61rpx;
+            padding: 0 30rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+        }
+        
+        .arrow_icon{
+            transition: all .2s 
+        }
+        .tran{
+            transform: rotate(90deg)
+        }
+        .maincontent{
+            border-top: 1rpx solid #e8e8e8;
+            background-color: #fff;
+            padding: 20rpx 30rpx;
+        }
+    }
+</style>
+
+<template>
+    <view class="container flodwhite">
+        <view class="listTitle" @tap="flodItem">
+            <text class="{{display?'maincolor':''}}">{{subtitle}}</text>
+            <text class="arrow_icon {{display?'tran':''}}"></text>
+        </view>
+        <view wx:if="{{display}}" class="maincontent">
+            <slot name="maindata">
+            </slot>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import Mixin from '@/mixins/global'
+    export default class flod2 extends wepy.component {
+        config = {}
+        components = {}
+        mixins = [Mixin]
+        props = {
+            subtitle: String,
+            itemlength:{
+                default:0
+            }
+        }
+        data = {
+            display: false
+        }
+        methods = {
+            flodItem(){
+                this.display = !this.display
+            }
+        }
+        onLoad() {}
+    }
+</script>
